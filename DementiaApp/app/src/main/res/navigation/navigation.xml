@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@id/titleFragment">
+
+    <fragment
+        android:id="@+id/titleFragment"
+        android:name="com.dementiaapp.quiz.TitleFragment"
+        android:label="TitleFragment"
+        tools:layout="@layout/fragment_title">
+        <action
+            android:id="@+id/action_titleFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment" />
+        <action
+            android:id="@+id/action_titleFragment_to_preQuizFragment2"
+            app:destination="@id/preQuizFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.dementiaapp.quiz.QuizFragment"
+        android:label="QuizFragment"
+        tools:layout="@layout/fragment_quiz" />
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.dementiaapp.quiz.resultsFragment"
+        android:label="fragment_results"
+        tools:layout="@layout/fragment_results" />
+    <fragment
+        android:id="@+id/preQuizFragment2"
+        android:name="com.dementiaapp.quiz.PreQuizFragment"
+        android:label="fragment_pre_quiz"
+        tools:layout="@layout/fragment_pre_quiz" >
+        <action
+            android:id="@+id/action_preQuizFragment2_to_quizFragment"
+            app:destination="@id/quizFragment" />
+    </fragment>
+</navigation>

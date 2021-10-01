@@ -23,38 +23,38 @@ class QuizFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
 
         // Parse the quiz questions json from file and create quiz questions kotlin object
-        //TODO: below code was in main activity, needs to be in "PreQuizFragment" yet to be created
-        val jsonFileString = getJsonDataFromAsset(applicationContext, QUIZ_QUESTIONS_JSON)
-        var quizQuestions = generateQuizQuestions(jsonFileString)
-        Log.i("quiz data", quizQuestions.toString())
-
-        // Sort the questions list by id
-        quizQuestions = quizQuestions.sortedBy {it.id}
-
-        // Initialize the question fields in the UI
-        populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-
-        // When next button is pressed, go to next question so long as not at end of question list
-        binding.nextBtn.setOnClickListener {
-            if (currentQuestionIndex < quizQuestions.size - 1) {
-                currentQuestionIndex += 1
-                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-            }
-        }
-
-        // When prev button is pressed, go to prev question so long as not at start of question list
-        binding.prevBtn.setOnClickListener {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex -= 1
-                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-            }
-        }
+        //TODO: below code was in main activity, needs to be in "PreQuizFragment" (yet to be created) - will require internet connectivity
+//        val jsonFileString = getJsonDataFromAsset(applicationContext, QUIZ_QUESTIONS_JSON)
+//        var quizQuestions = generateQuizQuestions(jsonFileString)
+//        Log.i("quiz data", quizQuestions.toString())
+//
+//        // Sort the questions list by id
+//        quizQuestions = quizQuestions.sortedBy {it.id}
+//
+//        // Initialize the question fields in the UI
+//        populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+//
+//        // When next button is pressed, go to next question so long as not at end of question list
+//        binding.nextBtn.setOnClickListener {
+//            if (currentQuestionIndex < quizQuestions.size - 1) {
+//                currentQuestionIndex += 1
+//                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+//            }
+//        }
+//
+//        // When prev button is pressed, go to prev question so long as not at start of question list
+//        binding.prevBtn.setOnClickListener {
+//            if (currentQuestionIndex > 0) {
+//                currentQuestionIndex -= 1
+//                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+//            }
+//        }
 
         return binding.root
     }
