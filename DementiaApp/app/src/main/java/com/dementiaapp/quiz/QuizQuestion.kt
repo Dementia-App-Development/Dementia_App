@@ -14,7 +14,7 @@ data class QuizQuestion(
     val id: Int,
     val question_no: Int,
     val instruction: String,
-    val sub_text: String,
+    val sub_text: String?,
     val time_limit: Int,
     val mark: Int,
     val response_type: ResponseType,

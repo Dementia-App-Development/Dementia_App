@@ -26,35 +26,65 @@ class QuizFragment : Fragment() {
     ): View {
 
         // Use view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
+        val binding = DataBindingUtil.inflate<FragmentQuizBinding>(
+            inflater,
+            R.layout.fragment_quiz,
+            container,
+            false
+        )
 
-        // Parse the quiz questions json from file and create quiz questions kotlin object
-        //TODO: below code was in main activity, needs to be in "PreQuizFragment" (yet to be created) - will require internet connectivity
-//        val jsonFileString = getJsonDataFromAsset(applicationContext, QUIZ_QUESTIONS_JSON)
-//        var quizQuestions = generateQuizQuestions(jsonFileString)
-//        Log.i("quiz data", quizQuestions.toString())
-//
-//        // Sort the questions list by id
-//        quizQuestions = quizQuestions.sortedBy {it.id}
-//
-//        // Initialize the question fields in the UI
-//        populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-//
-//        // When next button is pressed, go to next question so long as not at end of question list
-//        binding.nextBtn.setOnClickListener {
-//            if (currentQuestionIndex < quizQuestions.size - 1) {
-//                currentQuestionIndex += 1
-//                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-//            }
-//        }
-//
-//        // When prev button is pressed, go to prev question so long as not at start of question list
-//        binding.prevBtn.setOnClickListener {
-//            if (currentQuestionIndex > 0) {
-//                currentQuestionIndex -= 1
-//                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-//            }
-//        }
+        // TODO: Below code generates placeholder two-member list, need to replace so that it fetches data from server
+        val questionOne = QuizQuestion(
+            1,
+            1,
+            "What year is this?",
+            null,
+            10,
+            1,
+            QuizQuestion.ResponseType.LIST,
+            QuizQuestion.AnswerVerification.LIST,
+            null,
+            null,
+            'a',
+            listOf("2021")
+        )
+        val questionTwo = QuizQuestion(
+            2,
+            1,
+            "What season is this?",
+            null,
+            10,
+            1,
+            QuizQuestion.ResponseType.LIST,
+            QuizQuestion.AnswerVerification.LIST,
+            null,
+            null,
+            'b',
+            listOf("Spring")
+        )
+        var quizQuestions = listOf(questionOne, questionTwo)
+
+        // Sort the questions list by id
+        quizQuestions = quizQuestions.sortedBy { it.id }
+
+        // Initialize the question fields in the UI
+        populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+
+        // When next button is pressed, go to next question so long as not at end of question list
+        binding.nextBtn.setOnClickListener {
+            if (currentQuestionIndex < quizQuestions.size - 1) {
+                currentQuestionIndex += 1
+                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+            }
+        }
+
+        // When prev button is pressed, go to prev question so long as not at start of question list
+        binding.prevBtn.setOnClickListener {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex -= 1
+                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+            }
+        }
 
         return binding.root
     }
@@ -63,8 +93,12 @@ class QuizFragment : Fragment() {
 /**
  * This function populates the UI with the question at the provided index in the list of questions
  */
-// TODO: temporary code for demonstration purposes only
-fun populateUIWithQuestion(binding: FragmentQuizBinding, quizQuestions: List<QuizQuestion>, i: Int) {
+// TODO: temporary code for demonstration purposes only - needs tidy up when UI is done to display components properly
+fun populateUIWithQuestion(
+    binding: FragmentQuizBinding,
+    quizQuestions: List<QuizQuestion>,
+    i: Int
+) {
     // Instantiate the fields in the main activity with the first question in the quiz
     binding.tvTimeLimit.text = quizQuestions[i].time_limit.toString() + " seconds to answer"
     binding.tvQuestionNo.text = "id: " + quizQuestions[i].id.toString() + " | " +

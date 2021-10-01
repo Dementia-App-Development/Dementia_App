@@ -15,7 +15,7 @@
             app:destination="@id/resultsFragment" />
         <action
             android:id="@+id/action_titleFragment_to_preQuizFragment2"
-            app:destination="@id/preQuizFragment2" />
+            app:destination="@id/preQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
@@ -28,12 +28,12 @@
         android:label="fragment_results"
         tools:layout="@layout/fragment_results" />
     <fragment
-        android:id="@+id/preQuizFragment2"
+        android:id="@+id/preQuizFragment"
         android:name="com.dementiaapp.quiz.PreQuizFragment"
         android:label="fragment_pre_quiz"
         tools:layout="@layout/fragment_pre_quiz" >
         <action
-            android:id="@+id/action_preQuizFragment2_to_quizFragment"
+            android:id="@+id/action_preQuizFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
     </fragment>
 </navigation>
