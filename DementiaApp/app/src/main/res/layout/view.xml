@@ -1,0 +1,12 @@
+<ViewFlipper
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/vf">
+
+    <include android:id="@+id/basic" layout="@layout/activity_main" />
+    <include android:id="@+id/date" layout="@layout/date_question" />
+    <include android:id="@+id/picture" layout="@layout/picture_question" />
+
+
+</ViewFlipper>

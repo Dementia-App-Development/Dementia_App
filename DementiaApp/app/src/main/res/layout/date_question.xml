@@ -2,28 +2,23 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".TitleFragment">
-
-        <fragment
-            android:id="@+id/myNavHostFragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/navigation" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".MainActivity">
 
         <TextView
             android:id="@+id/tv_question_no"
             android:layout_width="380dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Question Title"
+            android:textSize="36sp"
             android:textColor="#003349"
-            android:textSize="36sp" />
+            android:text="Question Title" />
 
         <TextView
             android:id="@+id/tv_instructions"
@@ -43,13 +38,12 @@
             android:text="sub text" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTextDate"
             android:layout_width="358dp"
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Please write the answer here"
-            android:inputType="textPersonName" />
+            android:inputType="date" />
 
 
         <Button
@@ -74,6 +68,7 @@
             android:progressBackgroundTint = "#00FF0A"
             android:progressTint = "#FF1100"
             android:visibility="visible"/>
+
 
 
     </LinearLayout>
