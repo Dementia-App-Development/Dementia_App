@@ -19,12 +19,16 @@ class PreQuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPreQuizBinding>(inflater, R.layout.fragment_pre_quiz, container, false)
 
-        // Use Nav Controller to set go to quiz button to navigate to quiz fragment
-        binding.goToQuizButton.setOnClickListener { v: View ->
+        // If in assisted mode, go to the patient details fragment
+        binding.btnAssisting.setOnClickListener { v: View ->
+            v.findNavController().navigate(PreQuizFragmentDirections.actionPreQuizFragmentToPatientDetailsFragment())
+        }
+
+        // If in patient mode, go straight to the quiz
+        binding.btnForMyself.setOnClickListener { v: View ->
             v.findNavController().navigate(PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment())
         }
 

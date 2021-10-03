@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".PreQuizFragment">
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".PreQuizFragment"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_pre_quiz_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Are you assisting someone or doing the quiz yourself?"
+            android:textSize="36sp" />
 
         <Button
-            android:id="@+id/go_to_quiz_button"
+            android:id="@+id/btn_assisting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go to Quiz"
+            android:text="Assisting"
             android:textSize="34sp" />
 
-    </FrameLayout>
+        <Button
+            android:id="@+id/btn_for_myself"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For Myself"
+            android:textSize="34sp" />
+
+    </LinearLayout>
 </layout>

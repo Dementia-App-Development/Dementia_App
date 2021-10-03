@@ -35,5 +35,17 @@
         <action
             android:id="@+id/action_preQuizFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
+        <action
+            android:id="@+id/action_preQuizFragment_to_patientDetailsFragment"
+            app:destination="@id/patientDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientDetailsFragment"
+        android:name="com.dementiaapp.quiz.PatientDetailsFragment"
+        android:label="PatientDetailsFragment"
+        tools:layout="@layout/fragment_patient_details">
+        <action
+            android:id="@+id/action_patientDetailsFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
     </fragment>
 </navigation>

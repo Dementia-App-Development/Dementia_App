@@ -25,12 +25,12 @@ class TitleFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater, R.layout.fragment_title, container, false)
 
         // Use Nav Controller to set quiz button to navigate to quiz fragment
-        binding.quizButton.setOnClickListener { v: View ->
+        binding.btnQuiz.setOnClickListener { v: View ->
             v.findNavController().navigate(TitleFragmentDirections.actionTitleFragmentToPreQuizFragment2())
         }
 
         // Use Nav Controller to set results button to navigate to results fragment
-        binding.resultsButton.setOnClickListener { v: View ->
+        binding.btnResults.setOnClickListener { v: View ->
             v.findNavController()
                 .navigate(TitleFragmentDirections.actionTitleFragmentToResultsFragment())
         }

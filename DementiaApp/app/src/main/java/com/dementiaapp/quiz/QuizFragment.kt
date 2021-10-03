@@ -63,6 +63,7 @@ class QuizFragment : Fragment() {
             listOf("Spring")
         )
         var quizQuestions = listOf(questionOne, questionTwo)
+        // TODO: end of placeholder code
 
         // Sort the questions list by id
         quizQuestions = quizQuestions.sortedBy { it.id }
@@ -71,7 +72,7 @@ class QuizFragment : Fragment() {
         populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
 
         // When next button is pressed, go to next question so long as not at end of question list
-        binding.nextBtn.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             if (currentQuestionIndex < quizQuestions.size - 1) {
                 currentQuestionIndex += 1
                 populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
@@ -79,7 +80,7 @@ class QuizFragment : Fragment() {
         }
 
         // When prev button is pressed, go to prev question so long as not at start of question list
-        binding.prevBtn.setOnClickListener {
+        binding.btnPrevious.setOnClickListener {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex -= 1
                 populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
