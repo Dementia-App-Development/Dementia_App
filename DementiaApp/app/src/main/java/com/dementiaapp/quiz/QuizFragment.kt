@@ -41,7 +41,7 @@ class QuizFragment : Fragment() {
             null,
             10,
             1,
-            QuizQuestion.ResponseType.LIST,
+            QuizQuestion.ResponseType.DATE,
             QuizQuestion.AnswerVerification.LIST,
             null,
             null,
@@ -55,7 +55,7 @@ class QuizFragment : Fragment() {
             null,
             10,
             1,
-            QuizQuestion.ResponseType.LIST,
+            QuizQuestion.ResponseType.TEXT,
             QuizQuestion.AnswerVerification.LIST,
             null,
             null,
@@ -101,7 +101,7 @@ private fun startTimer(binding: FragmentQuizBinding, Min: Int) {
         }
 
         override fun onFinish() {
-            // DO something when 2 minutes is up
+            binding.bar.progress = 0
         }
     }
     MyCountDownTimer.start()
@@ -115,6 +115,14 @@ fun populateUIWithQuestion(
     quizQuestions: List<QuizQuestion>,
     i: Int
 ) {
+    if (quizQuestions[i].response_type == QuizQuestion.ResponseType.DATE) {
+        binding.Text.visibility = View.GONE
+        binding.date.visibility = View.VISIBLE
+    }
+    else {
+        binding.date.visibility = View.GONE
+        binding.Text.visibility = View.VISIBLE
+    }
     // Instantiate the fields in the main activity with the first question in the quiz
     binding.tvQuestionNo.text = " Question " + quizQuestions[i].question_no.toString() +
             quizQuestions[i].sub_question.toString()
