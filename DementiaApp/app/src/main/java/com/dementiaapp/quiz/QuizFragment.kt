@@ -1,13 +1,13 @@
 package com.dementiaapp.quiz
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.dementiaapp.quiz.databinding.ActivityMainBinding
 import com.dementiaapp.quiz.databinding.FragmentQuizBinding
 
 /**
@@ -16,7 +16,7 @@ import com.dementiaapp.quiz.databinding.FragmentQuizBinding
  * create an instance of this fragment.
  */
 class QuizFragment : Fragment() {
-
+    val Min = 60 * 1000
     // Initialize the current question index to 0 (the first question)
     private var currentQuestionIndex = 0
 
@@ -63,7 +63,8 @@ class QuizFragment : Fragment() {
             listOf("Spring")
         )
         var quizQuestions = listOf(questionOne, questionTwo)
-
+        binding.bar.progress = 0
+        startTimer(binding, Min)
         // Sort the questions list by id
         quizQuestions = quizQuestions.sortedBy { it.id }
 
@@ -77,19 +78,34 @@ class QuizFragment : Fragment() {
                 populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
             }
         }
-
         // When prev button is pressed, go to prev question so long as not at start of question list
-        binding.prevBtn.setOnClickListener {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex -= 1
-                populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-            }
-        }
+        //binding.prevBtn.setOnClickListener {
+        //    if (currentQuestionIndex > 0) {
+        //        currentQuestionIndex -= 1
+        //        populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+        //    }
+        // }
+
 
         return binding.root
     }
 }
 
+private fun startTimer(binding: FragmentQuizBinding, Min: Int) {
+    Log.i("Timer", "Is this working")
+    val MyCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
+        override fun onTick(millisUntilFinished: Long) {
+
+            val fraction = millisUntilFinished / Min.toDouble()
+            binding.bar.progress = (fraction * 100).toInt()
+        }
+
+        override fun onFinish() {
+            // DO something when 2 minutes is up
+        }
+    }
+    MyCountDownTimer.start()
+}
 /**
  * This function populates the UI with the question at the provided index in the list of questions
  */
@@ -100,9 +116,7 @@ fun populateUIWithQuestion(
     i: Int
 ) {
     // Instantiate the fields in the main activity with the first question in the quiz
-    binding.tvTimeLimit.text = quizQuestions[i].time_limit.toString() + " seconds to answer"
-    binding.tvQuestionNo.text = "id: " + quizQuestions[i].id.toString() + " | " +
-            "Question " + quizQuestions[i].question_no.toString() +
+    binding.tvQuestionNo.text = " Question " + quizQuestions[i].question_no.toString() +
             quizQuestions[i].sub_question.toString()
     binding.tvInstructions.text = quizQuestions[i].instruction
     binding.tvSubText.text = quizQuestions[i].sub_text
