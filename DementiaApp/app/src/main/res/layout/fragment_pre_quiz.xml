@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".PreQuizFragment"
+        tools:context=".fragments.PreQuizFragment"
         android:padding="16dp">
 
         <TextView

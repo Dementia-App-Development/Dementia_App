@@ -1,19 +1,24 @@
-package com.dementiaapp.quiz
+package com.dementiaapp.quiz.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.dementiaapp.quiz.R
 import com.dementiaapp.quiz.databinding.ActivityMainBinding
 
+//TODO: can probably remove this constant, unless when we are loading quiz from file after onStop/onResume in fragment
 const val QUIZ_QUESTIONS_JSON = "quiz_questions.json"
 
+/**
+ * Main activity for the Dementia Quiz App, hosts a number of fragments
+ */
 class MainActivity : AppCompatActivity() {
 
     // Creating a binding object for the main_activity.xml layout
     private lateinit var binding: ActivityMainBinding
 
     // Initialize the current question index to 0 (the first question)
+    // TODO: probably need to store this persistent data variable somewhere else
     private var currentQuestionIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

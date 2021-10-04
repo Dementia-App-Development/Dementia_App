@@ -1,4 +1,4 @@
-package com.dementiaapp.quiz
+package com.dementiaapp.quiz.models
 
 import android.content.Context
 import android.util.Log
@@ -22,6 +22,7 @@ data class QuizQuestion(
     val image_url: String?,
     val audio_url: String?,
     val sub_question: Char?,
+    val answer_options: List<String>?,
     val answers: List<String>?) {
 
     // Possible methods in which to provide a response for the question
@@ -55,16 +56,3 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String {
 }
 
 
-/**
- * Parses a json string and outputs a list of QuizQuestion objects
- */
-fun generateQuizQuestions(jsonString: String): List<QuizQuestion> {
-    try {
-        val gson = Gson()
-        val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type
-        return gson.fromJson(jsonString, quizQuestion)
-    } catch (e: Exception) {
-        Log.i("error:", "could not generate quiz questions list from json string")
-        throw Exception("could not generate quiz questions list from json string")
-    }
-}

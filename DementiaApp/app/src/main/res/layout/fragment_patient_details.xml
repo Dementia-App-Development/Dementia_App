@@ -9,7 +9,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".PatientDetailsFragment">
+        tools:context=".fragments.PatientDetailsFragment">
 
         <TextView
             android:id="@+id/tv_patient_details_header"
@@ -62,21 +62,6 @@
             android:background="@android:drawable/btn_dropdown"
             android:hint="Choose your gender"
             android:spinnerMode="dropdown" />
-
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:textSize="24sp" />
-
-        <EditText
-            android:id="@+id/et_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter your location"
-            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/btn_go_to_quiz"
