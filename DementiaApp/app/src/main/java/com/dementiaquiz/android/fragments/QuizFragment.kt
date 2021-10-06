@@ -1,4 +1,4 @@
-package com.dementiaapp.quiz.fragments
+package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.dementiaapp.quiz.models.QuizViewModel
-import com.dementiaapp.quiz.R
-import com.dementiaapp.quiz.databinding.FragmentQuizBinding
-import com.dementiaapp.quiz.models.QuizQuestion
+import com.dementiaquiz.android.models.QuizViewModel
+import com.dementiaquiz.android.R
+import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.dementiaquiz.android.models.QuizQuestion
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import timber.log.Timber
+import java.util.*
 
 /**
  * Displays the quiz questions and corresponding UI elements for answering them
@@ -40,6 +42,8 @@ class QuizFragment : Fragment() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Timber.i("onCreate called")
 
         // TODO: Below code generates placeholder two-member list, need to replace so that it fetches data from server
         val questionOne = QuizQuestion(
@@ -92,12 +96,18 @@ class QuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Timber.i("onCreateView called")
+
         // Use view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater,
-            R.layout.fragment_quiz, container, false)
+        val binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
+
+        Timber.i("assigned binding")
 
         // Initialize the question fields in the UI
         populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+
+        Timber.i("populated UI with quiz questions")
 
         // When next button is pressed, go to next question so long as not at end of question list
         binding.btnNext.setOnClickListener {

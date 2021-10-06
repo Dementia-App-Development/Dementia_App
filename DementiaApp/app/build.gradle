@@ -71,4 +71,7 @@ dependencies {
     // Retrofit Library API
     implementation "com.squareup.retrofit2:retrofit: $version_retrofit"
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
+
+    // Timber logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

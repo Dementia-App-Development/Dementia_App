@@ -1,10 +1,7 @@
-package com.dementiaapp.quiz.models
+package com.dementiaquiz.android.models
 
 import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
 import java.io.IOException
 
 /**

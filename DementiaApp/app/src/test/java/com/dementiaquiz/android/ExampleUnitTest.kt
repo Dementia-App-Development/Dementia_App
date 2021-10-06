@@ -1,4 +1,4 @@
-package com.dementiaapp.quiz
+package com.dementiaquiz.android
 
 import org.junit.Test
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/titleFragment"
-        android:name="com.dementiaapp.quiz.fragments.TitleFragment"
+        android:name="com.dementiaquiz.android.fragments.TitleFragment"
         android:label="TitleFragment"
         tools:layout="@layout/fragment_title">
         <action
@@ -19,17 +19,17 @@
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
-        android:name="com.dementiaapp.quiz.fragments.QuizFragment"
+        android:name="com.dementiaquiz.android.fragments.QuizFragment"
         android:label="QuizFragment"
         tools:layout="@layout/fragment_quiz" />
     <fragment
         android:id="@+id/resultsFragment"
-        android:name="com.dementiaapp.quiz.fragments.resultsFragment"
+        android:name="com.dementiaquiz.android.fragments.resultsFragment"
         android:label="fragment_results"
         tools:layout="@layout/fragment_results" />
     <fragment
         android:id="@+id/preQuizFragment"
-        android:name="com.dementiaapp.quiz.fragments.PreQuizFragment"
+        android:name="com.dementiaquiz.android.fragments.PreQuizFragment"
         android:label="fragment_pre_quiz"
         tools:layout="@layout/fragment_pre_quiz" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"
-        android:name="com.dementiaapp.quiz.fragments.PatientDetailsFragment"
+        android:name="com.dementiaquiz.android.fragments.PatientDetailsFragment"
         android:label="PatientDetailsFragment"
         tools:layout="@layout/fragment_patient_details">
         <action

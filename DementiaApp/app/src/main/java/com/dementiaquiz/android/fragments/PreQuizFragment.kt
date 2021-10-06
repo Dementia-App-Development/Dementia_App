@@ -1,4 +1,4 @@
-package com.dementiaapp.quiz.fragments
+package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.dementiaapp.quiz.R
-import com.dementiaapp.quiz.databinding.FragmentPreQuizBinding
+import com.dementiaquiz.android.R
+import com.dementiaquiz.android.databinding.FragmentPreQuizBinding
+import timber.log.Timber
 
 /**
  * Two-button display to determine whether the quiz is being conducted in Assisted or Patient mode
@@ -18,18 +19,21 @@ class PreQuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Timber.i("onCreateView called")
+
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPreQuizBinding>(inflater,
             R.layout.fragment_pre_quiz, container, false)
 
         // If in assisted mode, go to the patient details fragment
         binding.btnAssisting.setOnClickListener { v: View ->
-            v.findNavController().navigate(com.dementiaapp.quiz.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToPatientDetailsFragment())
+            v.findNavController().navigate(com.dementiaquiz.android.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToPatientDetailsFragment())
         }
 
         // If in patient mode, go straight to the quiz
         binding.btnForMyself.setOnClickListener { v: View ->
-            v.findNavController().navigate(com.dementiaapp.quiz.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment())
+            v.findNavController().navigate(com.dementiaquiz.android.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment())
         }
 
         return binding.root

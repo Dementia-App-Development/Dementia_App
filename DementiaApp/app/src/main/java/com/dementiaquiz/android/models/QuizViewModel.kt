@@ -1,9 +1,9 @@
-package com.dementiaapp.quiz.models
+package com.dementiaquiz.android.models
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dementiaapp.quiz.QuizApi
+import com.dementiaquiz.android.QuizApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

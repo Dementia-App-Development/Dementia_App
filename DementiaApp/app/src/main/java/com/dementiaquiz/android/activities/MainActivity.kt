@@ -1,10 +1,11 @@
-package com.dementiaapp.quiz.activities
+package com.dementiaquiz.android.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.dementiaapp.quiz.R
-import com.dementiaapp.quiz.databinding.ActivityMainBinding
+import com.dementiaquiz.android.R
+import com.dementiaquiz.android.databinding.ActivityMainBinding
+import timber.log.Timber
 
 //TODO: can probably remove this constant, unless when we are loading quiz from file after onStop/onResume in fragment
 const val QUIZ_QUESTIONS_JSON = "quiz_questions.json"
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Timber.i("onCreate called")
 
         // use DataBindingUtil to set the content view
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)

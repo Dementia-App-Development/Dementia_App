@@ -1,16 +1,16 @@
-package com.dementiaapp.quiz.fragments
+package com.dementiaquiz.android.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.dementiaapp.quiz.R
-import com.dementiaapp.quiz.databinding.FragmentPatientDetailsBinding
+import com.dementiaquiz.android.R
+import com.dementiaquiz.android.databinding.FragmentPatientDetailsBinding
+import timber.log.Timber
 import java.net.URL
 
 /**
@@ -21,13 +21,16 @@ class PatientDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Timber.i("onCreateView called")
+
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPatientDetailsBinding>(inflater,
             R.layout.fragment_patient_details, container, false)
 
         // Go to quiz button
         binding.btnGoToQuiz.setOnClickListener { v:View ->
-            v.findNavController().navigate(com.dementiaapp.quiz.fragments.PatientDetailsFragmentDirections.actionPatientDetailsFragmentToQuizFragment())
+            v.findNavController().navigate(com.dementiaquiz.android.fragments.PatientDetailsFragmentDirections.actionPatientDetailsFragmentToQuizFragment())
         }
 
         return binding.root
@@ -38,7 +41,7 @@ class PatientDetailsFragment : Fragment() {
 fun getQuizFromURL() {
 //    val latitude, longitude = getGPSCoordinates()
     val apiResponse = URL("https://alz-backend.herokuapp.com/question/all/").readText()
-    Log.i("API RESPONSE", apiResponse)
+    Timber.i("API RESPONSE")
 //    Toast.makeText(getActivity().applicationContext, apiResponse, Toast.LENGTH_LONG).show()
 }
 
