@@ -1,6 +1,7 @@
 package com.dementiaapp.quiz
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -12,26 +13,47 @@ import androidx.databinding.DataBindingUtil
 import com.dementiaapp.quiz.databinding.FragmentQuizBinding
 
 import android.content.Intent
+import android.os.Handler
 import android.speech.RecognizerIntent
-import android.widget.Toast
-import androidx.core.app.ActivityCompat.startActivityForResult
+import android.speech.tts.TextToSpeech
 import java.util.*
+
+
+
+
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [QuizFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class QuizFragment : Fragment() {
+class QuizFragment : Fragment(),TextToSpeech.OnInitListener {
     val Min = 60 * 1000
     // Initialize the current question index to 0 (the first question)
     private var currentQuestionIndex = 0
     private val REQUEST_CODE_SPEECH_INPUT = 100;
+    private var tts: TextToSpeech? = null
+    val handler = Handler()
+    override fun onInit(status: Int) {
+        if(status != TextToSpeech.ERROR) {
+            tts?.language = Locale.UK;
+            tts!!.speak("What year is this?", TextToSpeech.QUEUE_FLUSH, null)
+        }
+    }
+    public override fun onDestroy() {
+        // Shutdown TTS
+        if (tts != null) {
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+        super.onDestroy()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        tts = TextToSpeech(activity, this)
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentQuizBinding>(
             inflater,
@@ -88,11 +110,15 @@ class QuizFragment : Fragment() {
         startTimer(binding, Min)
         // Sort the questions list by id
         quizQuestions = quizQuestions.sortedBy { it.id }
-
         // Initialize the question fields in the UI
         populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
 
         // When next button is pressed, go to next question so long as not at end of question list
+
+        //handler.postDelayed({
+        //    startTimer(binding, Min)
+        //}, 100)
+        // CountDown needs to go onto a handler!!!!!!
         var CountDown = startTimer(binding, Min)
         binding.btnNext.setOnClickListener {
             if (currentQuestionIndex < quizQuestions.size - 1) {
@@ -102,6 +128,7 @@ class QuizFragment : Fragment() {
                 if (quizQuestions[currentQuestionIndex].response_type != QuizQuestion.ResponseType.ASSISTED){
                     CountDown = startTimer(binding, Min)
                 }
+                tts!!.speak(quizQuestions[currentQuestionIndex].instruction, TextToSpeech.QUEUE_FLUSH, null)
             }
         }
         binding.button.setOnClickListener{
@@ -165,7 +192,6 @@ class QuizFragment : Fragment() {
     }
 }
 
-
 private fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
     Log.i("Timer", "Is this working")
     binding.bar.progress = 0
@@ -178,6 +204,7 @@ private fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
 
         override fun onFinish() {
             binding.bar.progress = 100
+            this.cancel()
         }
     }
     MyCountDownTimer.start()
