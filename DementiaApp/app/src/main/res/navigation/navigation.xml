@@ -34,6 +34,12 @@
         tools:layout="@layout/fragment_pre_quiz" >
         <action
             android:id="@+id/action_preQuizFragment_to_quizFragment"
-            app:destination="@id/quizFragment" />
+            app:destination="@id/quizFragment"
+            app:popUpTo="@id/titleFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.dementiaapp.quiz.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about"/>
 </navigation>
