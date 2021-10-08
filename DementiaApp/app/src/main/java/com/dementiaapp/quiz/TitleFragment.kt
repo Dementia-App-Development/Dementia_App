@@ -7,6 +7,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.dementiaapp.quiz.databinding.FragmentTitleBinding
+import android.content.Intent
+import android.net.Uri
+
 
 /**
  * A simple [Fragment] subclass.
@@ -31,6 +34,15 @@ class TitleFragment : Fragment() {
         binding.resultsButton.setOnClickListener { v: View ->
             v.findNavController()
                 .navigate(TitleFragmentDirections.actionTitleFragmentToResultsFragment())
+        }
+
+        binding.websiteButton.setOnClickListener { v:View->
+
+            val uri: Uri =
+                Uri.parse("https://www.dementia.org.au/") // missing 'http://' will cause crashed
+
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
         }
 
         setHasOptionsMenu(true)
