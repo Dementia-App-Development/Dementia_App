@@ -7,8 +7,10 @@ import java.io.IOException
 /**
  * A class representing a quiz question
  */
+
 data class QuizQuestion(
-    val id: Int,
+
+    val id: Long = 0L,
     val question_no: Int,
     val instruction: String,
     val sub_text: String?,
