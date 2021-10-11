@@ -66,20 +66,3 @@ class QuizFragment : Fragment() {
         return binding.root
     }
 }
-
-///**
-// * Parses a json string and outputs a list of QuizQuestion objects
-// */
-//fun generateQuizQuestionsFromJson(jsonString: String): List<QuizQuestion> {
-//    try {
-//        val gson = Gson()
-//        val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type
-//        return gson.fromJson(jsonString, quizQuestion)
-//    } catch (e: Exception) {
-//        Log.i(
-//            "error:",
-//            "could not generate quiz questions list from json string"
-//        )
-//        throw Exception("could not generate quiz questions list from json string")
-//    }
-//}

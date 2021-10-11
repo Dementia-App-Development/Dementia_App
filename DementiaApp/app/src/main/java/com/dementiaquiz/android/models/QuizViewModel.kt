@@ -3,17 +3,20 @@ package com.dementiaquiz.android.models
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dementiaquiz.android.QuizApi
+import com.dementiaquiz.android.network.QuizApi
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 /**
  * Holds the information for the current question in the quiz
  */
 class QuizViewModel : ViewModel() {
 
-    private lateinit var quizQuestions : List<QuizQuestion>
+    private lateinit var quizQuestions: List<QuizQuestion>
 
     private var currentQuestionIndex: Int
 
@@ -32,13 +35,39 @@ class QuizViewModel : ViewModel() {
      * Generate the quiz question list and set the current question to the first in the list
      */
     init {
-        quizQuestions = getAllQuizQuestions()
+        getAllQuizQuestionsAPI()
+        Timber.i("getAllQuizQuestionsAPI has been called")
+
         _currentQuestion.value = quizQuestions[0]
         currentQuestionIndex = 0
     }
 
-    private fun getAllQuizQuestions(): List<QuizQuestion> {
+    // TODO: API code, to work on later
+    private fun getAllQuizQuestionsAPI() {
+        Timber.i("Fetching API service...")
 
+        QuizApi.retrofitService.getAllQuestions().enqueue(object : Callback<String> {
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Timber.i("onFailure called")
+
+                _response.value = "Failure: " + t.message
+                Timber.i("Could not fetch quiz questions")
+            }
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Timber.i("onResponse called")
+
+                _response.value = response.body()
+                Timber.i("Fetched quiz questions")
+
+                quizQuestions = generateQuizQuestionsFromJson(_response.value)
+                Timber.i("Quiz questions parsed from JSON into list")
+            }
+        })
+    }
+
+    private fun getAllQuizQuestionsPlaceholder() {
         // TODO: Below code generates placeholder two-member list, need to replace so that it fetches data from server
         val questionOne = QuizQuestion(
             1,
@@ -49,10 +78,10 @@ class QuizViewModel : ViewModel() {
             1,
             QuizQuestion.ResponseType.LIST,
             QuizQuestion.AnswerVerification.LIST,
+            listOf("2021", "2022", "2023", "2024"),
             null,
             null,
             'a',
-            listOf("2021"),
             listOf("2021")
         )
         val questionTwo = QuizQuestion(
@@ -64,30 +93,17 @@ class QuizViewModel : ViewModel() {
             1,
             QuizQuestion.ResponseType.LIST,
             QuizQuestion.AnswerVerification.LIST,
+            listOf("Spring", "Autumn", "Summer", "Winter"),
             null,
             null,
             'b',
-            listOf("Spring"),
             listOf("Spring")
         )
-        val quizQuestions = listOf(questionOne, questionTwo)
+        quizQuestions = listOf(questionOne, questionTwo)
 
         // Sort the questions list by id
         quizQuestions.sortedBy { it.id }
-
-        return quizQuestions
         // TODO: end of placeholder code
-
-        // TODO: API code, to work on later
-//        QuizApi.retrofitService.getAllQuizQuestions().enqueue( object: Callback<String> {
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                _response.value = "Failure: " + t.message
-//            }
-//
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                _response.value = response.body()
-//            }
-//        })
     }
 
     // Go to next question
@@ -105,4 +121,13 @@ class QuizViewModel : ViewModel() {
         }
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
     }
+}
+
+/**
+ * Parses a json string and outputs a list of QuizQuestion objects
+ */
+fun generateQuizQuestionsFromJson(jsonString: String?): List<QuizQuestion> {
+    val gson = Gson()
+    val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type
+    return gson.fromJson(jsonString, quizQuestion)
 }

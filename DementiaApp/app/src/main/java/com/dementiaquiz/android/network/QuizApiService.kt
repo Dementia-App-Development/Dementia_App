@@ -1,4 +1,4 @@
-package com.dementiaquiz.android
+package com.dementiaquiz.android.network
 
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -19,8 +19,8 @@ private val retrofit = Retrofit.Builder()
  * Quiz API endpoint for retrieving quiz questions from the server
  */
 interface QuizApiService {
-    @GET("question/all/") //TODO clarify this parameter
-    fun getAllQuizQuestions():
+    @GET("question/all/?lat=51.487580&long=-0.190920&mode=solo") //TODO this parameter retrieves all question, need to be location & mode specific
+    fun getAllQuestions():
             Call<String>
 }
 
@@ -28,7 +28,7 @@ interface QuizApiService {
  * API object to be used for retrieving quiz questions
  */
 object QuizApi {
-    val retrofitService : QuizApiService by lazy {
+    val retrofitService: QuizApiService by lazy {
         retrofit.create(QuizApiService::class.java)
     }
 }

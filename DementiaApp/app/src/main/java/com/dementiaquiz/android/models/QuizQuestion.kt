@@ -16,10 +16,10 @@ data class QuizQuestion(
     val mark: Int,
     val response_type: ResponseType,
     val answer_verification: AnswerVerification,
+    val answer_options: List<String>?,
     val image_url: String?,
     val audio_url: String?,
     val sub_question: Char?,
-    val answer_options: List<String>?,
     val answers: List<String>?) {
 
     // Possible methods in which to provide a response for the question
