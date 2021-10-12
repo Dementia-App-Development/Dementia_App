@@ -1,12 +1,14 @@
 package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import android.content.Intent
+import android.net.Uri
+
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentTitleBinding
 import timber.log.Timber
@@ -37,6 +39,29 @@ class TitleFragment : Fragment() {
                 .navigate(com.dementiaquiz.android.fragments.TitleFragmentDirections.actionTitleFragmentToResultsFragment())
         }
 
+        binding.websiteButton.setOnClickListener { v:View->
+
+            val uri: Uri =
+                Uri.parse("https://www.dementia.org.au/") // missing 'http://' will cause crashed
+
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
+        setHasOptionsMenu(true)
+
         return binding.root
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.options_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.
+        onNavDestinationSelected(item,requireView().findNavController())
+                || super.onOptionsItemSelected(item)
+    }
+
 }
