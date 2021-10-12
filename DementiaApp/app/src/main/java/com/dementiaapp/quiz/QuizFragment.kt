@@ -72,10 +72,13 @@ class QuizFragment : Fragment() {
         populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
 
         // When next button is pressed, go to next question so long as not at end of question list
-        binding.nextBtn.setOnClickListener {
+        var CountDown = startTimer(binding, Min)
+        binding.btnNext.setOnClickListener {
             if (currentQuestionIndex < quizQuestions.size - 1) {
+                CountDown.cancel()
                 currentQuestionIndex += 1
                 populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
+                startTimer(binding, Min)
             }
         }
         // When prev button is pressed, go to prev question so long as not at start of question list
@@ -91,8 +94,9 @@ class QuizFragment : Fragment() {
     }
 }
 
-private fun startTimer(binding: FragmentQuizBinding, Min: Int) {
+private fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
     Log.i("Timer", "Is this working")
+    binding.bar.progress = 0
     val MyCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
         override fun onTick(millisUntilFinished: Long) {
 
@@ -105,6 +109,7 @@ private fun startTimer(binding: FragmentQuizBinding, Min: Int) {
         }
     }
     MyCountDownTimer.start()
+    return MyCountDownTimer
 }
 /**
  * This function populates the UI with the question at the provided index in the list of questions
