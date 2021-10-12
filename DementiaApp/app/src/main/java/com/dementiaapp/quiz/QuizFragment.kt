@@ -1,5 +1,6 @@
 package com.dementiaapp.quiz
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -10,6 +11,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.dementiaapp.quiz.databinding.FragmentQuizBinding
 
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.widget.Toast
+import androidx.core.app.ActivityCompat.startActivityForResult
+import java.util.*
+
 /**
  * A simple [Fragment] subclass.
  * Use the [QuizFragment.newInstance] factory method to
@@ -19,7 +26,7 @@ class QuizFragment : Fragment() {
     val Min = 60 * 1000
     // Initialize the current question index to 0 (the first question)
     private var currentQuestionIndex = 0
-
+    private val REQUEST_CODE_SPEECH_INPUT = 100;
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,8 +55,22 @@ class QuizFragment : Fragment() {
             'a',
             listOf("2021")
         )
-        val questionTwo = QuizQuestion(
+        val questionOneb = QuizQuestion(
             2,
+            1,
+            "What year is this?",
+            null,
+            10,
+            1,
+            QuizQuestion.ResponseType.ASSISTED,
+            QuizQuestion.AnswerVerification.LIST,
+            null,
+            null,
+            'a',
+            listOf("2021")
+        )
+        val questionTwo = QuizQuestion(
+            3,
             1,
             "What season is this?",
             null,
@@ -78,8 +99,21 @@ class QuizFragment : Fragment() {
                 CountDown.cancel()
                 currentQuestionIndex += 1
                 populateUIWithQuestion(binding, quizQuestions, currentQuestionIndex)
-                startTimer(binding, Min)
+                if (quizQuestions[currentQuestionIndex].response_type != QuizQuestion.ResponseType.ASSISTED){
+                    CountDown = startTimer(binding, Min)
+                }
             }
+        }
+        binding.button.setOnClickListener{
+            binding.btnNext.visibility = View.VISIBLE
+            binding.bar.visibility = View.VISIBLE
+            binding.button.visibility = View.GONE
+            binding.Text.visibility = View.VISIBLE
+            CountDown = startTimer(binding, Min)
+        }
+        binding.voiceButton.setOnClickListener{
+            speak();
+            binding.btnNext.visibility = View.VISIBLE
         }
         // When prev button is pressed, go to prev question so long as not at start of question list
         //binding.prevBtn.setOnClickListener {
@@ -92,7 +126,45 @@ class QuizFragment : Fragment() {
 
         return binding.root
     }
+    private fun speak() {
+        // Intent to show SpeechToText dialog
+        val mIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        mIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        mIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        mIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hi speak something")
+
+        try {
+            // If there is no error show SpeechTo Text dialog
+            startActivityForResult(mIntent, REQUEST_CODE_SPEECH_INPUT)
+        } catch (e: Exception) {
+            // If there is any error get error message and show in toast
+            //Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            REQUEST_CODE_SPEECH_INPUT -> {
+                if (resultCode == Activity.RESULT_OK && null != data) {
+                    // Get Text from result
+                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+
+                    Log.i("Answer", result?.get(0).toString())
+
+                    // Return result of question
+                    //if (textViewVoiceAnswer.text == "no ifs ands or buts") {
+                    //    textViewAnswerResult.text = "Correct"
+                    //} else {
+                    //    textViewAnswerResult.text = "Incorrect"
+                    //}
+                }
+            }
+        }
+    }
 }
+
 
 private fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
     Log.i("Timer", "Is this working")
@@ -105,7 +177,7 @@ private fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
         }
 
         override fun onFinish() {
-            binding.bar.progress = 0
+            binding.bar.progress = 100
         }
     }
     MyCountDownTimer.start()
@@ -123,10 +195,29 @@ fun populateUIWithQuestion(
     if (quizQuestions[i].response_type == QuizQuestion.ResponseType.DATE) {
         binding.Text.visibility = View.GONE
         binding.date.visibility = View.VISIBLE
+        binding.button.visibility = View.GONE
+        binding.voiceButton.visibility = View.GONE
+    }
+    else if (quizQuestions[i].response_type == QuizQuestion.ResponseType.ASSISTED) {
+        binding.Text.visibility = View.GONE
+        binding.date.visibility = View.GONE
+        binding.button.visibility = View.VISIBLE
+        binding.bar.visibility = View.GONE
+        binding.btnNext.visibility = View.GONE
+        binding.voiceButton.visibility = View.GONE
+    }
+    else if (quizQuestions[i].response_type == QuizQuestion.ResponseType.SPEECH) {
+        binding.Text.visibility = View.GONE
+        binding.date.visibility = View.GONE
+        binding.button.visibility = View.GONE
+        binding.voiceButton.visibility = View.VISIBLE
+        binding.btnNext.visibility = View.GONE
     }
     else {
         binding.date.visibility = View.GONE
         binding.Text.visibility = View.VISIBLE
+        binding.button.visibility = View.GONE
+        binding.voiceButton.visibility = View.GONE
     }
     // Instantiate the fields in the main activity with the first question in the quiz
     binding.tvQuestionNo.text = " Question " + quizQuestions[i].question_no.toString() +

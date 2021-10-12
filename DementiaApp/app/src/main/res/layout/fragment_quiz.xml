@@ -53,6 +53,21 @@
             android:hint="1945"
             android:inputType="date"
             android:visibility="gone"/>
+        <ImageButton
+            android:id="@+id/voiceButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_mic"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Start Timer"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/Text"
@@ -69,7 +84,7 @@
             android:layout_height="68dp"
             android:layout_margin="8dp"
             android:padding="8dp"
-            android:text="Next"
+            android:text="Next Question"
             android:textColor="#0D47A1" />
 
         <ProgressBar
