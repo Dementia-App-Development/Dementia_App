@@ -1,6 +1,9 @@
 package com.dementiaquiz.android.activities
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.dementiaquiz.android.R
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private var currentQuestionIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState)
 
         Timber.i("onCreate called")
