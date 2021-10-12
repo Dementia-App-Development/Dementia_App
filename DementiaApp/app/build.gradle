@@ -7,6 +7,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: 'kotlin-android'
+
 android {
     compileSdk 31
 
