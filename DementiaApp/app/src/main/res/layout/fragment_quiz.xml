@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".QuizFragment">
+        tools:context=".fragments.QuizFragment">
 
         <TextView
             android:id="@+id/tv_time_limit"
@@ -20,16 +20,20 @@
 
         <TextView
             android:id="@+id/tv_question_no"
-            android:layout_width="wrap_content"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Question" />
+            android:textSize="36sp"
+            android:textColor="#003349"
+            android:text="Question Title" />
 
         <TextView
             android:id="@+id/tv_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="48sp"
+            android:textColor="#003349"
             android:text="instructions" />
 
         <TextView
@@ -37,35 +41,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="#003349"
             android:text="sub text" />
 
-        <ImageView
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="358dp"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="1945"
+            android:inputType="date"
+            android:visibility="gone"/>
+        <ImageButton
+            android:id="@+id/voiceButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_mic"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_help" />
+            android:text="Start Timer"
+            android:visibility="gone"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <EditText
+            android:id="@+id/Text"
+            android:layout_width="358dp"
+            android:layout_height="5dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Please write the answer here"
+            android:inputType="textPersonName" />
 
-            <Button
-                android:id="@+id/prev_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="Previous" />
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="293dp"
+            android:layout_height="68dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:text="Next Question"
+            android:textColor="#0D47A1" />
 
-            <Button
-                android:id="@+id/next_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="Next" />
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/bar"
+            android:max = "100"
+            android:minHeight="24dip"
+            android:maxHeight="24dip"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:indeterminate = "false"
+            android:progress="50"
+            android:progressBackgroundTint = "#FF1100"
+            android:progressTint = "#00FF0A" />
 
     </LinearLayout>
 </layout>
