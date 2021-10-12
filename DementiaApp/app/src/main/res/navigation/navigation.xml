@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/titleFragment"
         android:name="com.dementiaquiz.android.fragments.TitleFragment"
-        android:label="TitleFragment"
+        android:label="Dementia App"
+
         tools:layout="@layout/fragment_title">
         <action
             android:id="@+id/action_titleFragment_to_resultsFragment"
@@ -20,21 +21,22 @@
     <fragment
         android:id="@+id/quizFragment"
         android:name="com.dementiaquiz.android.fragments.QuizFragment"
-        android:label="QuizFragment"
+        android:label="Quiz"
         tools:layout="@layout/fragment_quiz" />
     <fragment
         android:id="@+id/resultsFragment"
         android:name="com.dementiaquiz.android.fragments.resultsFragment"
-        android:label="fragment_results"
+        android:label="Results"
         tools:layout="@layout/fragment_results" />
     <fragment
         android:id="@+id/preQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PreQuizFragment"
-        android:label="fragment_pre_quiz"
-        tools:layout="@layout/fragment_pre_quiz" >
+        android:label="Pre Quiz"
+        tools:layout="@layout/fragment_pre_quiz">
         <action
             android:id="@+id/action_preQuizFragment_to_quizFragment"
-            app:destination="@id/quizFragment" />
+            app:destination="@id/quizFragment"
+            app:popUpTo="@id/titleFragment" />
         <action
             android:id="@+id/action_preQuizFragment_to_patientDetailsFragment"
             app:destination="@id/patientDetailsFragment" />
@@ -46,6 +48,12 @@
         tools:layout="@layout/fragment_patient_details">
         <action
             android:id="@+id/action_patientDetailsFragment_to_quizFragment"
-            app:destination="@id/quizFragment" />
+            app:destination="@id/quizFragment"
+            app:popUpTo="@id/titleFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.dementiaapp.quiz.AboutFragment"
+        android:label="@string/about_title"
+        tools:layout="@layout/fragment_about" />
 </navigation>
