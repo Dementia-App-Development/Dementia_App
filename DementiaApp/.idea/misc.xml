@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_bar_chart_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_close_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_edit_note_20.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_edit_note_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_grading_20.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_grading_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_home_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_menu_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_search_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/dementia_australia.xml" value="0.275" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/ic_mic.xml" value="0.2713541666666667" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/round_button.xml" value="0.36041666666666666" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/activity_fullscreen.xml" value="0.33125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/activity_main.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/basic_question.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/data_question.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/date_question.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_about.xml" value="0.572463768115942" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_patient_details.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_pre_quiz.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_quiz.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_results.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_title.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/picture_question.xml" value="0.3453125" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/quiz_question_layout.xml" value="0.48188405797101447" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.5911458333333334" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.5911458333333334" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Android Studio Projects/QuizQuestionDemo/app/src/main/res/layout/activity_main.xml" value="0.4842592592592593" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Android Studio Projects/QuizQuestionDemo/app/src/main/res/layout/quiz_question_layout.xml" value="0.562037037037037" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/activity_main.xml" value="0.4626865671641791" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_pre_quiz.xml" value="0.3845108695652174" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_quiz.xml" value="0.33" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_results.xml" value="0.3845108695652174" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_title.xml" value="0.5" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

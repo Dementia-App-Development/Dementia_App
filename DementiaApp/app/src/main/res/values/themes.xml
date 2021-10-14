@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColor">#003349</item>
     </style>
 
     <style name="Theme.QuizQuestionDemo.Fullscreen" parent="Theme.QuizQuestionDemo">
@@ -21,6 +22,6 @@
 
     <style name="ThemeOverlay.DementiaApp.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+        <item name="fullscreenTextColor">@color/purple_700</item>
     </style>
 </resources>

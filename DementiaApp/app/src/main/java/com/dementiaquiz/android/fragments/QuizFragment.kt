@@ -18,6 +18,7 @@ import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
 import java.util.*
+import android.os.CountDownTimer as CountDownTimer
 
 /**
  * Displays the current quiz question and handles user input in answering the question
@@ -82,15 +83,16 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // Get the viewmodel
         viewModel = ViewModelProvider(this).get(QuizViewModel::class.java)
-        var CountDown = viewModel.startTimer(binding, 60 * 1000)
+        var CountDown: CountDownTimer? = null
         // Set up LiveData observation relationships
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
-            CountDown.cancel()
+
             if (newQuestion.response_type == QuizQuestion.ResponseType.DATE) {
                 binding.Text.visibility = View.GONE
                 binding.date.visibility = View.VISIBLE
                 binding.button.visibility = View.GONE
                 binding.voiceButton.visibility = View.GONE
+                CountDown = viewModel.startTimer(binding, 60 * 1000)
             }
             else if (newQuestion.response_type == QuizQuestion.ResponseType.ASSISTED) {
                 binding.Text.visibility = View.GONE
@@ -106,12 +108,14 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 binding.button.visibility = View.GONE
                 binding.voiceButton.visibility = View.VISIBLE
                 binding.nextBtn.visibility = View.GONE
+                CountDown = viewModel.startTimer(binding, 60 * 1000)
             }
             else {
                 binding.date.visibility = View.GONE
                 binding.Text.visibility = View.VISIBLE
                 binding.button.visibility = View.GONE
                 binding.voiceButton.visibility = View.GONE
+                CountDown = viewModel.startTimer(binding, 60 * 1000)
             }
             binding.tvQuestionNo.text = " Question " + newQuestion.question_no.toString() +
                     newQuestion.sub_question.toString()
@@ -130,6 +134,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
         // Go to the next question
         binding.nextBtn.setOnClickListener {
+            CountDown?.cancel()
             viewModel.onNext()
         }
         fun speak() {
