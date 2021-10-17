@@ -158,8 +158,8 @@ class QuizViewModel : ViewModel() {
             }
 
             override fun onFinish() {
-                binding.bar.progress = 100
-                this.cancel()
+                binding.bar.progress = 0
+                onNext()
             }
         }
         MyCountDownTimer.start()

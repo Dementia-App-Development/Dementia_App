@@ -56,9 +56,7 @@ class MainActivity : AppCompatActivity() {
         // display the navigation drawer
         NavigationUI.setupWithNavController(binding.navView, navController)
 
-
     }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.myNavHostFragment)
         return NavigationUI.navigateUp(navController, drawerLayout)

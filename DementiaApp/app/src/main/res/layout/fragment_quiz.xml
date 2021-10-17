@@ -82,7 +82,7 @@
             android:layout_margin="8dp"
             android:padding="8dp"
             android:text="Next Question"
-            android:textColor="#0D47A1" />
+            android:drawableRight="@drawable/ic_baseline_arrow_forward_24" />
 
         <ProgressBar
             android:id="@+id/bar"

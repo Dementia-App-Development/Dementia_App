@@ -20,15 +20,17 @@
 
         <Button
             android:id="@+id/btn_assisting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="320dp"
+            android:layout_height="114dp"
             android:text="Assisting"
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            app:icon="@drawable/ic_assistance" />
 
         <Button
             android:id="@+id/btn_for_myself"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:icon="@drawable/ic_myself"
             android:text="For Myself"
             android:textSize="34sp" />
 
