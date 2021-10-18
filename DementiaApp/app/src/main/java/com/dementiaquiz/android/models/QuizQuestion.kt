@@ -1,7 +1,11 @@
 package com.dementiaquiz.android.models
 
 import android.content.Context
+import android.util.Log
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import timber.log.Timber
 import java.io.IOException
 
 /**
@@ -38,16 +42,16 @@ data class QuizQuestion(
         @SerializedName("ASSISTED") ASSISTED}
 }
 
-
-/**
- * Parses the json file from the assets folder and returns the contents of the file as a string
- */
-fun getJsonDataFromAsset(context: Context, fileName: String): String {
-    var jsonString: String = ""
-    try {
-        jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-    } catch (ioException: IOException) {
-        ioException.printStackTrace()
-    }
-    return jsonString
-}
+// TODO : redundant code below, can remove (unless we wish to fetch json from storage)
+///**
+// * Parses the json file from the assets folder and returns the contents of the file as a string
+// */
+//fun getJsonDataFromAsset(context: Context, fileName: String): String {
+//    var jsonString: String = ""
+//    try {
+//        jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+//    } catch (ioException: IOException) {
+//        ioException.printStackTrace()
+//    }
+//    return jsonString
+//}

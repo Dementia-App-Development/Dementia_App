@@ -20,7 +20,7 @@ private val retrofit = Retrofit.Builder()
  */
 interface QuizApiService {
     @GET("question/all/") //TODO clarify this parameter
-    fun getAllQuizQuestions():
+    fun getAllQuestions():
             Call<String>
 }
 

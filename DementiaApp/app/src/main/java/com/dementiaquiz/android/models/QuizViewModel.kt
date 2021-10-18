@@ -9,9 +9,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -19,7 +22,7 @@ import java.util.*
  */
 class QuizViewModel : ViewModel() {
 
-    private lateinit var quizQuestions : List<QuizQuestion>
+    private var quizQuestions : List<QuizQuestion>
     private var currentQuestionIndex: Int
     private val REQUEST_CODE_SPEECH_INPUT = 100;
     // The current question
@@ -37,107 +40,33 @@ class QuizViewModel : ViewModel() {
      * Generate the quiz question list and set the current question to the first in the list
      */
     init {
-        quizQuestions = getAllQuizQuestions()
-        _currentQuestion.value = quizQuestions[0]
+        quizQuestions = emptyList()
         currentQuestionIndex = 0
+        getAllQuizQuestions()
     }
 
-    private fun getAllQuizQuestions(): List<QuizQuestion> {
+    private fun getAllQuizQuestions() {
+        // Fetch quiz questions from API call
+        QuizApi.retrofitService.getAllQuestions().enqueue( object: Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                _response.value = "Failure: " + t.message
+                Timber.i("API failure")
+            }
 
-        // TODO: Below code generates placeholder two-member list, need to replace so that it fetches data from server
-        val questionOne = QuizQuestion(
-            1,
-            1,
-            "What year is this?",
-            null,
-            10,
-            1,
-            QuizQuestion.ResponseType.DATE,
-            QuizQuestion.AnswerVerification.LIST,
-            null,
-            null,
-            'a',
-            listOf("2021"),
-            answers = null
-        )
-        val questionOneb = QuizQuestion(
-            2,
-            1,
-            "What year is this?",
-            null,
-            10,
-            1,
-            QuizQuestion.ResponseType.ASSISTED,
-            QuizQuestion.AnswerVerification.LIST,
-            null,
-            null,
-            'a',
-            listOf("2021"),
-            answers = null
-        )
-        val questionTwo = QuizQuestion(
-            3,
-            1,
-            "What season is this?",
-            null,
-            10,
-            1,
-            QuizQuestion.ResponseType.TEXT,
-            QuizQuestion.AnswerVerification.LIST,
-            null,
-            null,
-            'b',
-            listOf("Spring"),
-            answers = null
-        )
-        val questionTwob = QuizQuestion(
-            4,
-            1,
-            "What season is this?",
-            null,
-            10,
-            1,
-            QuizQuestion.ResponseType.ASSISTED,
-            QuizQuestion.AnswerVerification.LIST,
-            null,
-            null,
-            'b',
-            listOf("Spring"),
-            answers = null
-        )
-        val questionThree = QuizQuestion(
-            5,
-            1,
-            "Please the following phrase: I like quizes",
-            "Click on the microphone when you are ready",
-            10,
-            1,
-            QuizQuestion.ResponseType.SPEECH,
-            QuizQuestion.AnswerVerification.LIST,
-            null,
-            null,
-            'b',
-            listOf("Spring"),
-            answers = null
-        )
-        val quizQuestions = listOf(questionOne, questionOneb, questionTwo, questionTwob, questionThree)
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                _response.value = response.body()
+                Timber.i("API response")
 
-        // Sort the questions list by id
-        quizQuestions.sortedBy { it.id }
+                // Parse the json response to generate quiz question list
+                quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
 
-        return quizQuestions
-        // TODO: end of placeholder code
+                // Sort the questions list by id
+                quizQuestions.sortedBy { it.id }
 
-        // TODO: API code, to work on later
-//        QuizApi.retrofitService.getAllQuizQuestions().enqueue( object: Callback<String> {
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                _response.value = "Failure: " + t.message
-//            }
-//
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                _response.value = response.body()
-//            }
-//        })
+                // Set the current question to the first question
+                _currentQuestion.value = quizQuestions[currentQuestionIndex]
+            }
+        })
     }
 
     // Go to next question
@@ -148,9 +77,10 @@ class QuizViewModel : ViewModel() {
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
     }
+
     fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
         binding.bar.progress = 0
-        val MyCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
+        val myCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
 
                 val fraction = millisUntilFinished / Min.toDouble()
@@ -162,14 +92,29 @@ class QuizViewModel : ViewModel() {
                 onNext()
             }
         }
-        MyCountDownTimer.start()
-        return MyCountDownTimer
+        myCountDownTimer.start()
+        return myCountDownTimer
     }
+
     // Go to previous question
     fun onPrev() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex -= 1
         }
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
+    }
+}
+
+/**
+ * Parses a json string and outputs a list of QuizQuestion objects
+ */
+fun generateQuizQuestionsFromJson(jsonString: String): List<QuizQuestion> {
+    try {
+        val gson = Gson()
+        val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type
+        return gson.fromJson(jsonString, quizQuestion)
+    } catch (e: Exception) {
+        Timber.i("Could not generate quiz questions list from json string")
+        throw Exception("Could not generate quiz questions list from json string")
     }
 }
