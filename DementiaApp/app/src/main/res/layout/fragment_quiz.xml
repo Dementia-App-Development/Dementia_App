@@ -21,10 +21,10 @@
         <TextView
             android:id="@+id/tv_question_no"
             android:layout_width="380dp"
-            android:layout_height="wrap_content"
+            android:layout_height="5dp"
             android:layout_weight="1"
-            android:textSize="36sp"
-            android:text="Question Title" />
+            android:text="Question Title"
+            android:textSize="36sp" />
 
         <TextView
             android:id="@+id/tv_instructions"
@@ -34,8 +34,16 @@
             android:textSize="48sp"
             android:text="instructions" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:srcCompat="@tools:sample/avatars"
+            android:visibility="gone"/>
+
         <TextView
-            android:id="@+id/tv_sub_text"
+            android:id="@+id/tvSubText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,6 +72,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Start Timer"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/trueButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint = "#00FF0A"
+            android:text="Correct"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/falseButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint = "#FF1100"
+            android:text="Incorrect"
             android:visibility="gone"/>
 
         <EditText
