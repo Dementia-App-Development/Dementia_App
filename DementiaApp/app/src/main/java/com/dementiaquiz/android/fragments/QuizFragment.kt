@@ -23,6 +23,7 @@ import android.os.CountDownTimer as CountDownTimer
 import android.graphics.drawable.Drawable
 import android.opengl.Visibility
 import android.util.Log
+import androidx.navigation.findNavController
 import java.io.InputStream
 import java.net.URL
 
@@ -36,6 +37,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private val REQUEST_CODE_SPEECH_INPUT = 100
     private var tts: TextToSpeech? = null
     private var answer: String? = null
+    private var talk: String?= null
     private lateinit var binding: FragmentQuizBinding
 
     /**
@@ -98,8 +100,10 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
             Timber.i(newQuestion.answers.toString() )
             binding.tvInstructions.visibility = View.VISIBLE
+            binding.tvSubText.visibility = View.VISIBLE
             binding.trueButton.visibility = View.GONE
             binding.falseButton.visibility = View.GONE
+            binding.repeat.visibility = View.GONE
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.tvSubText.visibility  = View.GONE
                 binding.imageView.visibility = View.VISIBLE
@@ -128,7 +132,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 binding.Text.visibility = View.GONE
                 binding.date.visibility = View.GONE
                 binding.button.visibility = View.GONE
-                binding.tvInstructions.visibility = View.INVISIBLE
+                binding.tvSubText.visibility = View.GONE
+                binding.repeat.visibility = View.VISIBLE
+                binding.tvInstructions.visibility = View.GONE
                 binding.voiceButton.visibility = View.VISIBLE
                 binding.nextBtn.visibility = View.GONE
                 CountDown = viewModel.startTimer(binding, 60 * 1000)
@@ -145,6 +151,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.tvInstructions.text = newQuestion.instruction
             binding.tvSubText.text = newQuestion.sub_text
             answer = newQuestion.answers.toString()
+            talk = newQuestion.instruction
             tts!!.speak(newQuestion.instruction, TextToSpeech.QUEUE_FLUSH, null)
         })
 
@@ -155,6 +162,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.trueButton.visibility = View.VISIBLE
             binding.falseButton.visibility = View.VISIBLE
             CountDown = viewModel.startTimer(binding, 60 * 1000)
+        }
+        binding.repeat.setOnClickListener{
+            tts!!.speak(talk, TextToSpeech.QUEUE_FLUSH, null)
         }
         // Go to the next question
         binding.nextBtn.setOnClickListener {
@@ -195,6 +205,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         //}
 
         return binding.root
+    }
+    fun FinishQuiz() {
+        view?.findNavController()?.navigate(R.id.action_quizFragment_to_endFragment)
     }
     fun LoadImageFromWebOperations(url: String?): Drawable? {
         return try {

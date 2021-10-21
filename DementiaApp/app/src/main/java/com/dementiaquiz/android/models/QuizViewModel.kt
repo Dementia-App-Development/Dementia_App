@@ -51,6 +51,7 @@ class QuizViewModel : ViewModel() {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 _response.value = "Failure: " + t.message
                 Timber.i("API failure")
+                getAllQuizQuestions()
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {

@@ -22,7 +22,20 @@
         android:id="@+id/quizFragment"
         android:name="com.dementiaquiz.android.fragments.QuizFragment"
         android:label="Quiz"
-        tools:layout="@layout/fragment_quiz" />
+        tools:layout="@layout/fragment_quiz" >
+        <action
+            android:id="@+id/action_quizFragment_to_endFragment"
+            app:destination="@id/endFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endFragment"
+        android:name="com.dementiaquiz.android.fragments.EndFragment"
+        android:label="End"
+        tools:layout="@layout/fragment_end" >
+        <action
+            android:id="@+id/action_endFragment_to_titleFragment"
+            app:destination="@id/titleFragment" />
+    </fragment>
     <fragment
         android:id="@+id/resultsFragment"
         android:name="com.dementiaquiz.android.fragments.resultsFragment"
