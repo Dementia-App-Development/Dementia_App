@@ -3,7 +3,7 @@ package com.dementiaquiz.android.database.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "quiz_answer")
 data class QuizAnswer(
 
     @PrimaryKey(autoGenerate = true)

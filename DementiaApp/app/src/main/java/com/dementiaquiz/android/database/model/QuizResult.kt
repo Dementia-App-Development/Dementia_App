@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity
+@Entity(tableName = "quiz_result")
 data class QuizResult(
 
     @PrimaryKey(autoGenerate = true)
