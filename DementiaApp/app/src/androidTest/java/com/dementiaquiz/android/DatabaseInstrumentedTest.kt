@@ -93,6 +93,27 @@ class DatabaseInstrumentedTest {
     }
 
     @Test
+    fun getUsersWithResults(){
+        val user1: User = User(10, "Rachel", "Wilcher",convertStringToDate("2021/10/24"))
+        val user2: User = User(12, "Stephen", "Cox",convertStringToDate("2021/10/24"))
+
+        userDao.insert(user1)
+        userDao.insert(user2)
+
+        val quizResult1:QuizResult = QuizResult(1,10,80,convertStringToDate("2021/10/24"))
+        val quizResult2:QuizResult = QuizResult(2,10,70,convertStringToDate("2021/10/24"))
+        val quizResult3:QuizResult = QuizResult(3,12,50,convertStringToDate("2021/10/24"))
+
+        quizResultDao.insert(quizResult1)
+        quizResultDao.insert(quizResult2)
+        quizResultDao.insert(quizResult3)
+
+        val result = userDao.getUsersWithResults()
+//        println(result)
+        assertThat(result.size, equalTo(2))
+    }
+
+    @Test
     fun getQuizAnswersByResultId(){
         val quizResult1:QuizResult = QuizResult(1,10,80,convertStringToDate("2021/10/24"))
         val quizResult2:QuizResult = QuizResult(2,12,50,convertStringToDate("2021/10/24"))
