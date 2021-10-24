@@ -1,11 +1,14 @@
 package com.dementiaquiz.android.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.dementiaquiz.android.database.model.QuizAnswer
+import com.dementiaquiz.android.database.model.QuizResult
+import com.dementiaquiz.android.database.model.User
+import com.dementiaquiz.android.database.typeConverter.Converter
 
 @Database(entities = [User::class, QuizResult::class, QuizAnswer::class], version = 1, exportSchema = false)
+@TypeConverters(Converter::class)
 abstract class QuizDatabase : RoomDatabase() {
 
     abstract val quizDatabase: QuizDatabase
