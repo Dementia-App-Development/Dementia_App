@@ -19,7 +19,7 @@ private val retrofit = Retrofit.Builder()
  * Quiz API endpoint for retrieving quiz questions from the server
  */
 interface QuizApiService {
-    @GET("question/all/") //TODO clarify this parameter
+    @GET("question/all/?lat=51.487580&long=-0.190920&mode=solo") //TODO update this parameter to suit what mode the quiz is in
     fun getAllQuestions():
             Call<String>
 }
