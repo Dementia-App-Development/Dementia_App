@@ -20,18 +20,14 @@ class PostQuizFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        Timber.i("onCreateView called")
-
+    ): View {
         // Inflate view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPostQuizBinding>(
             inflater, R.layout.fragment_post_quiz, container, false
         )
 
         // Navigate back to the title screen
-        binding.btnDone.setOnClickListener { v: View ->
-            Timber.i("Done button pressed")
+        binding.postQuizDoneButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }
 

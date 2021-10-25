@@ -12,21 +12,21 @@
         tools:context=".fragments.PatientDetailsFragment">
 
         <TextView
-            android:id="@+id/tv_patient_details_header"
+            android:id="@+id/patientDetailsHeaderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Patient Details"
             android:textSize="34sp" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/patientDetailsNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name (optional)"
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/et_name"
+            android:id="@+id/patientDetailsNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -34,14 +34,14 @@
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/tv_age"
+            android:id="@+id/patientDetailsAgeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Age"
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/et_age"
+            android:id="@+id/patientDetailsAgeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -49,14 +49,14 @@
             android:inputType="number" />
 
         <TextView
-            android:id="@+id/tv_gender"
+            android:id="@+id/patientDetailsGenderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Gender"
             android:textSize="24sp" />
 
         <Spinner
-            android:id="@+id/spinner_gender"
+            android:id="@+id/patientDetailsGenderSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
@@ -64,7 +64,7 @@
             android:spinnerMode="dropdown" />
 
         <Button
-            android:id="@+id/btn_go_to_quiz"
+            android:id="@+id/patientDetailsGoToQuizButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Go To Quiz" />

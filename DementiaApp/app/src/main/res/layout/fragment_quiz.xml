@@ -12,22 +12,15 @@
         tools:context=".fragments.QuizFragment">
 
         <TextView
-            android:id="@+id/tv_time_limit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text='"X" SECONDS' />
-
-        <TextView
-            android:id="@+id/tv_question_no"
+            android:id="@+id/quizQuestionNumTextView"
             android:layout_width="380dp"
             android:layout_height="5dp"
             android:layout_weight="1"
-            android:text="Question Title"
+            android:text="Question Number"
             android:textSize="36sp" />
 
         <Button
-            android:id="@+id/repeat"
+            android:id="@+id/quizRepeatButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,15 +28,15 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tv_instructions"
+            android:id="@+id/quizInstructionsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="48sp"
-            android:text="instructions" />
+            android:text="Question Text"
+            android:textSize="48sp" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/quizQuestionImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -51,14 +44,14 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tvSubText"
+            android:id="@+id/quizSubTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="sub text" />
+            android:text="Question Sub Text" />
 
         <EditText
-            android:id="@+id/date"
+            android:id="@+id/quizDateEditText"
             android:layout_width="358dp"
             android:layout_height="5dp"
             android:layout_weight="1"
@@ -67,7 +60,7 @@
             android:inputType="date"
             android:visibility="gone"/>
         <ImageButton
-            android:id="@+id/voiceButton"
+            android:id="@+id/quizVoiceButton"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@null"
@@ -75,7 +68,7 @@
             android:src="@drawable/ic_mic"
             android:visibility="gone"/>
         <Button
-            android:id="@+id/button"
+            android:id="@+id/quizStartTimerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -83,7 +76,7 @@
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/trueButton"
+            android:id="@+id/quizTrueButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -92,7 +85,7 @@
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/falseButton"
+            android:id="@+id/quizFalseButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -101,7 +94,7 @@
             android:visibility="gone"/>
 
         <EditText
-            android:id="@+id/Text"
+            android:id="@+id/quizUserResponseEditText"
             android:layout_width="358dp"
             android:layout_height="5dp"
             android:layout_weight="1"
@@ -110,7 +103,7 @@
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/nextBtn"
+            android:id="@+id/quizNextButton"
             android:layout_width="293dp"
             android:layout_height="68dp"
             android:layout_margin="8dp"
@@ -119,7 +112,7 @@
             android:drawableRight="@drawable/ic_baseline_arrow_forward_24" />
 
         <ProgressBar
-            android:id="@+id/bar"
+            android:id="@+id/quizProgressBar"
             android:max = "100"
             android:minHeight="24dip"
             android:maxHeight="24dip"

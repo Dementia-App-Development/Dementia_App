@@ -14,33 +14,30 @@ import com.dementiaquiz.android.databinding.FragmentTitleBinding
 import timber.log.Timber
 
 /**
- * Home screen menu when first opening the app
+ * Home screen menu when first opening the app, contains main buttons to navigate the app
  */
 class TitleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        Timber.i("onCreateView called")
-
+    ): View {
         // Inflate view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentTitleBinding>(
             inflater, R.layout.fragment_title, container, false
         )
 
         // Use Nav Controller to set quiz button to navigate to quiz fragment
-        binding.btnQuiz.setOnClickListener { v: View ->
+        binding.titleQuizButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_titleFragment_to_preQuizFragment)
         }
 
         // Use Nav Controller to set results button to navigate to results fragment
-        binding.btnResults.setOnClickListener { v: View ->
+        binding.titleResultsButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_titleFragment_to_resultsFragment)
         }
 
-        binding.websiteButton.setOnClickListener { v: View ->
-
+        // Go to Dementia Australia Website
+        binding.titleWebsiteButton.setOnClickListener { v: View ->
             val uri: Uri =
                 Uri.parse("https://www.dementia.org.au/") // missing 'http://' will cause crashed
 

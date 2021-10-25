@@ -21,14 +21,14 @@
             android:text='"X" SECONDS' />
 
         <TextView
-            android:id="@+id/tv_question_no"
+            android:id="@+id/quizQuestionNumTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Question" />
 
         <TextView
-            android:id="@+id/tv_instructions"
+            android:id="@+id/quizInstructionsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

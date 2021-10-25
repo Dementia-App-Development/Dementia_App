@@ -24,7 +24,7 @@
         android:label="Quiz"
         tools:layout="@layout/fragment_quiz" >
         <action
-            android:id="@+id/action_quizFragment_to_endFragment"
+            android:id="@+id/action_quizFragment_to_postQuizFragment"
             app:destination="@id/postQuizFragment" />
     </fragment>
     <fragment

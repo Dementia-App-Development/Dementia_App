@@ -10,7 +10,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/titleMementoImageView"
             android:layout_width="416dp"
             android:layout_height="262dp"
             android:src="@drawable/logo"
@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_quiz"
+            android:id="@+id/titleQuizButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="288dp"
@@ -32,7 +32,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_results"
+            android:id="@+id/titleResultsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
@@ -42,10 +42,10 @@
             app:icon="@drawable/ic_results"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_quiz" />
+            app:layout_constraintTop_toBottomOf="@+id/titleQuizButton" />
 
         <Button
-            android:id="@+id/websiteButton"
+            android:id="@+id/titleWebsiteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_results"
+            app:layout_constraintTop_toBottomOf="@+id/titleResultsButton"
             app:layout_constraintVertical_bias="0.444" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

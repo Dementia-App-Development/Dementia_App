@@ -27,24 +27,15 @@ class PreQuizFragment : Fragment() {
             R.layout.fragment_pre_quiz, container, false)
 
         // If in assisted mode, go to the patient details fragment
-        binding.btnAssisting.setOnClickListener { v: View ->
-            v.findNavController().navigate(com.dementiaquiz.android.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToPatientDetailsFragment())
+        binding.preQuizAssistingButton.setOnClickListener { v: View ->
+            v.findNavController().navigate(R.id.action_preQuizFragment_to_patientDetailsFragment)
         }
 
         // If in patient mode, go straight to the quiz
-        binding.btnForMyself.setOnClickListener { v: View ->
-            v.findNavController().navigate(com.dementiaquiz.android.fragments.PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment())
+        binding.preQuizForMyselfButton.setOnClickListener { v: View ->
+            v.findNavController().navigate(R.id.action_preQuizFragment_to_quizFragment)
         }
 
         return binding.root
     }
-}
-
-// Parse the quiz questions json from file and create quiz questions kotlin object
-//TODO: below code was in main activity, it fetched quiz questions from storage
-// instead we will require internet connectivity to fetch from server
-fun getQuizQuestions() {
-//    val jsonFileString = getJsonDataFromAsset(applicationContext, QUIZ_QUESTIONS_JSON)
-//    val quizQuestions = generateQuizQuestions(jsonFileString)
-//    Log.i("quiz data", quizQuestions.toString())
 }

@@ -22,6 +22,7 @@ import java.util.*
  */
 class QuizViewModel : ViewModel() {
 
+    // TODO: variable never used, can delete?
     private val REQUEST_CODE_SPEECH_INPUT = 100;
 
     // A List of quiz question objects
@@ -64,6 +65,8 @@ class QuizViewModel : ViewModel() {
                 _response.value = "Failure: " + t.message
                 Timber.i("API failure")
 
+                // TODO: handle API response failure exception with dialog prompt
+
                 // TODO : not sure we should be calling this method here on failure
                 getAllQuizQuestions()
             }
@@ -75,7 +78,7 @@ class QuizViewModel : ViewModel() {
 
                 // Parse the json response to generate quiz question list
                 quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                Timber.i("Retrieved quiz questions from api")
+                Timber.i("Retrieved quiz questions from API")
 
                 // Sort the questions list by id
                 quizQuestions.sortedBy { it.id }
@@ -89,12 +92,12 @@ class QuizViewModel : ViewModel() {
 
     // Go to next question
     fun onNext() {
+        // TODO: Check if the answer provided is correct
+
+
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
-
-            //TODO check if answer correct/incorrect
-
         // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
             _quizIsFinished.value = true
@@ -104,16 +107,16 @@ class QuizViewModel : ViewModel() {
     }
 
     fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
-        binding.bar.progress = 0
+        binding.quizProgressBar.progress = 0
         val myCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
 
                 val fraction = millisUntilFinished / Min.toDouble()
-                binding.bar.progress = (fraction * 100).toInt()
+                binding.quizProgressBar.progress = (fraction * 100).toInt()
             }
 
             override fun onFinish() {
-                binding.bar.progress = 0
+                binding.quizProgressBar.progress = 0
                 onNext()
             }
         }
@@ -134,7 +137,7 @@ class QuizViewModel : ViewModel() {
 /**
  * Parses a json string and outputs a list of QuizQuestion objects
  */
-fun generateQuizQuestionsFromJson(jsonString: String): List<QuizQuestion> {
+private fun generateQuizQuestionsFromJson(jsonString: String): List<QuizQuestion> {
     try {
         val gson = Gson()
         val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type

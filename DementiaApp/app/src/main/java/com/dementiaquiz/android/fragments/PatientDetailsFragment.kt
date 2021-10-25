@@ -29,7 +29,7 @@ class PatientDetailsFragment : Fragment() {
             R.layout.fragment_patient_details, container, false)
 
         // Go to quiz button
-        binding.btnGoToQuiz.setOnClickListener { v:View ->
+        binding.patientDetailsGoToQuizButton.setOnClickListener { v:View ->
             v.findNavController().navigate(com.dementiaquiz.android.fragments.PatientDetailsFragmentDirections.actionPatientDetailsFragmentToQuizFragment())
         }
 
