@@ -48,6 +48,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             tts?.language = Locale.UK
         }
     }
+
     override fun onDestroy() {
         // Shutdown TTS
         if (tts != null) {
@@ -56,6 +57,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
         super.onDestroy()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -78,6 +80,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,17 +89,14 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         Timber.i("onCreateView called")
 
         // Inflate the binding
-        binding = DataBindingUtil.inflate<FragmentQuizBinding>(
-            inflater,
-            R.layout.fragment_quiz,
-            container,
-            false
+        binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false
         )
 
         // Get the viewmodel
         viewModel = ViewModelProvider(this).get(QuizViewModel::class.java)
         var CountDown: CountDownTimer? = null
-        // Set up LiveData observation relationships
+
+        // Set up LiveData observation relationship for the current question in the quiz
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
             Timber.i(newQuestion.answers.toString() )
             binding.tvInstructions.visibility = View.VISIBLE
@@ -104,15 +104,18 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.trueButton.visibility = View.GONE
             binding.falseButton.visibility = View.GONE
             binding.repeat.visibility = View.GONE
+
+            // TODO clean up the below code to be in a when/case format
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.tvSubText.visibility  = View.GONE
                 binding.imageView.visibility = View.VISIBLE
-                binding.imageView.setImageDrawable(LoadImageFromWebOperations(newQuestion.image_url))
+                binding.imageView.setImageDrawable(loadImageFromWebOperations(newQuestion.image_url))
             }
             else {
                 binding.tvSubText.visibility  = View.VISIBLE
                 binding.imageView.visibility = View.GONE
             }
+
             if (newQuestion.response_type == QuizQuestion.ResponseType.DATE) {
                 binding.Text.visibility = View.GONE
                 binding.date.visibility = View.VISIBLE
@@ -146,6 +149,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 binding.voiceButton.visibility = View.GONE
                 CountDown = viewModel.startTimer(binding, 60 * 1000)
             }
+
             binding.tvQuestionNo.text = " Question " + newQuestion.question_no.toString() +
                     newQuestion.sub_question.toString()
             binding.tvInstructions.text = newQuestion.instruction
@@ -153,6 +157,13 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             answer = newQuestion.answers.toString()
             talk = newQuestion.instruction
             tts!!.speak(newQuestion.instruction, TextToSpeech.QUEUE_FLUSH, null)
+        })
+
+        // Set up LiveData observation relationship to detect for when the quiz has completed
+        viewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newBoolean ->
+            if (newBoolean == true) {
+                finishQuiz()
+            }
         })
 
         binding.button.setOnClickListener{
@@ -163,9 +174,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.falseButton.visibility = View.VISIBLE
             CountDown = viewModel.startTimer(binding, 60 * 1000)
         }
+
         binding.repeat.setOnClickListener{
             tts!!.speak(talk, TextToSpeech.QUEUE_FLUSH, null)
         }
+
         // Go to the next question
         binding.nextBtn.setOnClickListener {
             if (binding.Text.visibility == View.VISIBLE){
@@ -178,6 +191,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             CountDown?.cancel()
             viewModel.onNext()
         }
+
         fun speak() {
             // Intent to show SpeechToText dialog
             val mIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -194,6 +208,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 //Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             }
         }
+
         binding.voiceButton.setOnClickListener{
             speak()
             binding.nextBtn.visibility = View.VISIBLE
@@ -206,10 +221,12 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         return binding.root
     }
-    fun FinishQuiz() {
+
+    private fun finishQuiz() {
         view?.findNavController()?.navigate(R.id.action_quizFragment_to_endFragment)
     }
-    fun LoadImageFromWebOperations(url: String?): Drawable? {
+
+    private fun loadImageFromWebOperations(url: String?): Drawable? {
         return try {
             val `is`: InputStream = URL(url).content as InputStream
             Drawable.createFromStream(`is`, "src name")

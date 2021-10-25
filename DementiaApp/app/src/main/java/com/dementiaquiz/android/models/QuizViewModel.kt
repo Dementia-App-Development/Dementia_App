@@ -22,16 +22,28 @@ import java.util.*
  */
 class QuizViewModel : ViewModel() {
 
-    private var quizQuestions : List<QuizQuestion>
-    private var currentQuestionIndex: Int
     private val REQUEST_CODE_SPEECH_INPUT = 100;
-    // The current question
+
+    // A List of quiz question objects
+    private var quizQuestions : List<QuizQuestion>
+
+    // The index of the current question in the quiz question list
+    private var currentQuestionIndex : Int
+
+    // A tally of how many correct answers the user has gotten in the quiz
+    private var correctAnswersTally : Int = 0
+
+    // Boolean value that defaults to false, and is set to true when the quiz is finished
+    private var _quizIsFinished = MutableLiveData<Boolean>()
+    val quizIsFinished: LiveData<Boolean>
+        get() = _quizIsFinished
+
+    // The current question to be displayed in the UI
     private var _currentQuestion = MutableLiveData<QuizQuestion>()
     val currentQuestion: LiveData<QuizQuestion>
         get() = _currentQuestion
 
     // The internal MutableLiveData String that stores the status of the most recent request
-    //TODO: used for API respone - yet to implement
     private val _response = MutableLiveData<String>()
     val response: LiveData<String> // The external immutable LiveData for the request status String
         get() = _response
@@ -51,18 +63,23 @@ class QuizViewModel : ViewModel() {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 _response.value = "Failure: " + t.message
                 Timber.i("API failure")
+
+                // TODO : not sure we should be calling this method here on failure
                 getAllQuizQuestions()
             }
 
+            // Get the quiz questions from API call and sort them
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 _response.value = response.body()
                 Timber.i("API response")
 
                 // Parse the json response to generate quiz question list
                 quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
+                Timber.i("Retrieved quiz questions from api")
 
                 // Sort the questions list by id
                 quizQuestions.sortedBy { it.id }
+                Timber.i("Length of quiz= %s", quizQuestions.size)
 
                 // Set the current question to the first question
                 _currentQuestion.value = quizQuestions[currentQuestionIndex]
@@ -72,8 +89,15 @@ class QuizViewModel : ViewModel() {
 
     // Go to next question
     fun onNext() {
+        // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
+
+            //TODO check if answer correct/incorrect
+
+        // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
+        } else {
+            _quizIsFinished.value = true
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
@@ -98,6 +122,7 @@ class QuizViewModel : ViewModel() {
     }
 
     // Go to previous question
+    // TODO: I believe this is redundant now and can be removed
     fun onPrev() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex -= 1

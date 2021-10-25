@@ -24,22 +24,22 @@ class TitleFragment : Fragment() {
 
         Timber.i("onCreateView called")
 
-        // Use view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater,
-            R.layout.fragment_title, container, false)
+        // Inflate view binding to get variables from XML
+        val binding = DataBindingUtil.inflate<FragmentTitleBinding>(
+            inflater, R.layout.fragment_title, container, false
+        )
 
         // Use Nav Controller to set quiz button to navigate to quiz fragment
         binding.btnQuiz.setOnClickListener { v: View ->
-            v.findNavController().navigate(com.dementiaquiz.android.fragments.TitleFragmentDirections.actionTitleFragmentToPreQuizFragment2())
+            v.findNavController().navigate(R.id.action_titleFragment_to_preQuizFragment)
         }
 
         // Use Nav Controller to set results button to navigate to results fragment
         binding.btnResults.setOnClickListener { v: View ->
-            v.findNavController()
-                .navigate(com.dementiaquiz.android.fragments.TitleFragmentDirections.actionTitleFragmentToResultsFragment())
+            v.findNavController().navigate(R.id.action_titleFragment_to_resultsFragment)
         }
 
-        binding.websiteButton.setOnClickListener { v:View->
+        binding.websiteButton.setOnClickListener { v: View ->
 
             val uri: Uri =
                 Uri.parse("https://www.dementia.org.au/") // missing 'http://' will cause crashed
@@ -59,8 +59,7 @@ class TitleFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.
-        onNavDestinationSelected(item,requireView().findNavController())
+        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
                 || super.onOptionsItemSelected(item)
     }
 
