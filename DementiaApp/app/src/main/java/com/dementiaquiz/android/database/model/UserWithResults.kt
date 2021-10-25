@@ -1,4 +1,4 @@
-package com.dementiaquiz.android.database
+package com.dementiaquiz.android.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

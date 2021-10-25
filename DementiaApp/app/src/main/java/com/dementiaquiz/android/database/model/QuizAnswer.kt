@@ -1,15 +1,17 @@
-package com.dementiaquiz.android.database
+package com.dementiaquiz.android.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "quiz_answer")
 data class QuizAnswer(
 
     @PrimaryKey(autoGenerate = true)
     val answerId: Long = 0L,
-    val correct: Boolean,
+    val questionDescription: String,
+    val correctAnswer: String,
     val response: String,
+    val correct: Boolean,
     val resultId: Long
 
 )
