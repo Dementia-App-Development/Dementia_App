@@ -19,17 +19,17 @@ interface UserDao {
     suspend fun update(user: User)
 
     @Query("SELECT * FROM user")
-    suspend fun getUsers(): Flow<List<User>>
+     fun getUsers(): Flow<List<User>>
 
     @Query("SELECT * FROM User WHERE userId = :userId")
-    suspend fun getUserById(userId: Long): Flow<User>
+     fun getUserById(userId: Long): Flow<User>
 
     @Transaction
     @Query("SELECT * FROM user")
-    suspend fun getUsersWithResults():Flow<List<UserWithResults>>
+     fun getUsersWithResults():Flow<List<UserWithResults>>
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId==:userId")
-    suspend fun getUsersWithResultsByUserId(userId:Long):Flow<UserWithResults>
+     fun getUsersWithResultsByUserId(userId:Long):Flow<UserWithResults>
 
 }

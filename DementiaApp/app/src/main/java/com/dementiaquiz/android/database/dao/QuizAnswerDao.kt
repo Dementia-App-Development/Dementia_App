@@ -20,9 +20,9 @@ interface QuizAnswerDao {
     suspend fun update(quizAnswer: QuizAnswer)
 
     @Query("SELECT * FROM quiz_answer")
-    suspend fun getQuizAnswers():Flow<List<QuizAnswer>>
+     fun getQuizAnswers():Flow<List<QuizAnswer>>
 
     @Query("SELECT * FROM quiz_answer WHERE resultId=:resultId")
-    suspend fun getQuizAnswersByResultId(resultId:Long):Flow<List<QuizAnswer>>
+     fun getQuizAnswersByResultId(resultId:Long):Flow<List<QuizAnswer>>
 
 }
