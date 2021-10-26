@@ -4,6 +4,7 @@ import androidx.room.*
 import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.database.model.ResultWithAnswers
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuizResultDao {
@@ -18,22 +19,22 @@ interface QuizResultDao {
     suspend fun update(quizResult: QuizResult)
 
     @Query("SELECT * FROM quiz_result")
-    suspend fun getQuizResults():List<QuizResult>
+    suspend fun getQuizResults():Flow<List<QuizResult>>
 
     @Query("SELECT * FROM quiz_result WHERE userId = :userId")
-    suspend fun getQuizResultsByUserId(userId:Long):List<QuizResult>
+    suspend fun getQuizResultsByUserId(userId:Long):Flow<List<QuizResult>>
 
     @Transaction
     @Query("SELECT * FROM quiz_result")
-    suspend fun getResultsWithAnswers(): List<ResultWithAnswers>
+    suspend fun getResultsWithAnswers(): Flow<List<ResultWithAnswers>>
 
     @Transaction
     @Query("SELECT * FROM quiz_result WHERE resultId = :resultId")
-    suspend fun getResultWithAnswersByResultId(resultId: Long): ResultWithAnswers
+    suspend fun getResultWithAnswersByResultId(resultId: Long): Flow<ResultWithAnswers>
 
     @Transaction
     @Query("SELECT * FROM quiz_result WHERE userId = :userId")
-    suspend fun getResultWithAnswersByUserId(userId: Long): List<ResultWithAnswers>
+    suspend fun getResultWithAnswersByUserId(userId: Long): Flow<List<ResultWithAnswers>>
 
 
 }

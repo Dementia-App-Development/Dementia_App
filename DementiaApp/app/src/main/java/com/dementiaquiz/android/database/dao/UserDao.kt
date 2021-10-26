@@ -4,6 +4,7 @@ import androidx.room.*
 import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.database.model.User
 import com.dementiaquiz.android.database.model.UserWithResults
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -18,17 +19,17 @@ interface UserDao {
     suspend fun update(user: User)
 
     @Query("SELECT * FROM user")
-    suspend fun getUsers():List<User>
+    suspend fun getUsers(): Flow<List<User>>
 
     @Query("SELECT * FROM User WHERE userId = :userId")
-    suspend fun getUserById(userId: Long): User
+    suspend fun getUserById(userId: Long): Flow<User>
 
     @Transaction
     @Query("SELECT * FROM user")
-    suspend fun getUsersWithResults():List<UserWithResults>
+    suspend fun getUsersWithResults():Flow<List<UserWithResults>>
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId==:userId")
-    suspend fun getUsersWithResultsByUserId(userId:Long):UserWithResults
+    suspend fun getUsersWithResultsByUserId(userId:Long):Flow<UserWithResults>
 
 }
