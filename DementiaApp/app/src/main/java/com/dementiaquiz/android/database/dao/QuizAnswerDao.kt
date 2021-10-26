@@ -10,18 +10,18 @@ import com.dementiaquiz.android.database.model.User
 interface QuizAnswerDao {
 
     @Insert
-    fun insert(quizAnswer: QuizAnswer)
+    suspend fun insert(quizAnswer: QuizAnswer)
 
     @Delete
-    fun delete(quizAnswer: QuizAnswer)
+    suspend fun delete(quizAnswer: QuizAnswer)
 
     @Update
-    fun update(quizAnswer: QuizAnswer)
+    suspend fun update(quizAnswer: QuizAnswer)
 
     @Query("SELECT * FROM quiz_answer")
-    fun getQuizAnswers():List<QuizAnswer>
+    suspend fun getQuizAnswers():List<QuizAnswer>
 
     @Query("SELECT * FROM quiz_answer WHERE resultId=:resultId")
-    fun getQuizAnswersByResultId(resultId:Long):List<QuizAnswer>
+    suspend fun getQuizAnswersByResultId(resultId:Long):List<QuizAnswer>
 
 }

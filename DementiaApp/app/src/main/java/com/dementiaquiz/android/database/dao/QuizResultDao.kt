@@ -9,31 +9,31 @@ import com.dementiaquiz.android.database.model.ResultWithAnswers
 interface QuizResultDao {
 
     @Insert
-    fun insert(quizResult: QuizResult)
+    suspend fun insert(quizResult: QuizResult)
 
     @Delete
-    fun delete(quizResult: QuizResult)
+    suspend fun delete(quizResult: QuizResult)
 
     @Update
-    fun update(quizResult: QuizResult)
+    suspend fun update(quizResult: QuizResult)
 
     @Query("SELECT * FROM quiz_result")
-    fun getQuizResults():List<QuizResult>
+    suspend fun getQuizResults():List<QuizResult>
 
     @Query("SELECT * FROM quiz_result WHERE userId = :userId")
-    fun getQuizResultsByUserId(userId:Long):List<QuizResult>
+    suspend fun getQuizResultsByUserId(userId:Long):List<QuizResult>
 
     @Transaction
     @Query("SELECT * FROM quiz_result")
-    fun getResultsWithAnswers(): List<ResultWithAnswers>
+    suspend fun getResultsWithAnswers(): List<ResultWithAnswers>
 
     @Transaction
     @Query("SELECT * FROM quiz_result WHERE resultId = :resultId")
-    fun getResultWithAnswersByResultId(resultId: Long): ResultWithAnswers
+    suspend fun getResultWithAnswersByResultId(resultId: Long): ResultWithAnswers
 
     @Transaction
     @Query("SELECT * FROM quiz_result WHERE userId = :userId")
-    fun getResultWithAnswersByUserId(userId: Long): List<ResultWithAnswers>
+    suspend fun getResultWithAnswersByUserId(userId: Long): List<ResultWithAnswers>
 
 
 }

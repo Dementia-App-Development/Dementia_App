@@ -9,26 +9,26 @@ import com.dementiaquiz.android.database.model.UserWithResults
 interface UserDao {
 
     @Insert
-    fun insert(user: User)
+    suspend fun insert(user: User)
 
     @Delete
-    fun delete(user: User)
+    suspend fun delete(user: User)
 
     @Update
-    fun update(user: User)
+    suspend fun update(user: User)
 
     @Query("SELECT * FROM user")
-    fun getUsers():List<User>
+    suspend fun getUsers():List<User>
 
     @Query("SELECT * FROM User WHERE userId = :userId")
-    fun getUserById(userId: Long): User
+    suspend fun getUserById(userId: Long): User
 
     @Transaction
     @Query("SELECT * FROM user")
-    fun getUsersWithResults():List<UserWithResults>
+    suspend fun getUsersWithResults():List<UserWithResults>
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId==:userId")
-    fun getUsersWithResultsByUserId(userId:Long):UserWithResults
+    suspend fun getUsersWithResultsByUserId(userId:Long):UserWithResults
 
 }
