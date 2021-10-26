@@ -34,7 +34,8 @@
         tools:layout="@layout/fragment_post_quiz" >
         <action
             android:id="@+id/action_postQuizFragment_to_titleFragment"
-            app:destination="@id/titleFragment" />
+            app:destination="@id/titleFragment"
+            app:popUpTo="@id/titleFragment" />
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"
