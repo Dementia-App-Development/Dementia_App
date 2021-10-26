@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dementiaquiz.android.QuizApi
+import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -75,7 +76,6 @@ class QuizViewModel : ViewModel() {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 _response.value = response.body()
                 Timber.i("API response")
-
                 // Parse the json response to generate quiz question list
                 quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                 Timber.i("Retrieved quiz questions from API")
@@ -91,9 +91,15 @@ class QuizViewModel : ViewModel() {
     }
 
     // Go to next question
-    fun onNext() {
+    fun onNext(userAnswer: String?, trueAnswer: String?, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
-
+        if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
+            Timber.i("Well Done")
+            // If string == answer do something
+        }
+        else {
+            Timber.i("Wrong!")
+        }
 
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
@@ -117,7 +123,7 @@ class QuizViewModel : ViewModel() {
 
             override fun onFinish() {
                 binding.quizProgressBar.progress = 0
-                onNext()
+                onNext(null, null, false)
             }
         }
         myCountDownTimer.start()

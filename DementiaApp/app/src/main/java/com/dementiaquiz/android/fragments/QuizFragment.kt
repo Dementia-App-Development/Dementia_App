@@ -35,7 +35,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private val REQUEST_CODE_SPEECH_INPUT = 100
     private var tts: TextToSpeech? = null
     private var answer: String? = null
-    private var talk: String?= null
+    private var talk: String? = null
+    private var voiceAnswer: String = "Nothing"
     private lateinit var binding: FragmentQuizBinding
 
     /**
@@ -64,18 +65,12 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                     // Get Text from result
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
 
-                    val voice = result?.get(0)
-
-                    // Return result of question
-                    Timber.i(voice)
-                    if (voice contentEquals answer) {
-                        Timber.i("Well Done")
+                    if (result != null) {
+                        voiceAnswer = result[0]
                     }
 
-                    //    textViewAnswerResult.text = "Correct"
-                    //} else {
-                    //    textViewAnswerResult.text = "Incorrect"
-                    //}
+                    // Return result of question
+                    Timber.i(voiceAnswer)
                 }
             }
         }
@@ -99,13 +94,16 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // Set up LiveData observation relationship for the current question in the quiz
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
-            Timber.i(newQuestion.answers.toString() )
+            Timber.i(newQuestion.answers.toString())
             binding.quizInstructionsTextView.visibility = View.VISIBLE
             binding.quizSubTextView.visibility = View.VISIBLE
             binding.quizTrueButton.visibility = View.GONE
             binding.quizFalseButton.visibility = View.GONE
             binding.quizRepeatButton.visibility = View.GONE
-
+            binding.quizUserResponseEditText.visibility = View.GONE
+            binding.quizDateEditText.visibility = View.GONE
+            binding.quizStartTimerButton.visibility = View.GONE
+            binding.quizVoiceButton.visibility = View.GONE
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.quizSubTextView.visibility  = View.GONE
                 binding.quizQuestionImageView.visibility = View.VISIBLE
@@ -119,24 +117,15 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             // Toggle visibility of respective parts of the UI based on the question response type
             when (newQuestion.response_type) {
                 QuizQuestion.ResponseType.DATE -> {
-                    binding.quizUserResponseEditText.visibility = View.GONE
                     binding.quizDateEditText.visibility = View.VISIBLE
-                    binding.quizStartTimerButton.visibility = View.GONE
-                    binding.quizVoiceButton.visibility = View.GONE
                     countDown = viewModel.startTimer(binding, 60 * 1000)
                 }
                 QuizQuestion.ResponseType.ASSISTED -> {
-                    binding.quizUserResponseEditText.visibility = View.GONE
-                    binding.quizDateEditText.visibility = View.GONE
                     binding.quizStartTimerButton.visibility = View.VISIBLE
                     binding.quizProgressBar.visibility = View.GONE
                     binding.quizNextButton.visibility = View.GONE
-                    binding.quizVoiceButton.visibility = View.GONE
                 }
                 QuizQuestion.ResponseType.SPEECH -> {
-                    binding.quizUserResponseEditText.visibility = View.GONE
-                    binding.quizDateEditText.visibility = View.GONE
-                    binding.quizStartTimerButton.visibility = View.GONE
                     binding.quizSubTextView.visibility = View.GONE
                     binding.quizRepeatButton.visibility = View.VISIBLE
                     binding.quizInstructionsTextView.visibility = View.GONE
@@ -145,10 +134,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                     countDown = viewModel.startTimer(binding, 60 * 1000)
                 }
                 else -> {
-                    binding.quizDateEditText.visibility = View.GONE
                     binding.quizUserResponseEditText.visibility = View.VISIBLE
-                    binding.quizStartTimerButton.visibility = View.GONE
-                    binding.quizVoiceButton.visibility = View.GONE
                     countDown = viewModel.startTimer(binding, 60 * 1000)
                 }
             }
@@ -160,7 +146,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizSubTextView.text = newQuestion.sub_text
 
             // TODO: old code, can delete this I think
-//            answer = newQuestion.answers.toString()
+            // No this do not delete this currently is used for answer handling
+            answer = newQuestion.answers.toString()
 
             // Get the new question instruction and pass it to text to speech
             talk = newQuestion.instruction
@@ -173,10 +160,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 finishQuiz()
             }
         })
-
         // Start timer when start timer button is pressed
         binding.quizStartTimerButton.setOnClickListener{
-            binding.quizNextButton.visibility = View.VISIBLE
             binding.quizProgressBar.visibility = View.VISIBLE
             binding.quizStartTimerButton.visibility = View.GONE
             binding.quizTrueButton.visibility = View.VISIBLE
@@ -191,22 +176,37 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // Go to the next question
         binding.quizNextButton.setOnClickListener {
-
+            // Cancel countdown and go to next question
+            countDown?.cancel()
             // Verify answer against what was input in the edit text response field
             // TODO: implement this properly
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
-                var string = binding.quizUserResponseEditText.text.toString()
-                if (answer?.contains(string) == true){
-                    Timber.i("Well Done")
-                    // If string == answer do something
-                }
+                var user = binding.quizUserResponseEditText.text.toString()
+                viewModel.onNext(user, answer, false)
             }
+            else if (binding.quizDateEditText.visibility == View.VISIBLE) {
+                var user = binding.quizDateEditText.text.toString()
+                viewModel.onNext(user, answer, false)
+            }
+            else {
+                viewModel.onNext(voiceAnswer, answer, false)
+            }
+        }
+        binding.quizTrueButton.setOnClickListener {
+
+            // Verify answer against what was input in the edit text response field
 
             // Cancel countdown and go to next question
             countDown?.cancel()
-            viewModel.onNext()
+            viewModel.onNext(null, answer, true)
         }
+        binding.quizFalseButton.setOnClickListener {
 
+            // Verify answer against what was input in the edit text response field
+            // Cancel countdown and go to next question
+            countDown?.cancel()
+            viewModel.onNext(null, answer, false)
+        }
         // Text to speech
         fun speak() {
             // Intent to show SpeechToText dialog
