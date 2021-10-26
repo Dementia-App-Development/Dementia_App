@@ -140,8 +140,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             }
 
             // Set the bindings in the UI based on the current question
-            binding.quizQuestionNumTextView.text = " Question " + newQuestion.question_no.toString() +
-                    newQuestion.sub_question.toString()
+            binding.quizQuestionNumTextView.text = " Question " + newQuestion.question_no.toString()
             binding.quizInstructionsTextView.text = newQuestion.instruction
             binding.quizSubTextView.text = newQuestion.sub_text
 
@@ -160,6 +159,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 finishQuiz()
             }
         })
+
         // Start timer when start timer button is pressed
         binding.quizStartTimerButton.setOnClickListener{
             binding.quizProgressBar.visibility = View.VISIBLE
@@ -178,20 +178,23 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.quizNextButton.setOnClickListener {
             // Cancel countdown and go to next question
             countDown?.cancel()
+
             // Verify answer against what was input in the edit text response field
-            // TODO: implement this properly
+            // TODO: implement this properly, put in when/case loop
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
-                var user = binding.quizUserResponseEditText.text.toString()
-                viewModel.onNext(user, answer, false)
+                val response = binding.quizUserResponseEditText.text.toString()
+                viewModel.onNext(response, answer, false)
             }
             else if (binding.quizDateEditText.visibility == View.VISIBLE) {
-                var user = binding.quizDateEditText.text.toString()
-                viewModel.onNext(user, answer, false)
+                val response = binding.quizDateEditText.text.toString()
+                viewModel.onNext(response, answer, false)
             }
             else {
                 viewModel.onNext(voiceAnswer, answer, false)
             }
         }
+
+        // Assisted mode true/false response buttons
         binding.quizTrueButton.setOnClickListener {
 
             // Verify answer against what was input in the edit text response field
@@ -207,6 +210,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             countDown?.cancel()
             viewModel.onNext(null, answer, false)
         }
+
         // Text to speech
         fun speak() {
             // Intent to show SpeechToText dialog
