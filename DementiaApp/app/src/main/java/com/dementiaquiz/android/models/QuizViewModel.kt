@@ -88,6 +88,9 @@ class QuizViewModel : ViewModel() {
                 _currentQuestion.value = quizQuestions[currentQuestionIndex]
             }
         })
+
+        // TODO: Create a loaded variable that changes to true when everything has been loaded
+        // TODO: put it on the onResponse function maybe?
     }
 
     // Go to next question

@@ -15,14 +15,14 @@
             android:id="@+id/patientDetailsHeaderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Patient Details"
+            android:text="@string/patientDetailHeaderTextView_text"
             android:textSize="34sp" />
 
         <TextView
             android:id="@+id/patientDetailsAreYouTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you..." />
+            android:text="@string/patientDetailsAreYouTextView_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,23 +35,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:textOff="At Home"
-                android:textOn="At Home" />
+                android:textOff="@string/patientDetailsAtHomeButton_textOff"
+                android:textOn="@string/patientDetailsAtHomeButton_textOn" />
 
             <TextView
                 android:id="@+id/patientDetailsOrTextView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="or"
+                android:text="@string/patientDetailsOrTextView1_text"
                 android:textAlignment="center" />
 
             <ToggleButton
                 android:id="@+id/patientDetailsAtClinicButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOff="At Clinic"
-                android:textOn="At Clinic" />
+                android:textOff="@string/patientDetailsAtClinicButton_textOff"
+                android:textOn="@string/patientDetailsAtClinicButton_textOn" />
 
         </LinearLayout>
 
@@ -66,23 +66,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:textOff="By Myself"
-                android:textOn="By Myself" />
+                android:textOff="@string/patientDetailsByMyselfButton_textOff"
+                android:textOn="@string/patientDetailsByMyselfButton_textOn" />
 
             <TextView
                 android:id="@+id/patientDetailsOrTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="or"
+                android:text="@string/patientDetailsOrTextView2_text"
                 android:textAlignment="center" />
 
             <ToggleButton
                 android:id="@+id/patientDetailsBeingAssistedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOff="Being Assisted"
-                android:textOn="Being Assisted" />
+                android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
+                android:textOn="@string/patientDetailsBeingAssistedButton_textOn" />
 
         </LinearLayout>
 
@@ -90,7 +90,7 @@
             android:id="@+id/patientDetailsNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name (optional)"
+            android:text="@string/patientDetailsNameTextView_text"
             android:textSize="24sp"
             android:visibility="gone" />
 
@@ -99,14 +99,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Enter your name"
+            android:hint="@string/patientDetailsNameEditText_hint"
             android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/patientDetailsAgeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Age"
+            android:text="@string/patientDetailsAgeTextView_text"
             android:textSize="24sp"
             android:visibility="gone" />
 
@@ -115,14 +115,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Enter your age"
+            android:hint="@string/patientDetailsAgeEditText_hint"
             android:inputType="number" />
 
         <TextView
             android:id="@+id/patientDetailsGenderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Gender"
+            android:text="@string/patientDetailsGenderTextView_text"
             android:textSize="24sp"
             android:visibility="gone" />
 
@@ -132,14 +132,14 @@
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:entries="@array/Genders"
-            android:hint="Choose your gender"
+            android:hint="@string/patientDetailsGenderSpinner_hint"
             android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/patientDetailsGoToQuizButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go To Quiz" />
+            android:text="@string/patientDetailsGoToQuizButton_text" />
 
     </LinearLayout>
 </layout>
