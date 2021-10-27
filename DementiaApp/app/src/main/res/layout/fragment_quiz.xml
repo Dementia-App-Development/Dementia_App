@@ -53,7 +53,7 @@
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="@string/quizDateEditText_text"
+            android:hint="@string/quizDateEditText_hint"
             android:inputType="date"
             android:visibility="gone"/>
         <ImageButton
@@ -96,7 +96,7 @@
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="@string/quizUserResponseEditText_text"
+            android:hint="@string/quizUserResponseEditText_hint"
             android:visibility="invisible"
             android:inputType="textPersonName" />
 

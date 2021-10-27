@@ -12,11 +12,35 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="quizRepeatButton_text">Repeat Instructions</string>
     <string name="quizStartTimerButton_text">Start Timer</string>
-    <string name="quizDateEditText_text">1945</string>
+    <string name="quizDateEditText_hint">1945</string>
     <string name="quizTrueButton_text">Correct</string>
     <string name="quizFalseButton_text">Incorrect</string>
     <string name="quizNextButton_text">Next Question</string>
-    <string name="quizUserResponseEditText_text">Please write the answer here</string>
+    <string name="quizUserResponseEditText_hint">Please write the answer here</string>
+    <string name="patientDetailHeaderTextView_text">Patient Details</string>
+    <string name="patientDetailsAreYouTextView_text">Are you...</string>
+    <string name="patientDetailsAtHomeButton_textOn">At Home</string>
+    <string name="patientDetailsAtHomeButton_textOff">At Home</string>
+    <string name="patientDetailsOrTextView1_text">or</string>
+    <string name="patientDetailsAtClinicButton_textOff">At Clinic</string>
+    <string name="patientDetailsAtClinicButton_textOn">At Clinic</string>
+    <string name="patientDetailsByMyselfButton_textOff">By Myself</string>
+    <string name="patientDetailsByMyselfButton_textOn">By Myself</string>
+    <string name="patientDetailsOrTextView2_text">or</string>
+    <string name="patientDetailsBeingAssistedButton_textOff">Being Assisted</string>
+    <string name="patientDetailsBeingAssistedButton_textOn">Being Assisted</string>
+    <string name="patientDetailsNameTextView_text">Name (optional)</string>
+    <string name="patientDetailsNameEditText_hint">Enter your name</string>
+    <string name="patientDetailsAgeTextView_text">Age</string>
+    <string name="patientDetailsAgeEditText_hint">Enter your age</string>
+    <string name="patientDetailsGenderTextView_text">Gender</string>
+    <string name="patientDetailsGenderSpinner_hint">Choose your gender</string>
+    <string name="patientDetailsGoToQuizButton_text">Go To Quiz</string>
+    <string name="titleQuizButton_text">Quiz</string>
+    <string name="titleResultsButton_text">Results</string>
+    <string name="titleWebsiteButton_text">Website</string>
+    <string name="quizQuestionNumTextView_text">Question</string>
+    <string name="quizInstructionsTextView_text">instructions</string>
 
     <string-array name="Genders">
         <item>Male</item>
