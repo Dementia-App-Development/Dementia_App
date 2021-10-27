@@ -88,17 +88,24 @@ class QuizViewModel : ViewModel() {
                 _currentQuestion.value = quizQuestions[currentQuestionIndex]
             }
         })
+
+        // TODO: Create a loaded variable that changes to true when everything has been loaded
+        // TODO: put it on the onResponse function maybe?
     }
 
     // Go to next question
     fun onNext(userAnswer: String?, trueAnswer: String?, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
-        if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
-            Timber.i("Well Done")
-            // If string == answer do something
-        }
-        else {
-            Timber.i("Wrong!")
+        userAnswer?.let {
+            if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
+                Timber.i("Well Done")
+                // If string == answer do something
+            }
+            else {
+                Timber.i("Wrong!")
+            }
+        } ?: run {
+            Timber.i("User ran out of time or didn't input anything.")
         }
 
         // Check whether at the end of the quiz

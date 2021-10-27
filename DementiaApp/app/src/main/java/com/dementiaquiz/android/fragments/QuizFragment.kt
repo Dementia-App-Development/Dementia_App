@@ -104,6 +104,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizDateEditText.visibility = View.GONE
             binding.quizStartTimerButton.visibility = View.GONE
             binding.quizVoiceButton.visibility = View.GONE
+            binding.quizNextButton.visibility = View.VISIBLE
+            binding.quizProgressBar.visibility = View.VISIBLE
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.quizSubTextView.visibility  = View.GONE
                 binding.quizQuestionImageView.visibility = View.VISIBLE
@@ -113,6 +115,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 binding.quizSubTextView.visibility  = View.VISIBLE
                 binding.quizQuestionImageView.visibility = View.GONE
             }
+
+            // TODO: Bind the loadingbar https://stackoverflow.com/questions/45373007/progressdialog-is-deprecated-what-is-the-alternate-one-to-use
+            // TODO: in some way?
 
             // Toggle visibility of respective parts of the UI based on the question response type
             when (newQuestion.response_type) {

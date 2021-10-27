@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Question" />
+            android:text="@string/quizQuestionNumTextView_text" />
 
         <TextView
             android:id="@+id/quizInstructionsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="instructions" />
+            android:text="@string/quizInstructionsTextView_text" />
 
         <TextView
             android:id="@+id/tv_sub_text"
