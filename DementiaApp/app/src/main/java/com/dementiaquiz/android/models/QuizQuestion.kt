@@ -43,17 +43,3 @@ data class QuizQuestion(
         @SerializedName("GPS") GPS,
         @SerializedName("ASSISTED") ASSISTED}
 }
-
-// TODO : redundant code below, can remove (unless we wish to fetch json from storage)
-///**
-// * Parses the json file from the assets folder and returns the contents of the file as a string
-// */
-//fun getJsonDataFromAsset(context: Context, fileName: String): String {
-//    var jsonString: String = ""
-//    try {
-//        jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-//    } catch (ioException: IOException) {
-//        ioException.printStackTrace()
-//    }
-//    return jsonString
-//}
