@@ -10,6 +10,13 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="quizRepeatButton_text">Repeat Instructions</string>
+    <string name="quizStartTimerButton_text">Start Timer</string>
+    <string name="quizDateEditText_text">1945</string>
+    <string name="quizTrueButton_text">Correct</string>
+    <string name="quizFalseButton_text">Incorrect</string>
+    <string name="quizNextButton_text">Next Question</string>
+    <string name="quizUserResponseEditText_text">Please write the answer here</string>
 
     <string-array name="Genders">
         <item>Male</item>
