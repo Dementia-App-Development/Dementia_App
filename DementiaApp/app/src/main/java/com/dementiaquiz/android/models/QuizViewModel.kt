@@ -91,9 +91,12 @@ class QuizViewModel : ViewModel() {
     }
 
     // Go to next question
-    fun onNext(userAnswer: String?, trueAnswer: String?, assistedCorrect: Boolean) {
+    fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
-        if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
+        if (userAnswer == null && !assistedCorrect) {
+            Timber.i("Wrong!")
+        }
+        else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
             Timber.i("Well Done")
             // If string == answer do something
         }
@@ -123,7 +126,7 @@ class QuizViewModel : ViewModel() {
 
             override fun onFinish() {
                 binding.quizProgressBar.progress = 0
-                onNext(null, null, false)
+                binding.quizNextButton.performClick()
             }
         }
         myCountDownTimer.start()
