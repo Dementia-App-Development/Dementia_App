@@ -34,7 +34,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: QuizViewModel
     private val REQUEST_CODE_SPEECH_INPUT = 100
     private var tts: TextToSpeech? = null
-    private var answer: String? = null
+    private var answer: String = "False"
     private var talk: String? = null
     private var voiceAnswer: String = "Nothing"
     private lateinit var binding: FragmentQuizBinding

@@ -98,20 +98,19 @@ class QuizViewModel : ViewModel() {
     }
 
     // Go to next question
-    fun onNext(userAnswer: String?, trueAnswer: String?, assistedCorrect: Boolean) {
+    fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
-        userAnswer?.let {
-            if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
-                Timber.i("Correct response")
+        if (userAnswer == null && !assistedCorrect) {
+            Timber.i("Wrong!")
+        }
+        else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+            Timber.i("Well Done")
 
-                // Increment the score
-                _score.value = (_score.value)?.plus(1)
-            }
-            else {
-                Timber.i("Incorrect response")
-            }
-        } ?: run {
-            Timber.i("User ran out of time or didn't input anything.")
+            // Increment the score
+            _score.value = (_score.value)?.plus(1)
+        }
+        else {
+            Timber.i("Wrong!")
         }
 
         // Check whether at the end of the quiz
@@ -136,7 +135,7 @@ class QuizViewModel : ViewModel() {
 
             override fun onFinish() {
                 binding.quizProgressBar.progress = 0
-                onNext(null, null, false)
+                binding.quizNextButton.performClick()
             }
         }
         myCountDownTimer.start()
