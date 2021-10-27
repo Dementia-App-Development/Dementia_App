@@ -144,7 +144,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 }
             }
 
-            // Set the bindings in the UI based on the current question
+            // Set the bindings in the UI to default values
             binding.quizQuestionNumTextView.text = " Question " + newQuestion.question_no.toString()
             binding.quizInstructionsTextView.text = newQuestion.instruction
             binding.quizSubTextView.text = newQuestion.sub_text
@@ -161,7 +161,13 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         // Set up LiveData observation relationship to detect for when the quiz has completed
         viewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newBoolean ->
             if (newBoolean == true) {
-                finishQuiz()
+
+                // Fetch the current score
+                val currentScore = viewModel.score.value ?: 0
+
+                // Finish the quiz with the current score bundle passed to the post quiz fragment
+                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(currentScore)
+                view?.findNavController()?.navigate(action)
             }
         })
 
@@ -246,11 +252,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         //}
 
         return binding.root
-    }
-
-    // Navigates to the PostQuizFragment
-    private fun finishQuiz() {
-        view?.findNavController()?.navigate(R.id.action_quizFragment_to_postQuizFragment)
     }
 
 }

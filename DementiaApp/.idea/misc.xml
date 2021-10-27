@@ -26,6 +26,8 @@
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/data_question.xml" value="0.3453125" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/date_question.xml" value="0.3453125" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_about.xml" value="0.572463768115942" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_end.xml" value="0.41302083333333334" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_game.xml" value="0.41302083333333334" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_patient_details.xml" value="0.3453125" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_pre_quiz.xml" value="0.3453125" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_quiz.xml" value="0.3453125" />
@@ -41,23 +43,13 @@
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_search_24.xml" value="0.45364583333333336" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/drawable/round_button.xml" value="0.45364583333333336" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/activity_main.xml" value="0.4626865671641791" />
-        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_about.xml" value="0.5502717391304348" />
-        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_end.xml" value="0.4429347826086957" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_patient_details.xml" value="0.36231884057971014" />
-        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_post_quiz.xml" value="0.5" />
+        <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_post_quiz.xml" value="0.34479166666666666" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_pre_quiz.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_quiz.xml" value="0.33" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_results.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/fragment_title.xml" value="0.5" />
         <entry key="..\:/Users/olive/Google Drive/Uni/2021_Sem2/COMP90018 Mobile Computing/Dementia_App/DementiaApp/app/src/main/res/layout/quiz_question_layout.xml" value="0.36231884057971014" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16614583333333333" />
-        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.16614583333333333" />
-        <entry key="app/src/main/res/layout/fragment_patient_details.xml" value="0.16614583333333333" />
-        <entry key="app/src/main/res/layout/fragment_post_quiz.xml" value="0.13697916666666668" />
-        <entry key="app/src/main/res/layout/fragment_pre_quiz.xml" value="0.13697916666666668" />
-        <entry key="app/src/main/res/layout/fragment_quiz.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/fragment_results.xml" value="0.13697916666666668" />
-        <entry key="app/src/main/res/layout/fragment_title.xml" value="0.13697916666666668" />
       </map>
     </option>
   </component>

@@ -17,6 +17,13 @@
             android:layout_height="361dp"
             android:text="Well Done! You got ...." />
 
+        <TextView
+            android:id="@+id/postQuizScoreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="36sp" />
+
         <Button
             android:id="@+id/postQuizDoneButton"
             android:layout_width="match_parent"

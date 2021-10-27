@@ -33,7 +33,10 @@ class QuizViewModel : ViewModel() {
     private var currentQuestionIndex : Int
 
     // A tally of how many correct answers the user has gotten in the quiz
-    private var correctAnswersTally : Int = 0
+    // The current score
+    private val _score = MutableLiveData<Int>()
+    val score: LiveData<Int>
+        get() = _score
 
     // Boolean value that defaults to false, and is set to true when the quiz is finished
     private var _quizIsFinished = MutableLiveData<Boolean>()
@@ -56,6 +59,7 @@ class QuizViewModel : ViewModel() {
     init {
         quizQuestions = emptyList()
         currentQuestionIndex = 0
+        _score.value = 0
         getAllQuizQuestions()
     }
 
@@ -98,11 +102,13 @@ class QuizViewModel : ViewModel() {
         // TODO: Check if the answer provided is correct
         userAnswer?.let {
             if (trueAnswer!!.contains(userAnswer!!) or assistedCorrect){
-                Timber.i("Well Done")
-                // If string == answer do something
+                Timber.i("Correct response")
+
+                // Increment the score
+                _score.value = (_score.value)?.plus(1)
             }
             else {
-                Timber.i("Wrong!")
+                Timber.i("Incorrect response")
             }
         } ?: run {
             Timber.i("User ran out of time or didn't input anything.")

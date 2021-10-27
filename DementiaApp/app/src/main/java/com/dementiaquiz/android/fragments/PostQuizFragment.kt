@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPostQuizBinding
 import com.dementiaquiz.android.databinding.FragmentTitleBinding
@@ -30,6 +31,10 @@ class PostQuizFragment : Fragment() {
         binding.postQuizDoneButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }
+
+        // Get args using by navArgs property delegate and display the score from the quiz
+        val postQuizFragmentArgs by navArgs<PostQuizFragmentArgs>()
+        binding.postQuizScoreTextView.text = postQuizFragmentArgs.currentScore.toString()
 
         return binding.root
     }
