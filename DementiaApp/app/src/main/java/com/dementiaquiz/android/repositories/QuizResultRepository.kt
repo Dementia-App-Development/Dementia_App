@@ -19,6 +19,10 @@ class QuizResultRepository(private val quizResultDao: QuizResultDao) {
         return quizResultDao.getQuizResults()
     }
 
+    fun getQuizResultByResultId(resultId: Long):Flow<QuizResult>{
+        return quizResultDao.getQuizResultByResultId(resultId)
+    }
+
     fun getQuizResultsByUserId(userId:Long):Flow<List<QuizResult>>{
         return quizResultDao.getQuizResultsByUserId(userId)
     }

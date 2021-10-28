@@ -27,7 +27,7 @@ class PostQuizFragment : Fragment() {
         )
 
         // Navigate back to the title screen
-        binding.postQuizDoneButton.setOnClickListener { v: View ->
+        binding.mainMenuButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }
 

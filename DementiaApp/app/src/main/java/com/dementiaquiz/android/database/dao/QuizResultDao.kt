@@ -21,6 +21,9 @@ interface QuizResultDao {
     @Query("SELECT * FROM quiz_result")
      fun getQuizResults():Flow<List<QuizResult>>
 
+    @Query("SELECT * FROM quiz_result WHERE resultId = :resultId")
+    fun getQuizResultByResultId(resultId: Long):Flow<QuizResult>
+
     @Query("SELECT * FROM quiz_result WHERE userId = :userId")
      fun getQuizResultsByUserId(userId:Long):Flow<List<QuizResult>>
 
