@@ -1,6 +1,7 @@
 package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,23 @@ class PostQuizFragment : Fragment() {
         // Navigate back to the title screen
         binding.mainMenuButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
+        }
+
+        quizResultViewModel.getQuizResultByResultId(2).observe(viewLifecycleOwner) { result ->
+
+            if (result != null) {
+
+                println("the score is: "+ result.score.toString())
+                //Log.d("the score is: ", result.score.toString())
+                binding.scoreTextView.text = result.score.toString()
+
+            }else{
+
+                binding.scoreTextView.text = ""
+                binding.scoreDescriptionTextView.text = "We are unable to find your score, please contact the administrator"
+
+            }
+
         }
 
         return binding.root
