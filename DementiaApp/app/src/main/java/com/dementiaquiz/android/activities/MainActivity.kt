@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
 
 
+
     // Initialize the current question index to 0 (the first question)
     // TODO: probably need to store this persistent data variable somewhere else
     private var currentQuestionIndex = 0

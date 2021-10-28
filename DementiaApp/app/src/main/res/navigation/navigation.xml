@@ -25,7 +25,8 @@
         tools:layout="@layout/fragment_quiz" >
         <action
             android:id="@+id/action_quizFragment_to_postQuizFragment"
-            app:destination="@id/postQuizFragment" />
+            app:destination="@id/postQuizFragment"
+            app:popUpTo="@id/titleFragment" />
     </fragment>
     <fragment
         android:id="@+id/postQuizFragment"

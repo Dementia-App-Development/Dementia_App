@@ -6,16 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPostQuizBinding
 import com.dementiaquiz.android.databinding.FragmentTitleBinding
+import com.dementiaquiz.android.models.QuizResultViewModel
+import com.dementiaquiz.android.models.QuizResultViewModelFactory
+import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
 
 /**
  * A fragment displayed at the end of the quiz, to display the results of the quiz
  */
 class PostQuizFragment : Fragment() {
+
+
+    //TODO: this may crash the app, there might be another better solution
+    // see "https://stackoverflow.com/questions/11585702/how-to-get-application-object-into-fragment-class"
+    private val quizResultViewModel: QuizResultViewModel by viewModels {
+        QuizResultViewModelFactory((activity?.application as DementiaQuizApplication).quizResultRepository)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,4 +46,10 @@ class PostQuizFragment : Fragment() {
 
         return binding.root
     }
+
+
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        application = activity?.application as DementiaQuizApplication
+    }*/
 }
