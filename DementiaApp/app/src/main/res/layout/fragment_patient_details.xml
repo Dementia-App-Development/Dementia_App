@@ -16,13 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/patientDetailHeaderTextView_text"
-            android:textSize="34sp" />
+            android:textSize="36sp" />
 
         <TextView
             android:id="@+id/patientDetailsAreYouTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/patientDetailsAreYouTextView_text" />
+            android:text="@string/patientDetailsAreYouTextView_text"
+            android:textSize="24sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,9 +33,10 @@
 
             <ToggleButton
                 android:id="@+id/patientDetailsAtHomeButton"
-                android:layout_width="wrap_content"
+                android:layout_width="158dp"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:drawableTop="@drawable/home"
                 android:textOff="@string/patientDetailsAtHomeButton_textOff"
                 android:textOn="@string/patientDetailsAtHomeButton_textOn" />
 
@@ -44,12 +46,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/patientDetailsOrTextView1_text"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <ToggleButton
                 android:id="@+id/patientDetailsAtClinicButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/hospital"
                 android:textOff="@string/patientDetailsAtClinicButton_textOff"
                 android:textOn="@string/patientDetailsAtClinicButton_textOn" />
 
@@ -63,11 +67,12 @@
 
             <ToggleButton
                 android:id="@+id/patientDetailsByMyselfButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="158dp"
+                android:layout_height="129dp"
                 android:checked="true"
                 android:textOff="@string/patientDetailsByMyselfButton_textOff"
-                android:textOn="@string/patientDetailsByMyselfButton_textOn" />
+                android:textOn="@string/patientDetailsByMyselfButton_textOn"
+                android:drawableTop="@drawable/ic_myself" />
 
             <TextView
                 android:id="@+id/patientDetailsOrTextView2"
@@ -75,14 +80,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/patientDetailsOrTextView2_text"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <ToggleButton
                 android:id="@+id/patientDetailsBeingAssistedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="129dp"
                 android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
-                android:textOn="@string/patientDetailsBeingAssistedButton_textOn" />
+                android:textOn="@string/patientDetailsBeingAssistedButton_textOn"
+                android:drawableTop="@drawable/ic_assistance" />
 
         </LinearLayout>
 
@@ -137,8 +144,8 @@
 
         <Button
             android:id="@+id/patientDetailsGoToQuizButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="411dp"
+            android:layout_height="60dp"
             android:text="@string/patientDetailsGoToQuizButton_text" />
 
     </LinearLayout>

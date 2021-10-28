@@ -1,5 +1,6 @@
 package com.dementiaquiz.android.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import androidx.navigation.fragment.navArgs
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPostQuizBinding
 import com.dementiaquiz.android.databinding.FragmentTitleBinding
+import nl.dionsegijn.konfetti.models.Shape
+import nl.dionsegijn.konfetti.models.Size
 import timber.log.Timber
 
 /**
@@ -26,7 +29,16 @@ class PostQuizFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentPostQuizBinding>(
             inflater, R.layout.fragment_post_quiz, container, false
         )
-
+        binding.viewKonfetti.build()
+            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+            .setDirection(0.0, 359.0)
+            .setSpeed(1f, 5f)
+            .setFadeOutEnabled(true)
+            .setTimeToLive(2000L)
+            .addShapes(Shape.Square, Shape.Circle)
+            .addSizes(Size(12))
+            .setPosition(-50f, binding.viewKonfetti.width + 50f, -50f, -50f)
+            .streamFor(300, 5000L)
         // Navigate back to the title screen
         binding.postQuizDoneButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
