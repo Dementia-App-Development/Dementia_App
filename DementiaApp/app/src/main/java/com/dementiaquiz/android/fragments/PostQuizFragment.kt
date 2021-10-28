@@ -45,7 +45,7 @@ class PostQuizFragment : Fragment() {
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }
 
-        quizResultViewModel.getQuizResultByResultId(2).observe(viewLifecycleOwner) { result ->
+        quizResultViewModel.getQuizResultByResultId(1).observe(viewLifecycleOwner) { result ->
 
             if (result != null) {
 
@@ -53,10 +53,21 @@ class PostQuizFragment : Fragment() {
                 //Log.d("the score is: ", result.score.toString())
                 binding.scoreTextView.text = result.score.toString()
 
+                var comment:String
+
+                when(result.score){
+                    in 80..100 -> comment="Congratulation! Based on the test result, you have no symptom of dementia"
+                    in 50..80 -> comment="Warning! Based on the test result, you have mild symptom of dementia. We recommend you to see a Doctor if possible"
+                    in 0..50 -> comment="Warning! Based on the test result, you have severe symptom of dementia. Please inform your family and see a Doctor as soon as possible. "
+                    else -> comment="Something is wrong, we are not able to read the scaled test score. Please contact the Administrator"
+                }
+
+                binding.commentTextView.text = comment
+
             }else{
 
                 binding.scoreTextView.text = ""
-                binding.scoreDescriptionTextView.text = "We are unable to find your score, please contact the administrator"
+                binding.scoreDescriptionTextView.text = "We are unable to find your score, please contact the Administrator"
 
             }
 
