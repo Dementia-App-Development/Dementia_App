@@ -16,7 +16,6 @@
             android:layout_width="380dp"
             android:layout_height="5dp"
             android:layout_weight="1"
-            android:text="Question Number"
             android:textSize="36sp" />
 
         <Button
@@ -24,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Repeat Instructions"
+            android:text="@string/quizRepeatButton_text"
             android:visibility="gone"/>
 
         <TextView
@@ -32,8 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Question Text"
-            android:textSize="48sp" />
+            android:textSize="36sp" />
 
         <ImageView
             android:id="@+id/quizQuestionImageView"
@@ -47,8 +45,7 @@
             android:id="@+id/quizSubTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Question Sub Text" />
+            android:layout_weight="1" />
 
         <EditText
             android:id="@+id/quizDateEditText"
@@ -56,9 +53,10 @@
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="1945"
+            android:hint="@string/quizDateEditText_hint"
             android:inputType="date"
             android:visibility="gone"/>
+
         <ImageButton
             android:id="@+id/quizVoiceButton"
             android:layout_width="150dp"
@@ -72,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Start Timer"
+            android:text="@string/quizStartTimerButton_text"
             android:visibility="gone"/>
 
         <Button
@@ -81,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint = "#00FF0A"
-            android:text="Correct"
+            android:text="@string/quizTrueButton_text"
             android:visibility="gone"/>
 
         <Button
@@ -90,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint = "#FF1100"
-            android:text="Incorrect"
+            android:text="@string/quizFalseButton_text"
             android:visibility="gone"/>
 
         <EditText
@@ -99,7 +97,8 @@
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Please write the answer here"
+            android:hint="@string/quizUserResponseEditText_hint"
+            android:visibility="invisible"
             android:inputType="textPersonName" />
 
         <Button
@@ -108,7 +107,8 @@
             android:layout_height="68dp"
             android:layout_margin="8dp"
             android:padding="8dp"
-            android:text="Next Question"
+            android:text="@string/quizNextButton_text"
+            android:visibility="invisible"
             android:drawableRight="@drawable/ic_baseline_arrow_forward_24" />
 
         <ProgressBar
@@ -121,6 +121,7 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:indeterminate = "false"
             android:progress="50"
+            android:visibility="invisible"
             android:progressBackgroundTint = "#FF1100"
             android:progressTint = "#00FF0A" />
 

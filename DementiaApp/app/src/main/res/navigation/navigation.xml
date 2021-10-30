@@ -22,7 +22,7 @@
         android:id="@+id/quizFragment"
         android:name="com.dementiaquiz.android.fragments.QuizFragment"
         android:label="Quiz"
-        tools:layout="@layout/fragment_quiz" >
+        tools:layout="@layout/fragment_quiz">
         <action
             android:id="@+id/action_quizFragment_to_postQuizFragment"
             app:destination="@id/postQuizFragment"
@@ -32,10 +32,15 @@
         android:id="@+id/postQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PostQuizFragment"
         android:label="End"
-        tools:layout="@layout/fragment_post_quiz" >
+        tools:layout="@layout/fragment_post_quiz">
+        <argument
+            android:name="currentScore"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_postQuizFragment_to_titleFragment"
-            app:destination="@id/titleFragment" />
+            app:destination="@id/titleFragment"
+            app:popUpTo="@id/titleFragment" />
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"

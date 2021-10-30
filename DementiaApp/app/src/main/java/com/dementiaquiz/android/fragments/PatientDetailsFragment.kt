@@ -17,6 +17,11 @@ import java.net.URL
  * Displays a Pre-Quiz form for the assisted mode, whereby key details of the patient are inputted
  */
 class PatientDetailsFragment : Fragment() {
+
+//    // Available genders for the gender spinner
+    //TODO delete this
+//    private val genders : List<String> = listOf("Male", "Female", "Other")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,12 +30,41 @@ class PatientDetailsFragment : Fragment() {
         Timber.i("onCreateView called")
 
         // Use view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentPatientDetailsBinding>(inflater,
-            R.layout.fragment_patient_details, container, false)
+        val binding = DataBindingUtil.inflate<FragmentPatientDetailsBinding>(inflater,R.layout.fragment_patient_details, container, false)
 
         // Go to quiz button
         binding.patientDetailsGoToQuizButton.setOnClickListener { v:View ->
-            v.findNavController().navigate(com.dementiaquiz.android.fragments.PatientDetailsFragmentDirections.actionPatientDetailsFragmentToQuizFragment())
+            v.findNavController().navigate(R.id.action_patientDetailsFragment_to_quizFragment)
+        }
+
+        // Toggle the respective toggle buttons on/off as the other member of the pair is pressed
+        binding.patientDetailsAtHomeButton.setOnClickListener {
+            if (binding.patientDetailsAtHomeButton.isChecked) {
+                binding.patientDetailsAtClinicButton.toggle()
+            } else {
+                binding.patientDetailsAtHomeButton.toggle()
+            }
+        }
+        binding.patientDetailsAtClinicButton.setOnClickListener {
+            if (binding.patientDetailsAtClinicButton.isChecked) {
+                binding.patientDetailsAtHomeButton.toggle()
+            } else {
+                binding.patientDetailsAtClinicButton.toggle()
+            }
+        }
+        binding.patientDetailsByMyselfButton.setOnClickListener {
+            if (binding.patientDetailsByMyselfButton.isChecked) {
+                binding.patientDetailsBeingAssistedButton.toggle()
+            } else {
+                binding.patientDetailsByMyselfButton.toggle()
+            }
+        }
+        binding.patientDetailsBeingAssistedButton.setOnClickListener {
+            if (binding.patientDetailsBeingAssistedButton.isChecked) {
+                binding.patientDetailsByMyselfButton.toggle()
+            } else {
+                binding.patientDetailsBeingAssistedButton.toggle()
+            }
         }
 
         return binding.root

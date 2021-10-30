@@ -40,10 +40,11 @@ class PostQuizFragment : Fragment() {
             inflater, R.layout.fragment_post_quiz, container, false
         )
 
+        /* The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
         // Navigate back to the title screen
         binding.mainMenuButton.setOnClickListener { v: View ->
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
-        }
+        }*/
 
         quizResultViewModel.getQuizResultByResultId(1).observe(viewLifecycleOwner) { result ->
 
@@ -62,7 +63,7 @@ class PostQuizFragment : Fragment() {
                     else -> comment="Something is wrong, we are not able to read the scaled test score. Please contact the Administrator"
                 }
 
-                binding.commentTextView.text = comment
+                binding.commentContentTextView.text = comment
 
             }else{
 

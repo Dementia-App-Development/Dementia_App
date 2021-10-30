@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dementiaquiz.android.QuizApi
+import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -32,7 +33,9 @@ class QuizViewModel : ViewModel() {
     private var currentQuestionIndex : Int
 
     // A tally of how many correct answers the user has gotten in the quiz
-    private var correctAnswersTally : Int = 0
+    private val _score = MutableLiveData<Int>()
+    val score: LiveData<Int>
+        get() = _score
 
     // Boolean value that defaults to false, and is set to true when the quiz is finished
     private var _quizIsFinished = MutableLiveData<Boolean>()
@@ -55,26 +58,28 @@ class QuizViewModel : ViewModel() {
     init {
         quizQuestions = emptyList()
         currentQuestionIndex = 0
+        _score.value = 0
         getAllQuizQuestions()
     }
 
     private fun getAllQuizQuestions() {
         // Fetch quiz questions from API call
-        QuizApi.retrofitService.getAllQuestions().enqueue( object: Callback<String> {
+        QuizApi.retrofitService.getAllCustomQuestions("51.487580", "-0.190920","solo").enqueue( object: Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 _response.value = "Failure: " + t.message
                 Timber.i("API failure")
 
                 // TODO: handle API response failure exception with dialog prompt
 
-                // TODO : not sure we should be calling this method here on failure
+                // TODO : not sure we should be calling this method here on failure, we should be handling the failure and displaying an error
                 getAllQuizQuestions()
             }
 
             // Get the quiz questions from API call and sort them
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 _response.value = response.body()
-                Timber.i("API response")
+                Timber.i("API response:")
+                Timber.i(response.body())
 
                 // Parse the json response to generate quiz question list
                 quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
@@ -88,12 +93,26 @@ class QuizViewModel : ViewModel() {
                 _currentQuestion.value = quizQuestions[currentQuestionIndex]
             }
         })
+
+        // TODO: Create a loaded variable that changes to true when everything has been loaded
+        // TODO: put it on the onResponse function maybe?
     }
 
     // Go to next question
-    fun onNext() {
+    fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
+        if (userAnswer == null && !assistedCorrect) {
+            Timber.i("Wrong!")
+        }
+        else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+            Timber.i("Well Done")
 
+            // Increment the score
+            _score.value = (_score.value)?.plus(1)
+        }
+        else {
+            Timber.i("Wrong!")
+        }
 
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
@@ -101,6 +120,7 @@ class QuizViewModel : ViewModel() {
         // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
             _quizIsFinished.value = true
+            // TODO: make this a method that, before setting game finished to true, saves the results of the quiz to database
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
@@ -117,7 +137,7 @@ class QuizViewModel : ViewModel() {
 
             override fun onFinish() {
                 binding.quizProgressBar.progress = 0
-                onNext()
+                binding.quizNextButton.performClick()
             }
         }
         myCountDownTimer.start()
