@@ -63,6 +63,8 @@ class UsersFragment : Fragment() {
 
             // Display the existing users spinner if existing users button is on
             binding.usersExistingUsersSpinner.visibility = View.VISIBLE
+            binding.spinnerPromptTextView.visibility = View.VISIBLE
+
             // Expand the spinner automatically
             // binding.usersExistingUsersSpinner.performClick()
         }
@@ -75,6 +77,7 @@ class UsersFragment : Fragment() {
 
             // Hide the existing users spinner if new users button is on
             binding.usersExistingUsersSpinner.visibility = View.GONE
+            binding.spinnerPromptTextView.visibility = View.GONE
         }
 
         // Go to quiz dependent on whether new or existing user
