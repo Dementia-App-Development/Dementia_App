@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert
-    suspend fun insert(user: User)
+    suspend fun insert(user: User): Long
 
     @Delete
     suspend fun delete(user: User)

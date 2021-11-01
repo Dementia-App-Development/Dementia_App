@@ -11,18 +11,17 @@ class UserRepository(private val userDao: UserDao) {
 
     // check if there is already a same nickname in the database before insert, only
     // allow insert into the database if there is no such nickname.
-    // return true if insert succeed, false if failed
+    // return the ID of the inserted user if succeed, return -1 if failed
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     @Transaction
-    suspend fun checkAndInsert(user:User): Boolean{
+    suspend fun checkAndInsert(user:User): Long{
 
         val userWithSameNickname = userDao.getUserByNickname(user.nickname)
         if (userWithSameNickname!=null){
-            return false
+            return -1
         }else{
-            userDao.insert(user)
-            return true
+            return userDao.insert(user)
         }
 
     }
