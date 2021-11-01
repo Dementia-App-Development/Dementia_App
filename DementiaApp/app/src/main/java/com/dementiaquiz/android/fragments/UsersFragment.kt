@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -31,11 +32,24 @@ class UsersFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        
+
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
-        // TODO: Populate existing users spinner with the nicknames from the user database
+        // TODO: (Done)Populate existing users spinner with the nicknames from the user database
+        usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList->
+
+            val spinner = binding.usersExistingUsersSpinner
+            val adapter:ArrayAdapter<String>? = context?.let {
+                ArrayAdapter<String>(
+                    it, android.R.layout.simple_spinner_dropdown_item, nicknameList
+                )
+            }
+            spinner.adapter = adapter
+
+        }
+
+
         // binding.usersExistingUsersSpinner.setSelection()
 
         // Toggle the existing users and new user buttons to mirror each other
@@ -48,6 +62,8 @@ class UsersFragment : Fragment() {
 
             // Display the existing users spinner if existing users button is on
             binding.usersExistingUsersSpinner.visibility = View.VISIBLE
+            // Expand the spinner automatically
+            // binding.usersExistingUsersSpinner.performClick()
         }
         binding.usersNewUserToggleButton.setOnClickListener {
             if (binding.usersNewUserToggleButton.isChecked) {
