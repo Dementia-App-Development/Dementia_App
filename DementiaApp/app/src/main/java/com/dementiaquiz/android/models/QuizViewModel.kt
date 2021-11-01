@@ -234,6 +234,8 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         } else {
             _quizIsFinished.value = true
             // TODO: make this a method that, before setting game finished to true, saves the results of the quiz to database
+            _quizIsFinished.value = false
+            currentQuestionIndex = 0
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
