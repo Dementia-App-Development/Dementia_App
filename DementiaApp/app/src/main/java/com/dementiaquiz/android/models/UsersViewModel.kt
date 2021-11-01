@@ -32,7 +32,7 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
 
 }
 
-class UsersViewModelModelFactory(private val userRepository: UserRepository):
+class UsersViewModelFactory(private val userRepository: UserRepository):
     ViewModelProvider.Factory{
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

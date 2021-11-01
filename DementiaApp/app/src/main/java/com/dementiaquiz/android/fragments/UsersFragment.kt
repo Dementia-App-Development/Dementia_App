@@ -6,19 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentUsersBinding
+import com.dementiaquiz.android.models.QuizResultViewModel
+import com.dementiaquiz.android.models.QuizResultViewModelFactory
+import com.dementiaquiz.android.models.UsersViewModel
+import com.dementiaquiz.android.models.UsersViewModelFactory
 
 /**
  * TODO: description
  */
 class UsersFragment : Fragment() {
 
+    //TODO: this may crash the app, there might be another better solution
+    // see "https://stackoverflow.com/questions/11585702/how-to-get-application-object-into-fragment-class"
+    private val usersViewModel: UsersViewModel by viewModels {
+        UsersViewModelFactory((activity?.application as DementiaQuizApplication).userRepository)
+    }
+
     private lateinit var binding : FragmentUsersBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 

@@ -9,19 +9,22 @@ import android.content.pm.PackageManager
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.room.Transaction
+import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
+import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +35,8 @@ import java.util.*
  * Holds the information for the current question in the quiz
  */
 class QuizViewModel(application : Application) : AndroidViewModel(application) {
+
+    private val quizResultRepository:QuizResultRepository = getApplication<DementiaQuizApplication>().quizResultRepository
 
     // TODO: variable never used, can delete?
     private val REQUEST_CODE_SPEECH_INPUT = 100;
@@ -276,6 +281,18 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
             currentQuestionIndex -= 1
         }
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
+    }
+
+    // insertQuizResult and answers belong to that result. It returns the ID of
+    // the inserted QuizResult
+    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):Long{
+
+        var quizResultId:Long =-1;
+        viewModelScope.launch {
+            quizResultId = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+        }
+        return quizResultId
+
     }
 }
 
