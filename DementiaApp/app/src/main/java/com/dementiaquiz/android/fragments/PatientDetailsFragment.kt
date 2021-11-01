@@ -100,7 +100,7 @@ class PatientDetailsFragment : Fragment() {
 private fun showDatePickerDialog(context : Context, binding : FragmentPatientDetailsBinding) {
     val datePickerDialog : DatePickerDialog = DatePickerDialog(context)
     // Default year of birth is set to 1940
-    datePickerDialog.updateDate(1940,1,1)
+    datePickerDialog.updateDate(1940,0,1)
     datePickerDialog.datePicker.touchables[0].performClick();
     datePickerDialog.show()
     datePickerDialog.setOnDateSetListener { _, year, month, day ->
