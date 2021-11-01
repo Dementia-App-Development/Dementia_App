@@ -101,7 +101,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         // Inflate the binding
         binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
 
-        // Get the viewmodel
+        // Get the viewmodel and set to the first question
         viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
         Timber.i("QUIZ MODE: %s", viewModel.mode)
         viewModel.setFirstQuestion()
@@ -185,6 +185,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
                 // Fetch the current score
                 val currentScore = viewModel.score.value ?: 0
+
+                // TODO: convert the score to a double as a percentage score
+                // TODO: pass the user ID, score, results ID to the post quiz fragment
 
                 // Finish the quiz with the current score bundle passed to the post quiz fragment
                 val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(currentScore)
