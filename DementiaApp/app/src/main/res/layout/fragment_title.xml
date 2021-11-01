@@ -21,7 +21,7 @@
         <Button
             android:id="@+id/titleQuizButton"
             android:layout_width="275dp"
-            android:layout_height="90"
+            android:layout_height="90dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
@@ -37,7 +37,7 @@
         <Button
             android:id="@+id/titleResultsButton"
             android:layout_width="275dp"
-            android:layout_height="90"
+            android:layout_height="90dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:text="@string/titleResultsButton_text"
@@ -51,7 +51,7 @@
         <Button
             android:id="@+id/titleWebsiteButton"
             android:layout_width="275dp"
-            android:layout_height="90"
+            android:layout_height="90dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/round_button"
             android:text="@string/titleWebsiteButton_text"
