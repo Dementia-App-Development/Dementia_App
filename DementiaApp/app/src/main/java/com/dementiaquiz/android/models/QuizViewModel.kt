@@ -82,10 +82,6 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         quizQuestions = emptyList()
         currentQuestionIndex = 0
         _score.value = 0
-
-        // Get the device location, and then get quiz questions from server once location is provided
-//        getLocation(fusedLocationClient, context)
-//        setQuizMode(mode)
     }
 
     // Get the location of the device
@@ -171,6 +167,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     Timber.i("Length of quiz= %s", quizQuestions.size)
 
                     // Set the first question
+                    currentQuestionIndex = 0
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
                 }
             })
@@ -201,6 +198,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     Timber.i("Length of quiz= %s", quizQuestions.size)
 
                     // Set the first question
+                    currentQuestionIndex = 0
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
                 }
             })

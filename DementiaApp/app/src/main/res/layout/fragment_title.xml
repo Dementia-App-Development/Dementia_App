@@ -20,8 +20,8 @@
 
         <Button
             android:id="@+id/titleQuizButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="275dp"
+            android:layout_height="90"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
@@ -36,23 +36,23 @@
 
         <Button
             android:id="@+id/titleResultsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_width="275dp"
+            android:layout_height="90"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:text="@string/titleResultsButton_text"
             android:textSize="32sp"
             app:icon="@drawable/ic_results"
             app:layout_constraintBottom_toTopOf="@+id/titleWebsiteButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/titleWebsiteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="56dp"
+            android:layout_width="275dp"
+            android:layout_height="90"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/round_button"
             android:text="@string/titleWebsiteButton_text"
             android:textSize="32sp"

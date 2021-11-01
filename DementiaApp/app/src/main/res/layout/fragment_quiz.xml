@@ -55,6 +55,7 @@
             android:ems="10"
             android:hint="@string/quizDateEditText_hint"
             android:inputType="date"
+            android:imeOptions="actionDone"
             android:visibility="gone"/>
 
         <ImageButton
@@ -98,6 +99,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/quizUserResponseEditText_hint"
+            android:imeOptions="actionDone"
             android:visibility="invisible"
             android:inputType="textPersonName" />
 

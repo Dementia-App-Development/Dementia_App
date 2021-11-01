@@ -208,7 +208,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.quizNextButton.setOnClickListener {
             // Cancel countdown and go to next question
             countDown?.cancel()
-
             // Verify answer against what was input in the edit text response field
             // TODO: implement this properly, put in when/case loop
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
@@ -222,6 +221,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             else {
                 viewModel.onNext(voiceAnswer, answer, false)
             }
+            binding.quizUserResponseEditText.getText().clear();
+            binding.quizDateEditText.getText().clear();
         }
 
         // Assisted mode true/false response buttons

@@ -1,5 +1,6 @@
 package com.dementiaquiz.android.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,6 +17,8 @@ import com.dementiaquiz.android.databinding.FragmentTitleBinding
 import com.dementiaquiz.android.models.QuizResultViewModel
 import com.dementiaquiz.android.models.QuizResultViewModelFactory
 import com.dementiaquiz.android.models.QuizViewModel
+import nl.dionsegijn.konfetti.models.Shape
+import nl.dionsegijn.konfetti.models.Size
 import timber.log.Timber
 
 /**
@@ -39,7 +42,16 @@ class PostQuizFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentPostQuizBinding>(
             inflater, R.layout.fragment_post_quiz, container, false
         )
-
+        binding.viewKonfetti.build()
+            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+            .setDirection(0.0, 359.0)
+            .setSpeed(1f, 5f)
+            .setFadeOutEnabled(true)
+            .setTimeToLive(2000L)
+            .addShapes(Shape.Square, Shape.Circle)
+            .addSizes(Size(12))
+            .setPosition(-50f, binding.viewKonfetti.width + 50f, -50f, -50f)
+            .streamFor(300, 5000L)
         /* The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
         // Navigate back to the title screen
         binding.mainMenuButton.setOnClickListener { v: View ->
