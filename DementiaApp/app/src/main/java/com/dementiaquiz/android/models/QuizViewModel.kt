@@ -217,10 +217,6 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                 }
             })
         }
-
-
-        // TODO: Create a loaded variable that changes to true when everything has been loaded
-        // TODO: put it on the onResponse function maybe?
     }
 
     /**
