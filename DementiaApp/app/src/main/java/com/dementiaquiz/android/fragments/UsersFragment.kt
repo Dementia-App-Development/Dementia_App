@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -85,9 +86,22 @@ class UsersFragment : Fragment() {
             // If it is an existing user, navigate straight to the pre-quiz fragment
             } else {
                 // Send user ID to pre quiz fragment
-                val userID = 0L // TODO: get the user ID from the db
-                val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userID)
-                v.findNavController().navigate(action)
+                val nickname = binding.usersExistingUsersSpinner.selectedItem.toString()
+                usersViewModel.getUserByNickname(nickname).observe(viewLifecycleOwner){ user ->
+                    if (user==null){
+                        Toast.makeText(context,
+                            "Error, cannot find the user with the nickname",
+                            Toast.LENGTH_SHORT).show()
+                    }else{
+                        // TODO: (Done) send the userId to the next fragment
+                        // everything is good to go, navigate and pass the userId to next fragment
+                        val userId = user.userId
+                        val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userId)
+                        v.findNavController().navigate(action)
+
+                    }
+                }
+
             }
         }
 
