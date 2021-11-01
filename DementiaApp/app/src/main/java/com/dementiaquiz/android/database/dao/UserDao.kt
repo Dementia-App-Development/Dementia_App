@@ -24,6 +24,13 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE userId = :userId")
      fun getUserById(userId: Long): Flow<User>
 
+    @Query("SELECT * FROM User WHERE nickname = :nickname")
+    fun getUserByNickname(nickname:String): Flow<User>
+
+    //TODO: test this function
+    @Query("SELECT nickname FROM User")
+    fun getNicknames(): Flow<List<String>>
+
     @Transaction
     @Query("SELECT * FROM user")
      fun getUsersWithResults():Flow<List<UserWithResults>>

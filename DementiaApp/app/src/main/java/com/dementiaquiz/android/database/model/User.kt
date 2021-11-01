@@ -8,13 +8,13 @@ import java.util.*
 
 /*@Entity(indices = [Index(value = ["first_name", "last_name"],
     unique = true)])*/
-@Entity(tableName = "user",indices = [Index(value = ["nickName"],
+@Entity(tableName = "user",indices = [Index(value = ["nickname"],
     unique = true)])
 data class User (
 
     @PrimaryKey(autoGenerate = true)
     val userId: Long = 0L,
-    val nickName: String,
+    val nickname: String,
     val firstName: String,
     val lastName: String,
     val dateOfBirth: Date,
