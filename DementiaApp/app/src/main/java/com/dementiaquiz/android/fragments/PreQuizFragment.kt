@@ -10,15 +10,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPreQuizBinding
+import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
 
 /**
  * Two-button display to determine whether the quiz is being conducted in Assisted or Patient mode
  */
 class PreQuizFragment : Fragment() {
+
+    private lateinit var viewModel: QuizViewModel
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,24 +43,9 @@ class PreQuizFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentPreQuizBinding>(inflater,
             R.layout.fragment_pre_quiz, container, false)
 
-        // Prompt the user for location permission
-        val locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    // Precise location access granted.
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                } else -> {
-                // No location access granted.
-            }
-            }
-        }
-        locationPermissionRequest.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION))
+        // Get the viewmodel and set the quiz mode to solo
+        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
+        viewModel.setQuizMode("solo")
 
         // If in assisted mode, go to the patient details fragment
         binding.preQuizAssistingButton.setOnClickListener { v: View ->

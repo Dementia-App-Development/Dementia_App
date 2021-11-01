@@ -66,10 +66,13 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     @SuppressLint("StaticFieldLeak")
     private val context = getApplication<Application>().applicationContext
 
+    // Location client
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
     // Quiz latitude, longitude and mode
     var myLat : Double? = null
     var myLong : Double? = null
-    var mode : String = "" //TODO implement this when go to quiz button is pressed
+    var mode : String = ""
 
 
     /**
@@ -81,13 +84,12 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         _score.value = 0
 
         // Get the device location, and then get quiz questions from server once location is provided
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        getLocation(fusedLocationClient, context)
+//        getLocation(fusedLocationClient, context)
+//        setQuizMode(mode)
     }
 
     // Get the location of the device
     private fun getLocation(fusedLocationProviderClient : FusedLocationProviderClient, context: Context) {
-
         Timber.i("Fetching device location")
 
         if (ActivityCompat.checkSelfPermission(
@@ -118,12 +120,34 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         }
     }
 
-    // Gets all quiz questions from server, calls one of two API methods depending on whether location provided
+    /**
+     * Sets the mode of the quiz to the input, one of either "solo", "assisted-home" or "assisted-clinic"
+     * Then gets the location of the quiz
+     */
+    fun setQuizMode(newMode: String) {
+        // Fetch quiz if the new mode is different to the current mode
+        if (newMode != mode) {
+            mode = newMode
+            getLocation(fusedLocationClient, context)
+        }
+    }
+
+    /**
+     * Sets the first question of the quiz so long as it is loaded (not empty)
+     */
+    fun setFirstQuestion() {
+        if (quizQuestions.isNotEmpty()) {
+            _currentQuestion.value = quizQuestions[currentQuestionIndex]
+        }
+    }
+
+    /**
+     * Gets all quiz questions from server, calls one of two API methods depending on whether location provided
+     */
     private fun getAllQuizQuestions() {
         // If no GPS can be fetched, send API request with no latitude and longitude values
         if (myLat == null || myLong == null) {
-            //TODO: change from 'solo' to mode
-            QuizApi.retrofitService.getAllCustomQuestionsNoGPS("solo").enqueue( object: Callback<String> {
+            QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode).enqueue( object: Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     _response.value = "Failure: " + t.message
                     Timber.i("API failure")
@@ -145,7 +169,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     quizQuestions.sortedBy { it.id }
                     Timber.i("Length of quiz= %s", quizQuestions.size)
 
-                    // Set the current question to the first question
+                    // Set the first question
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
                 }
             })
@@ -153,8 +177,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
             // Fetch all quiz questions with GPS coordinated provided
         } else {
             // Fetch quiz questions from API call
-            //TODO: change from 'solo' to mode
-            QuizApi.retrofitService.getAllCustomQuestions(myLat.toString(), myLong.toString(), "solo").enqueue( object: Callback<String> {
+            QuizApi.retrofitService.getAllCustomQuestions(myLat.toString(), myLong.toString(), mode).enqueue( object: Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     _response.value = "Failure: " + t.message
                     Timber.i("API failure")
@@ -176,7 +199,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     quizQuestions.sortedBy { it.id }
                     Timber.i("Length of quiz= %s", quizQuestions.size)
 
-                    // Set the current question to the first question
+                    // Set the first question
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
                 }
             })

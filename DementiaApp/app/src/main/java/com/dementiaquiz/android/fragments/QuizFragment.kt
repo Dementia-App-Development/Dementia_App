@@ -100,7 +100,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
 
         // Get the viewmodel
-        viewModel = ViewModelProvider(this).get(QuizViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
+        Timber.i("QUIZ MODE: %s", viewModel.mode)
+        viewModel.setFirstQuestion()
 
         // Initialize count down timer
         var countDown: CountDownTimer? = null
@@ -121,6 +123,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizVoiceButton.visibility = View.GONE
             binding.quizNextButton.visibility = View.VISIBLE
             binding.quizProgressBar.visibility = View.VISIBLE
+
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.quizSubTextView.visibility  = View.GONE
                 binding.quizQuestionImageView.visibility = View.VISIBLE
