@@ -19,6 +19,6 @@ data class User (
     val lastName: String,
     val dateOfBirth: Date,
     //Male: true, Female: false
-    val gender: Boolean
+    val gender: String
 
 )

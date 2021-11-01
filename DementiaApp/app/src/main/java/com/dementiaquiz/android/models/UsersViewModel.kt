@@ -12,12 +12,15 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
     // check if there is already a same nickname in the database before insert, only
     // allow insert into the database if there is no such nickname.
     // return the ID of the inserted user if succeed, return -1 if failed
-    fun checkAndInsert(user: User):Long {
+    fun checkAndInsert(user: User):LiveData<Long> {
 
-        var result:Long = -1;
+        var result = MutableLiveData<Long>()
+
         viewModelScope.launch {
-            result=userRepository.checkAndInsert(user)
+            val num = userRepository.checkAndInsert(user)
+            result.postValue(num)
         }
+
         return result
     }
 

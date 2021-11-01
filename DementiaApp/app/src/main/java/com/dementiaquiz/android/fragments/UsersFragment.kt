@@ -69,7 +69,7 @@ class UsersFragment : Fragment() {
             // If it is an existing user, navigate straight to the pre-quiz fragment
             } else {
                 // Send user ID to pre quiz fragment
-                val userID = 0 // TODO: get the user ID from the db
+                val userID = 0L // TODO: get the user ID from the db
                 val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userID)
                 v.findNavController().navigate(action)
             }

@@ -41,7 +41,7 @@
             app:popUpTo="@id/titleFragment" />
         <argument
             android:name="userID"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/postQuizFragment"
@@ -81,7 +81,7 @@
             app:popUpTo="@id/titleFragment" />
         <argument
             android:name="userID"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"
