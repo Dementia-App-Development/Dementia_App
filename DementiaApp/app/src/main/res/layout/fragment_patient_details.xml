@@ -63,16 +63,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ToggleButton
                 android:id="@+id/patientDetailsByMyselfButton"
                 android:layout_width="158dp"
                 android:layout_height="129dp"
                 android:checked="true"
+                android:drawableTop="@drawable/ic_myself"
                 android:textOff="@string/patientDetailsByMyselfButton_textOff"
-                android:textOn="@string/patientDetailsByMyselfButton_textOn"
-                android:drawableTop="@drawable/ic_myself" />
+                android:textOn="@string/patientDetailsByMyselfButton_textOn" />
 
             <TextView
                 android:id="@+id/patientDetailsOrTextView2"
@@ -87,9 +88,9 @@
                 android:id="@+id/patientDetailsBeingAssistedButton"
                 android:layout_width="160dp"
                 android:layout_height="129dp"
+                android:drawableTop="@drawable/ic_assistance"
                 android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
-                android:textOn="@string/patientDetailsBeingAssistedButton_textOn"
-                android:drawableTop="@drawable/ic_assistance" />
+                android:textOn="@string/patientDetailsBeingAssistedButton_textOn" />
 
         </LinearLayout>
 
@@ -107,7 +108,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/patientDetailsNameEditText_hint"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textSize="34sp" />
 
         <TextView
             android:id="@+id/patientDetailsAgeTextView"
@@ -123,7 +125,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/patientDetailsAgeEditText_hint"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textSize="34sp" />
 
         <TextView
             android:id="@+id/patientDetailsGenderTextView"
@@ -140,6 +143,7 @@
             android:background="@android:drawable/btn_dropdown"
             android:entries="@array/Genders"
             android:hint="@string/patientDetailsGenderSpinner_hint"
+            android:scrollbarSize="24sp"
             android:spinnerMode="dropdown" />
 
         <Button
