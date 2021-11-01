@@ -49,6 +49,7 @@ class PostQuizFragment : Fragment() {
         quizResultViewModel.getQuizResultByResultId(1).observe(viewLifecycleOwner) { result ->
 
             if (result != null) {
+                binding.scoreDescriptionTextView.text = "Score"
 
                 println("the score is: "+ result.score.toString())
                 //Log.d("the score is: ", result.score.toString())
@@ -67,8 +68,11 @@ class PostQuizFragment : Fragment() {
 
             }else{
 
+                //There is not such result
                 binding.scoreTextView.text = ""
-                binding.scoreDescriptionTextView.text = "We are unable to find your score, please contact the Administrator"
+                binding.scoreDescriptionTextView.text = "Not Available"
+                binding.commentContentTextView.text = "Something is wrong, the score is not available"
+
 
             }
 
