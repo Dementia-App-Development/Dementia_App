@@ -14,10 +14,13 @@ import com.dementiaquiz.android.databinding.FragmentUsersBinding
  * TODO: description
  */
 class UsersFragment : Fragment() {
+
+    private lateinit var binding : FragmentUsersBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Use view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
+        binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
         // Toggle the existing users and new user buttons to mirror each other
         binding.usersExistingUserToggleButton.setOnClickListener {
@@ -55,5 +58,14 @@ class UsersFragment : Fragment() {
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Display the existing users spinner if existing users button is on (simple check if navigating back to this fragment)
+        if (binding.usersExistingUserToggleButton.isChecked) {
+            binding.usersExistingUsersSpinner.visibility = View.VISIBLE
+        }
     }
 }
