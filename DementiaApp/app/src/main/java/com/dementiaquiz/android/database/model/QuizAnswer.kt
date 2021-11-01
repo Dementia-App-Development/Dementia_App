@@ -12,6 +12,6 @@ data class QuizAnswer(
     val correctAnswer: String,
     val response: String,
     val correct: Boolean,
-    val resultId: Long
+    var resultId: Long
 
 )
