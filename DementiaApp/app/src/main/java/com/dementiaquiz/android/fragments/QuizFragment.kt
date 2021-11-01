@@ -196,7 +196,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizStartTimerButton.visibility = View.GONE
             binding.quizTrueButton.visibility = View.VISIBLE
             binding.quizFalseButton.visibility = View.VISIBLE
-            countDown = viewModel.startTimer(binding, 60 * 1000)
         }
 
         // Repeat the quiz question text to speech when button is pressed
