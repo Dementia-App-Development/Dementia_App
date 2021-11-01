@@ -9,8 +9,11 @@ data class User (
 
     @PrimaryKey(autoGenerate = true)
     val userId: Long = 0L,
+    val nickName: String,
     val firstName: String,
     val lastName: String,
-    val dateOfBirth: Date
+    val dateOfBirth: Date,
+    //Male: true, Female: false
+    val gender: Boolean
 
 )
