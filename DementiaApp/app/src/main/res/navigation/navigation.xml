@@ -41,7 +41,11 @@
             app:popUpTo="@id/titleFragment" />
         <argument
             android:name="userID"
+<<<<<<< Updated upstream
             app:argType="long" />
+=======
+            app:argType="integer" />
+>>>>>>> Stashed changes
     </fragment>
     <fragment
         android:id="@+id/postQuizFragment"
