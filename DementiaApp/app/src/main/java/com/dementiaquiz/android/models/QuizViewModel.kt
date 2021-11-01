@@ -107,15 +107,16 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                 Timber.i("GPS location request failure")
             }
             addOnSuccessListener {
-                //Got last known location. (Can be null sometimes)
+                // Get last known location if it is not null, then get all quiz questions
+                if (it != null) {
+                    //You ca extract the details from the client, like the latitude and longitude of the place and use it accordingly.
+                    myLat = it.latitude
+                    myLong = it.longitude
+                    Timber.i("myLat= %s", myLat.toString())
+                    Timber.i("myLong= %s", myLong.toString())
 
-                //You ca extract the details from the client, like the latitude and longitude of the place and use it accordingly.
-                myLat = it.latitude
-                myLong = it.longitude
-                Timber.i("myLat= %s", myLat.toString())
-                Timber.i("myLong= %s", myLong.toString())
-
-                getAllQuizQuestions()
+                    getAllQuizQuestions()
+                }
             }
         }
     }
