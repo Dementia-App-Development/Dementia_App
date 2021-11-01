@@ -85,7 +85,6 @@ class PostQuizFragment : Fragment() {
                 binding.scoreDescriptionTextView.text = "Not Available"
                 binding.commentContentTextView.text = "Something is wrong, the score is not available"
 
-
             }
 
         }

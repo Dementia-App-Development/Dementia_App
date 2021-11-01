@@ -1,11 +1,8 @@
 package com.dementiaquiz.android.repositories
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.room.Transaction
-import com.dementiaquiz.android.database.dao.QuizResultDao
 import com.dementiaquiz.android.database.dao.UserDao
-import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.database.model.User
 import kotlinx.coroutines.flow.Flow
 
@@ -39,8 +36,8 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     // get all nicknames in the database
-    fun getNicknames(): Flow<List<String>>{
-        return userDao.getNicknames()
+    fun getAllNicknames(): Flow<List<String>>{
+        return userDao.getAllNicknames()
     }
 
 

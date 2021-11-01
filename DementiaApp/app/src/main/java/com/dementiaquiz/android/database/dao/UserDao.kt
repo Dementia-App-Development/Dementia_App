@@ -29,7 +29,7 @@ interface UserDao {
 
     //TODO: test this function
     @Query("SELECT nickname FROM User")
-    fun getNicknames(): Flow<List<String>>
+    fun getAllNicknames(): Flow<List<String>>
 
     @Transaction
     @Query("SELECT * FROM user")
