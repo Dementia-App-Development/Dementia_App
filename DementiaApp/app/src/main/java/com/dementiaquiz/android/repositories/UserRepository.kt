@@ -5,6 +5,7 @@ import androidx.room.Transaction
 import com.dementiaquiz.android.database.dao.UserDao
 import com.dementiaquiz.android.database.model.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
 class UserRepository(private val userDao: UserDao) {
 
@@ -17,10 +18,14 @@ class UserRepository(private val userDao: UserDao) {
     @Transaction
     suspend fun checkAndInsert(user:User): Long{
 
-        val userWithSameNickname = userDao.getUserByNickname(user.nickname)
+        val userWithSameNickname = userDao.getUserByNickname(user.nickname).first()
+
         if (userWithSameNickname!=null){
+
+            // There is already user with the same nickName, failed to insert
             return -1
-        }else{
+        }else {
+            // all good, go ahead and insert the new user
             return userDao.insert(user)
         }
 
@@ -31,6 +36,8 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     fun getUserByNickname(nickname:String): Flow<User>{
+
+        println("getUserByNickname called")
         return userDao.getUserByNickname(nickname)
     }
 
