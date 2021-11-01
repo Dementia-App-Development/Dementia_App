@@ -58,7 +58,7 @@ class TitleFragment : Fragment() {
 
         // Use Nav Controller to set quiz button to navigate to quiz fragment
         binding.titleQuizButton.setOnClickListener { v: View ->
-            v.findNavController().navigate(R.id.action_titleFragment_to_preQuizFragment)
+            v.findNavController().navigate(R.id.action_titleFragment_to_usersFragment)
         }
 
         // Use Nav Controller to set results button to navigate to results fragment

@@ -62,6 +62,11 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     val response: LiveData<String> // The external immutable LiveData for the request status String
         get() = _response
 
+    // Used to determine whether quiz is currently loading, and to show/hide go to quiz button in pre quiz
+    private var _quizIsLoading = MutableLiveData<Boolean>()
+    val quizIsLoading: LiveData<Boolean>
+        get() = _quizIsLoading
+
     // Application context, used for location access
     @SuppressLint("StaticFieldLeak")
     private val context = getApplication<Application>().applicationContext
@@ -142,6 +147,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
      * Gets all quiz questions from server, calls one of two API methods depending on whether location provided
      */
     private fun getAllQuizQuestions() {
+        // As the quiz is loading, set the quiz is loading to true
+        _quizIsLoading.value = true
+
         // If no GPS can be fetched, send API request with no latitude and longitude values
         if (myLat == null || myLong == null) {
             QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode).enqueue( object: Callback<String> {
@@ -161,6 +169,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     // Parse the json response to generate quiz question list
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
+
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
 
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }
@@ -192,6 +203,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     // Parse the json response to generate quiz question list
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
+
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
 
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }

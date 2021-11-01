@@ -15,8 +15,8 @@
             android:id="@+id/action_titleFragment_to_resultsFragment"
             app:destination="@id/resultsFragment" />
         <action
-            android:id="@+id/action_titleFragment_to_preQuizFragment"
-            app:destination="@id/preQuizFragment" />
+            android:id="@+id/action_titleFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
@@ -56,9 +56,6 @@
             android:id="@+id/action_preQuizFragment_to_quizFragment"
             app:destination="@id/quizFragment"
             app:popUpTo="@id/titleFragment" />
-        <action
-            android:id="@+id/action_preQuizFragment_to_patientDetailsFragment"
-            app:destination="@id/patientDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"
@@ -66,13 +63,24 @@
         android:label="PatientDetailsFragment"
         tools:layout="@layout/fragment_patient_details">
         <action
-            android:id="@+id/action_patientDetailsFragment_to_quizFragment"
-            app:destination="@id/quizFragment"
-            app:popUpTo="@id/titleFragment" />
+            android:id="@+id/action_patientDetailsFragment_to_preQuizFragment"
+            app:destination="@id/preQuizFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.dementiaapp.quiz.AboutFragment"
+        android:name="com.dementiaquiz.android.fragments.AboutFragment"
         android:label="@string/about_title"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.dementiaquiz.android.fragments.UsersFragment"
+        android:label="UsersFragment"
+        tools:layout="@layout/fragment_users">
+        <action
+            android:id="@+id/action_usersFragment_to_patientDetailsFragment"
+            app:destination="@id/patientDetailsFragment" />
+        <action
+            android:id="@+id/action_usersFragment_to_preQuizFragment"
+            app:destination="@id/preQuizFragment" />
+    </fragment>
 </navigation>

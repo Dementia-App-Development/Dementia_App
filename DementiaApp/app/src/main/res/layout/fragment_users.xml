@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".fragments.UsersFragment">
+
+        <TextView
+            android:id="@+id/usersHeaderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Are you a new or existing user?"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/usersNewUserToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="New User"
+                android:textOn="New User" />
+
+            <ToggleButton
+                android:id="@+id/usersExistingUserToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:textOff="Existing User"
+                android:textOn="Existing User" />
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/usersExistingUsersSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/Users"
+            android:minHeight="48dp"
+            android:scrollbarSize="24sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/usersNextButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Next" />
+
+
+    </LinearLayout>
+</layout>

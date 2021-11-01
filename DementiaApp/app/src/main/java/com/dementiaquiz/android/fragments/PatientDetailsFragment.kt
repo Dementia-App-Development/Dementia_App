@@ -20,11 +20,9 @@ import java.net.URL
  */
 class PatientDetailsFragment : Fragment() {
 
-    private lateinit var viewModel: QuizViewModel
+//    private lateinit var viewModel: QuizViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         Timber.i("onCreateView called")
@@ -32,70 +30,18 @@ class PatientDetailsFragment : Fragment() {
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPatientDetailsBinding>(inflater,R.layout.fragment_patient_details, container, false)
 
-        // Get the viewmodel
-        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
-
-        // By default when this fragment is created, the quiz is set to "assisted-home" mode
-        viewModel.setQuizMode("assisted-home")
-        Timber.i("Quiz mode set to assisted-home")
+//        // Get the viewmodel
+//        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
+//
+//        // By default when this fragment is created, the quiz is set to "assisted-home" mode
+//        viewModel.setQuizMode("assisted-home")
+//        Timber.i("Quiz mode set to assisted-home")
 
         // Go to quiz button
-        binding.patientDetailsGoToQuizButton.setOnClickListener { v:View ->
-            v.findNavController().navigate(R.id.action_patientDetailsFragment_to_quizFragment)
-        }
-
-        // Toggle the respective toggle buttons on/off as the other member of the pair is pressed
-        binding.patientDetailsAtHomeButton.setOnClickListener {
-            if (binding.patientDetailsAtHomeButton.isChecked) {
-                binding.patientDetailsAtClinicButton.toggle()
-            } else {
-                binding.patientDetailsAtHomeButton.toggle()
-            }
-
-            // Set the new quiz mode, and poll for coordinates again
-            viewModel.setQuizMode("assisted-home")
-            Timber.i("Quiz mode set to assisted-home")
-        }
-        binding.patientDetailsAtClinicButton.setOnClickListener {
-            if (binding.patientDetailsAtClinicButton.isChecked) {
-                binding.patientDetailsAtHomeButton.toggle()
-            } else {
-                binding.patientDetailsAtClinicButton.toggle()
-            }
-
-            // Set the new quiz mode, and poll for coordinates again
-            viewModel.setQuizMode("assisted-facility")
-            Timber.i("Quiz mode set to assisted-facility")
-        }
-        binding.patientDetailsByMyselfButton.setOnClickListener {
-            if (binding.patientDetailsByMyselfButton.isChecked) {
-                binding.patientDetailsBeingAssistedButton.toggle()
-            } else {
-                binding.patientDetailsByMyselfButton.toggle()
-            }
-        }
-        binding.patientDetailsBeingAssistedButton.setOnClickListener {
-            if (binding.patientDetailsBeingAssistedButton.isChecked) {
-                binding.patientDetailsByMyselfButton.toggle()
-            } else {
-                binding.patientDetailsBeingAssistedButton.toggle()
-            }
+        binding.patientDetailsNextButton.setOnClickListener { v:View ->
+            v.findNavController().navigate(R.id.action_patientDetailsFragment_to_preQuizFragment)
         }
 
         return binding.root
     }
-}
-
-@SuppressLint("RestrictedApi")
-fun getQuizFromURL() {
-//    val latitude, longitude = getGPSCoordinates()
-    val apiResponse = URL("https://alz-backend.herokuapp.com/question/all/").readText()
-    Timber.i("API RESPONSE")
-//    Toast.makeText(getActivity().applicationContext, apiResponse, Toast.LENGTH_LONG).show()
-}
-
-fun getGPSCoordinates() {
-//    val latitude: Double
-//    val longitude: Double
-//    return latitude, longitude
 }

@@ -18,106 +18,33 @@
             android:text="@string/patientDetailHeaderTextView_text"
             android:textSize="36sp" />
 
-        <TextView
-            android:id="@+id/patientDetailsAreYouTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/patientDetailsAreYouTextView_text"
-            android:textSize="24sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/patientDetailsAtHomeButton"
-                android:layout_width="158dp"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:drawableTop="@drawable/home"
-                android:textOff="@string/patientDetailsAtHomeButton_textOff"
-                android:textOn="@string/patientDetailsAtHomeButton_textOn" />
-
-            <TextView
-                android:id="@+id/patientDetailsOrTextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/patientDetailsOrTextView1_text"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-            <ToggleButton
-                android:id="@+id/patientDetailsAtClinicButton"
-                android:layout_width="160dp"
-                android:layout_height="match_parent"
-                android:drawableTop="@drawable/hospital"
-                android:textOff="@string/patientDetailsAtClinicButton_textOff"
-                android:textOn="@string/patientDetailsAtClinicButton_textOn" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ToggleButton
-                android:id="@+id/patientDetailsByMyselfButton"
-                android:layout_width="158dp"
-                android:layout_height="129dp"
-                android:checked="true"
-                android:drawableTop="@drawable/ic_myself"
-                android:textOff="@string/patientDetailsByMyselfButton_textOff"
-                android:textOn="@string/patientDetailsByMyselfButton_textOn" />
-
-            <TextView
-                android:id="@+id/patientDetailsOrTextView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/patientDetailsOrTextView2_text"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-            <ToggleButton
-                android:id="@+id/patientDetailsBeingAssistedButton"
-                android:layout_width="160dp"
-                android:layout_height="129dp"
-                android:drawableTop="@drawable/ic_assistance"
-                android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
-                android:textOn="@string/patientDetailsBeingAssistedButton_textOn" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/patientDetailsNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/patientDetailsNameTextView_text"
-            android:textSize="24sp"
-            android:visibility="gone" />
 
         <EditText
-            android:id="@+id/patientDetailsNameEditText"
+            android:id="@+id/patientDetailsNicknameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/patientDetailsNameEditText_hint"
+            android:hint="Enter your nickname"
             android:inputType="textPersonName"
             android:textSize="34sp" />
 
-        <TextView
-            android:id="@+id/patientDetailsAgeTextView"
+        <EditText
+            android:id="@+id/patientDetailsFirstNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/patientDetailsAgeTextView_text"
-            android:textSize="24sp"
-            android:visibility="gone" />
+            android:ems="10"
+            android:hint="Enter your first name"
+            android:inputType="textPersonName"
+            android:textSize="34sp" />
+
+        <EditText
+            android:id="@+id/patientDetailsLastNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter your last name"
+            android:inputType="textPersonName"
+            android:textSize="34sp" />
 
         <EditText
             android:id="@+id/patientDetailsAgeEditText"
@@ -127,14 +54,6 @@
             android:hint="@string/patientDetailsAgeEditText_hint"
             android:inputType="number"
             android:textSize="34sp" />
-
-        <TextView
-            android:id="@+id/patientDetailsGenderTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/patientDetailsGenderTextView_text"
-            android:textSize="24sp"
-            android:visibility="gone" />
 
         <Spinner
             android:id="@+id/patientDetailsGenderSpinner"
@@ -147,10 +66,10 @@
             android:spinnerMode="dropdown" />
 
         <Button
-            android:id="@+id/patientDetailsGoToQuizButton"
+            android:id="@+id/patientDetailsNextButton"
             android:layout_width="411dp"
             android:layout_height="60dp"
-            android:text="@string/patientDetailsGoToQuizButton_text" />
+            android:text="Next" />
 
     </LinearLayout>
 </layout>
