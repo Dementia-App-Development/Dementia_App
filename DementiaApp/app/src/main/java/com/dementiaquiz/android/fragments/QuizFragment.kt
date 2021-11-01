@@ -1,7 +1,9 @@
 package com.dementiaquiz.android.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
@@ -21,6 +23,12 @@ import timber.log.Timber
 import java.util.*
 import android.os.CountDownTimer as CountDownTimer
 import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import java.io.InputStream
 import java.net.URL
@@ -48,6 +56,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
     }
 
+    /**
+     * Shut down text to speech on fragment destroyed
+     */
     override fun onDestroy() {
         // Shutdown TTS
         if (tts != null) {
@@ -76,9 +87,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
     }
 
+    /**
+     * Initialize text to speech, view model, and handle bindings of UI elements
+     */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Initialize text to speech
         tts = TextToSpeech(activity, this)
@@ -87,12 +100,16 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
 
         // Get the viewmodel
-        viewModel = ViewModelProvider(this).get(QuizViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
+        Timber.i("QUIZ MODE: %s", viewModel.mode)
+        viewModel.setFirstQuestion()
 
         // Initialize count down timer
         var countDown: CountDownTimer? = null
 
-        // Set up LiveData observation relationship for the current question in the quiz
+        /**
+         * Logic and UI handling when a new question is detected in the quiz
+         */
         viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
             Timber.i(newQuestion.answers.toString())
             binding.quizInstructionsTextView.visibility = View.VISIBLE
@@ -106,6 +123,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizVoiceButton.visibility = View.GONE
             binding.quizNextButton.visibility = View.VISIBLE
             binding.quizProgressBar.visibility = View.VISIBLE
+
             if (TextUtils.isEmpty(newQuestion.image_url)){
                 binding.quizSubTextView.visibility  = View.GONE
                 binding.quizQuestionImageView.visibility = View.VISIBLE
@@ -149,8 +167,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizInstructionsTextView.text = newQuestion.instruction
             binding.quizSubTextView.text = newQuestion.sub_text
 
-            // TODO: old code, can delete this I think
-            // No this do not delete this currently is used for answer handling
+            // Used for answer handling
             answer = newQuestion.answers.toString()
 
             // Get the new question instruction and pass it to text to speech
@@ -158,8 +175,10 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             tts!!.speak(newQuestion.instruction, TextToSpeech.QUEUE_FLUSH, null)
         })
 
-        // Set up LiveData observation relationship to detect for when the quiz has completed
-        viewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newBoolean ->
+        /**
+         * Set up LiveData observation relationship to detect for when the quiz has completed
+         */
+         viewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newBoolean ->
             if (newBoolean == true) {
 
                 // Fetch the current score
@@ -216,8 +235,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             viewModel.onNext(null, answer, true)
         }
         binding.quizFalseButton.setOnClickListener {
-
             // Verify answer against what was input in the edit text response field
+
             // Cancel countdown and go to next question
             countDown?.cancel()
             viewModel.onNext(null, answer, false)
@@ -246,11 +265,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             speak()
             binding.quizNextButton.visibility = View.VISIBLE
         }
-
-        // Go to the previous question
-        //binding.btnPrevious.setOnClickListener {
-        //    viewModel.onPrev()
-        //}
 
         return binding.root
     }

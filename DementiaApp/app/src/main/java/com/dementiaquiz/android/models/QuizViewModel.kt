@@ -1,15 +1,25 @@
 package com.dementiaquiz.android.models
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -21,7 +31,7 @@ import java.util.*
 /**
  * Holds the information for the current question in the quiz
  */
-class QuizViewModel : ViewModel() {
+class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
     // TODO: variable never used, can delete?
     private val REQUEST_CODE_SPEECH_INPUT = 100;
@@ -52,6 +62,19 @@ class QuizViewModel : ViewModel() {
     val response: LiveData<String> // The external immutable LiveData for the request status String
         get() = _response
 
+    // Application context, used for location access
+    @SuppressLint("StaticFieldLeak")
+    private val context = getApplication<Application>().applicationContext
+
+    // Location client
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+    // Quiz latitude, longitude and mode
+    var myLat : Double? = null
+    var myLong : Double? = null
+    var mode : String = ""
+
+
     /**
      * Generate the quiz question list and set the current question to the first in the list
      */
@@ -59,46 +82,137 @@ class QuizViewModel : ViewModel() {
         quizQuestions = emptyList()
         currentQuestionIndex = 0
         _score.value = 0
-        getAllQuizQuestions()
+
+        // Get the device location, and then get quiz questions from server once location is provided
+//        getLocation(fusedLocationClient, context)
+//        setQuizMode(mode)
     }
 
-    private fun getAllQuizQuestions() {
-        // Fetch quiz questions from API call
-        QuizApi.retrofitService.getAllCustomQuestions("51.487580", "-0.190920","solo").enqueue( object: Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                _response.value = "Failure: " + t.message
-                Timber.i("API failure")
+    // Get the location of the device
+    private fun getLocation(fusedLocationProviderClient : FusedLocationProviderClient, context: Context) {
+        Timber.i("Fetching device location")
 
-                // TODO: handle API response failure exception with dialog prompt
+        if (ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                // TODO : not sure we should be calling this method here on failure, we should be handling the failure and displaying an error
+            // TODO: handle if location is no granted permission
+            return
+        }
+
+        fusedLocationProviderClient.lastLocation.apply {
+            addOnFailureListener{
+                //Handle the failure of the call. You can show an error dialogue or a toast stating the failure in receiving location.
+
+                Timber.i("GPS location request failure")
+            }
+            addOnSuccessListener {
+                //Got last known location. (Can be null sometimes)
+
+                //You ca extract the details from the client, like the latitude and longitude of the place and use it accordingly.
+                myLat = it.latitude
+                myLong = it.longitude
+                Timber.i("myLat= %s", myLat.toString())
+                Timber.i("myLong= %s", myLong.toString())
+
                 getAllQuizQuestions()
             }
+        }
+    }
 
-            // Get the quiz questions from API call and sort them
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                _response.value = response.body()
-                Timber.i("API response:")
-                Timber.i(response.body())
+    /**
+     * Sets the mode of the quiz to the input, one of either "solo", "assisted-home" or "assisted-clinic"
+     * Then gets the location of the quiz
+     */
+    fun setQuizMode(newMode: String) {
+        // Fetch quiz if the new mode is different to the current mode
+        if (newMode != mode) {
+            mode = newMode
+            getLocation(fusedLocationClient, context)
+        }
+    }
 
-                // Parse the json response to generate quiz question list
-                quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                Timber.i("Retrieved quiz questions from API")
+    /**
+     * Sets the first question of the quiz so long as it is loaded (not empty)
+     */
+    fun setFirstQuestion() {
+        if (quizQuestions.isNotEmpty()) {
+            _currentQuestion.value = quizQuestions[currentQuestionIndex]
+        }
+    }
 
-                // Sort the questions list by id
-                quizQuestions.sortedBy { it.id }
-                Timber.i("Length of quiz= %s", quizQuestions.size)
+    /**
+     * Gets all quiz questions from server, calls one of two API methods depending on whether location provided
+     */
+    private fun getAllQuizQuestions() {
+        // If no GPS can be fetched, send API request with no latitude and longitude values
+        if (myLat == null || myLong == null) {
+            QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode).enqueue( object: Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    _response.value = "Failure: " + t.message
+                    Timber.i("API failure")
 
-                // Set the current question to the first question
-                _currentQuestion.value = quizQuestions[currentQuestionIndex]
-            }
-        })
+                    // TODO: handle API response failure exception with dialog prompt
+                }
+
+                // Get the quiz questions from API call and sort them
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    _response.value = response.body()
+                    Timber.i("API response:")
+                    Timber.i(response.body())
+
+                    // Parse the json response to generate quiz question list
+                    quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
+                    Timber.i("Retrieved quiz questions from API")
+
+                    // Sort the questions list by id
+                    quizQuestions.sortedBy { it.id }
+                    Timber.i("Length of quiz= %s", quizQuestions.size)
+
+                    // Set the first question
+                    _currentQuestion.value = quizQuestions[currentQuestionIndex]
+                }
+            })
+
+            // Fetch all quiz questions with GPS coordinated provided
+        } else {
+            // Fetch quiz questions from API call
+            QuizApi.retrofitService.getAllCustomQuestions(myLat.toString(), myLong.toString(), mode).enqueue( object: Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    _response.value = "Failure: " + t.message
+                    Timber.i("API failure")
+
+                    // TODO: handle API response failure exception with dialog prompt
+                }
+
+                // Get the quiz questions from API call and sort them
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    _response.value = response.body()
+                    Timber.i("API response:")
+                    Timber.i(response.body())
+
+                    // Parse the json response to generate quiz question list
+                    quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
+                    Timber.i("Retrieved quiz questions from API")
+
+                    // Sort the questions list by id
+                    quizQuestions.sortedBy { it.id }
+                    Timber.i("Length of quiz= %s", quizQuestions.size)
+
+                    // Set the first question
+                    _currentQuestion.value = quizQuestions[currentQuestionIndex]
+                }
+            })
+        }
+
 
         // TODO: Create a loaded variable that changes to true when everything has been loaded
         // TODO: put it on the onResponse function maybe?
     }
 
-    // Go to next question
+    /**
+     * Goes to the next question, also checks the answer and records the result
+     */
     fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
         if (userAnswer == null && !assistedCorrect) {

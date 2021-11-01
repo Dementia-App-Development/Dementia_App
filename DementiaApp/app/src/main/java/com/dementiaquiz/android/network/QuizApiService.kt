@@ -22,14 +22,19 @@ private val retrofit = Retrofit.Builder()
  */
 interface QuizApiService {
     // Gets all solo questions, dummy data with fixed latitude and longitude
-    @GET("question/all/?lat=51.487580&long=-0.190920&mode=solo") //TODO update this parameter to suit what mode the quiz is in
-    fun getAllQuestions():
+    @GET("question/all/?lat=51.487580&long=-0.190920&mode=solo")
+    fun getAllTestQuestions():
             Call<String>
 
     @GET("question/all/")
     fun getAllCustomQuestions(
         @Query("lat") lat: String,
         @Query("long") long: String,
+        @Query("mode") mode: String
+    ): Call<String>
+
+    @GET("question/all/")
+    fun getAllCustomQuestionsNoGPS(
         @Query("mode") mode: String
     ): Call<String>
 }
