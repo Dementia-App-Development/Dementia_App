@@ -9,19 +9,22 @@ import android.content.pm.PackageManager
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.room.Transaction
+import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
+import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +35,8 @@ import java.util.*
  * Holds the information for the current question in the quiz
  */
 class QuizViewModel(application : Application) : AndroidViewModel(application) {
+
+    private val quizResultRepository:QuizResultRepository = getApplication<DementiaQuizApplication>().quizResultRepository
 
     // TODO: variable never used, can delete?
     private val REQUEST_CODE_SPEECH_INPUT = 100;
@@ -61,6 +66,11 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     private val _response = MutableLiveData<String>()
     val response: LiveData<String> // The external immutable LiveData for the request status String
         get() = _response
+
+    // Used to determine whether quiz is currently loading, and to show/hide go to quiz button in pre quiz
+    private var _quizIsLoading = MutableLiveData<Boolean>()
+    val quizIsLoading: LiveData<Boolean>
+        get() = _quizIsLoading
 
     // Application context, used for location access
     @SuppressLint("StaticFieldLeak")
@@ -142,6 +152,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
      * Gets all quiz questions from server, calls one of two API methods depending on whether location provided
      */
     private fun getAllQuizQuestions() {
+        // As the quiz is loading, set the quiz is loading to true
+        _quizIsLoading.value = true
+
         // If no GPS can be fetched, send API request with no latitude and longitude values
         if (myLat == null || myLong == null) {
             QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode).enqueue( object: Callback<String> {
@@ -161,6 +174,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     // Parse the json response to generate quiz question list
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
+
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
 
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }
@@ -193,6 +209,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
 
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
+
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }
                     Timber.i("Length of quiz= %s", quizQuestions.size)
@@ -203,10 +222,6 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                 }
             })
         }
-
-
-        // TODO: Create a loaded variable that changes to true when everything has been loaded
-        // TODO: put it on the onResponse function maybe?
     }
 
     /**
@@ -266,6 +281,18 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
             currentQuestionIndex -= 1
         }
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
+    }
+
+    // insertQuizResult and answers belong to that result. It returns the ID of
+    // the inserted QuizResult
+    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):Long{
+
+        var quizResultId:Long =-1;
+        viewModelScope.launch {
+            quizResultId = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+        }
+        return quizResultId
+
     }
 }
 

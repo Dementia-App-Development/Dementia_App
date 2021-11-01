@@ -30,6 +30,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import com.dementiaquiz.android.database.model.QuizAnswer
+import com.dementiaquiz.android.database.model.QuizResult
 import java.io.InputStream
 import java.net.URL
 
@@ -222,6 +224,16 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             }
             binding.quizUserResponseEditText.getText().clear();
             binding.quizDateEditText.getText().clear();
+
+
+            //TODO:test if we can save to database, this should be removed. It works, but it needs to be removed
+            /*val quizResult:QuizResult = QuizResult(55,2,76,Date())
+            val quizAnswerList:MutableList<QuizAnswer> = mutableListOf()
+            quizAnswerList.add(QuizAnswer(0,"firstQuestion","correctAns","myResponse",false,55))
+            quizAnswerList.add(QuizAnswer(0,"secQuestion","correctsecAns","mysecResponse",true,55))
+
+            viewModel.insertQuizResultAndAnswers(quizResult,quizAnswerList)*/
+
         }
 
         // Assisted mode true/false response buttons

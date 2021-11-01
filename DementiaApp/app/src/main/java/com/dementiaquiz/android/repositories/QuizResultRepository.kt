@@ -1,18 +1,37 @@
 package com.dementiaquiz.android.repositories
 
 import androidx.annotation.WorkerThread
+import androidx.room.Transaction
+import com.dementiaquiz.android.database.dao.QuizAnswerDao
 import com.dementiaquiz.android.database.dao.QuizResultDao
+import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.database.model.QuizResult
 import kotlinx.coroutines.flow.Flow
 
 // according to the app architecture guideline, Repository is an layer between the viewModel and
 // the Room database. It encapsulates the data and then used as an API class for the viewModel
-class QuizResultRepository(private val quizResultDao: QuizResultDao) {
+class QuizResultRepository(private val quizResultDao: QuizResultDao, private val answerDao: QuizAnswerDao) {
 
-    @Suppress("RedundantSuspendModifier")
+    /*@Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(quizResult: QuizResult){
         quizResultDao.insert(quizResult)
+    }*/
+
+    // insertQuizResult and answers belong to that result. It returns the ID of
+    // the inserted QuizResult
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    @Transaction
+    suspend fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>): Long{
+
+        val quizResultId = quizResultDao.insert(quizResult)
+        for (quizAnswer in quizAnswerList) {
+            quizAnswer.resultId = quizResultId
+            answerDao.insert(quizAnswer)
+        }
+        return quizResultId
+
     }
 
     fun getQuizResults(): Flow<List<QuizResult>>{
@@ -26,6 +45,5 @@ class QuizResultRepository(private val quizResultDao: QuizResultDao) {
     fun getQuizResultsByUserId(userId:Long):Flow<List<QuizResult>>{
         return quizResultDao.getQuizResultsByUserId(userId)
     }
-
 
 }

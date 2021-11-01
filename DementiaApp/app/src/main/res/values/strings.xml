@@ -47,4 +47,10 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="Users">
+        <item>Bob</item>
+        <item>Dick</item>
+        <item>Harry</item>
+    </string-array>
 </resources>
