@@ -56,6 +56,9 @@
             android:id="@+id/action_preQuizFragment_to_quizFragment"
             app:destination="@id/quizFragment"
             app:popUpTo="@id/titleFragment" />
+        <argument
+            android:name="userID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"

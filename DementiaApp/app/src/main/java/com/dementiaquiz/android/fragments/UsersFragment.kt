@@ -35,6 +35,9 @@ class UsersFragment : Fragment() {
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
+        // TODO: Populate existing users spinner with the nicknames from the user database
+        // binding.usersExistingUsersSpinner.setSelection()
+
         // Toggle the existing users and new user buttons to mirror each other
         binding.usersExistingUserToggleButton.setOnClickListener {
             if (binding.usersExistingUserToggleButton.isChecked) {
@@ -65,7 +68,10 @@ class UsersFragment : Fragment() {
 
             // If it is an existing user, navigate straight to the pre-quiz fragment
             } else {
-                v.findNavController().navigate(R.id.action_usersFragment_to_preQuizFragment)
+                // Send user ID to pre quiz fragment
+                val userID = 0 // TODO: get the user ID from the db
+                val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userID)
+                v.findNavController().navigate(action)
             }
         }
 
