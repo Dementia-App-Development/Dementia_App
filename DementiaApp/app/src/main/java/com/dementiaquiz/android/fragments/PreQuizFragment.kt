@@ -37,9 +37,6 @@ class PreQuizFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        Timber.i("onCreateView called")
-
         // Use view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentPreQuizBinding>(inflater,
             R.layout.fragment_pre_quiz, container, false)
