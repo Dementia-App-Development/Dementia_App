@@ -34,18 +34,19 @@ import java.util.*
 /**
  * Holds the information for the current question in the quiz
  */
-class QuizViewModel(application : Application) : AndroidViewModel(application) {
+class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val quizResultRepository:QuizResultRepository = getApplication<DementiaQuizApplication>().quizResultRepository
+    private val quizResultRepository: QuizResultRepository =
+        getApplication<DementiaQuizApplication>().quizResultRepository
 
     // TODO: variable never used, can delete?
     private val REQUEST_CODE_SPEECH_INPUT = 100;
 
     // A List of quiz question objects
-    private var quizQuestions : List<QuizQuestion>
+    private var quizQuestions: List<QuizQuestion>
 
     // The index of the current question in the quiz question list
-    private var currentQuestionIndex : Int
+    private var currentQuestionIndex: Int
 
     // A tally of how many correct answers the user has gotten in the quiz
     private val _score = MutableLiveData<Int>()
@@ -80,9 +81,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     // Quiz latitude, longitude and mode
-    var myLat : Double? = null
-    var myLong : Double? = null
-    var mode : String = ""
+    var myLat: Double? = null
+    var myLong: Double? = null
+    var mode: String = ""
 
 
     /**
@@ -95,19 +96,25 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     }
 
     // Get the location of the device
-    private fun getLocation(fusedLocationProviderClient : FusedLocationProviderClient, context: Context) {
+    private fun getLocation(
+        fusedLocationProviderClient: FusedLocationProviderClient,
+        context: Context
+    ) {
         Timber.i("Fetching device location")
 
         if (ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                context, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
             // TODO: handle if location is no granted permission
             return
         }
 
         fusedLocationProviderClient.lastLocation.apply {
-            addOnFailureListener{
+            addOnFailureListener {
                 //Handle the failure of the call. You can show an error dialogue or a toast stating the failure in receiving location.
 
                 Timber.i("GPS location request failure")
@@ -132,11 +139,17 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
      * Then gets the location of the quiz
      */
     fun setQuizMode(newMode: String) {
-        // Fetch quiz if the new mode is different to the current mode
+        /*// Fetch quiz if the new mode is different to the current mode
         if (newMode != mode) {
             mode = newMode
             getLocation(fusedLocationClient, context)
-        }
+        }*/
+
+        // fetch the quiz everytime the mode button is clicked
+        mode = newMode
+        getLocation(fusedLocationClient, context)
+
+
     }
 
     /**
@@ -157,72 +170,80 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
         // If no GPS can be fetched, send API request with no latitude and longitude values
         if (myLat == null || myLong == null) {
-            QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode).enqueue( object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    _response.value = "Failure: " + t.message
-                    Timber.i("API failure")
+            QuizApi.retrofitService.getAllCustomQuestionsNoGPS(mode)
+                .enqueue(object : Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        _response.value = "Failure: " + t.message
+                        Timber.i("API failure")
 
-                    // TODO: handle API response failure exception with dialog prompt
-                }
+                        // TODO: handle API response failure exception with dialog prompt
+                    }
 
-                // Get the quiz questions from API call and sort them
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    _response.value = response.body()
-                    Timber.i("API response:")
-                    Timber.i(response.body())
+                    // Get the quiz questions from API call and sort them
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        _response.value = response.body()
+                        Timber.i("API response:")
+                        Timber.i(response.body())
 
-                    // Parse the json response to generate quiz question list
-                    quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                    Timber.i("Retrieved quiz questions from API")
+                        // Parse the json response to generate quiz question list
+                        quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
+                        Timber.i("Retrieved quiz questions from API")
+                        Timber.i("unsorted questions: " + quizQuestions)
 
-                    // Sort the questions list by id
-                    quizQuestions.sortedBy { it.id }
-                    Timber.i("Length of quiz= %s", quizQuestions.size)
 
-                    // Set the first question
-                    currentQuestionIndex = 0
-                    _currentQuestion.value = quizQuestions[currentQuestionIndex]
-                    // As the quiz is now loaded, set the quiz is loading now to false
-                    _quizIsLoading.value = false
+                        // Sort the questions list by id
+                        quizQuestions = quizQuestions.sortedWith(compareBy({ it.question_no }))
+                        Timber.i("sorted questions: " + quizQuestions)
 
-                }
-            })
+                        Timber.i("Length of quiz= %s", quizQuestions.size)
+
+                        // Set the first question
+                        currentQuestionIndex = 0
+                        _currentQuestion.value = quizQuestions[currentQuestionIndex]
+                        // As the quiz is now loaded, set the quiz is loading now to false
+                        _quizIsLoading.value = false
+
+                    }
+                })
 
             // Fetch all quiz questions with GPS coordinated provided
         } else {
             // Fetch quiz questions from API call
-            QuizApi.retrofitService.getAllCustomQuestions(myLat.toString(), myLong.toString(), mode).enqueue( object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    _response.value = "Failure: " + t.message
-                    Timber.i("API failure")
+            QuizApi.retrofitService.getAllCustomQuestions(myLat.toString(), myLong.toString(), mode)
+                .enqueue(object : Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        _response.value = "Failure: " + t.message
+                        Timber.i("API failure")
 
-                    // TODO: handle API response failure exception with dialog prompt
-                }
+                        // TODO: handle API response failure exception with dialog prompt
+                    }
 
-                // Get the quiz questions from API call and sort them
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    _response.value = response.body()
-                    Timber.i("API response:")
-                    Timber.i(response.body())
+                    // Get the quiz questions from API call and sort them
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        _response.value = response.body()
+                        Timber.i("API response:")
+                        Timber.i(response.body())
 
-                    // Parse the json response to generate quiz question list
-                    quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                    Timber.i("Retrieved quiz questions from API")
+                        // Parse the json response to generate quiz question list
+                        quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
+                        Timber.i("Retrieved quiz questions from API")
+                        Timber.i("unsorted questions: " + quizQuestions)
 
 
+                        // Sort the questions list by id
+                        quizQuestions = quizQuestions.sortedWith(compareBy({ it.question_no }))
+                        Timber.i("sorted questions: " + quizQuestions)
 
-                    // Sort the questions list by id
-                    quizQuestions.sortedBy { it.id }
-                    Timber.i("Length of quiz= %s", quizQuestions.size)
+                        Timber.i("Length of quiz= %s", quizQuestions.size)
 
-                    // Set the first question
-                    currentQuestionIndex = 0
-                    _currentQuestion.value = quizQuestions[currentQuestionIndex]
+                        // Set the first question
+                        currentQuestionIndex = 0
+                        _currentQuestion.value = quizQuestions[currentQuestionIndex]
 
-                    // As the quiz is now loaded, set the quiz is loading now to false
-                    _quizIsLoading.value = false
-                }
-            })
+                        // As the quiz is now loaded, set the quiz is loading now to false
+                        _quizIsLoading.value = false
+                    }
+                })
         }
     }
 
@@ -233,21 +254,19 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         // TODO: Check if the answer provided is correct
         if (userAnswer.isNullOrEmpty() && !assistedCorrect) {
             Timber.i("Wrong!")
-        }
-        else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+        } else if (assistedCorrect || trueAnswer.contains(userAnswer!!)) {
             Timber.i("Well Done")
 
             // Increment the score
             _score.value = (_score.value)?.plus(1)
-        }
-        else {
+        } else {
             Timber.i("Wrong!")
         }
 
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
-        // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
+            // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
             _quizIsFinished.value = true
             // TODO: make this a method that, before setting game finished to true, saves the results of the quiz to database
@@ -287,11 +306,12 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
     // insertQuizResult and answers belong to that result. It returns the ID of
     // the inserted QuizResult
-    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):Long{
+    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList: List<QuizAnswer>): Long {
 
-        var quizResultId:Long =-1;
+        var quizResultId: Long = -1;
         viewModelScope.launch {
-            quizResultId = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+            quizResultId =
+                quizResultRepository.insertQuizResultAndAnswers(quizResult, quizAnswerList)
         }
         return quizResultId
 
