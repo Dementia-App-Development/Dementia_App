@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-night/postresult_textview_border.xml" value="0.41822916666666665" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_bar_chart_24.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable-v24/outline_close_24.xml" value="0.3614583333333333" />
@@ -19,6 +20,7 @@
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/ic_mic.xml" value="0.2713541666666667" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/ic_myself.xml" value="0.3145833333333333" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/ic_quiz.xml" value="0.3145833333333333" />
+        <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/postresult_textview_border.xml" value="0.41822916666666665" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/drawable/round_button.xml" value="0.36041666666666666" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/activity_fullscreen.xml" value="0.33125" />
         <entry key="..\:/Users/Aleks/AndroidStudioProjects/Git/Dementia_App/DementiaApp/app/src/main/res/layout/activity_main.xml" value="0.4466666666666667" />

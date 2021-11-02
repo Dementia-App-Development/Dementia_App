@@ -13,10 +13,18 @@
         tools:layout="@layout/fragment_title">
         <action
             android:id="@+id/action_titleFragment_to_resultsFragment"
-            app:destination="@id/resultsFragment" />
+            app:destination="@id/resultsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_titleFragment_to_usersFragment"
-            app:destination="@id/usersFragment" />
+            app:destination="@id/usersFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
@@ -26,8 +34,15 @@
         <action
             android:id="@+id/action_quizFragment_to_postQuizFragment"
             app:destination="@id/postQuizFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/titleFragment" />
-    </fragment>
+        <argument
+            android:name="userID"
+            app:argType="long" />
+</fragment>
     <fragment
         android:id="@+id/postQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PostQuizFragment"
@@ -40,6 +55,10 @@
         <action
             android:id="@+id/action_postQuizFragment_to_titleFragment"
             app:destination="@id/titleFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/titleFragment" />
     </fragment>
     <fragment
@@ -55,7 +74,14 @@
         <action
             android:id="@+id/action_preQuizFragment_to_quizFragment"
             app:destination="@id/quizFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/titleFragment" />
+        <argument
+            android:name="userID"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"
@@ -64,7 +90,11 @@
         tools:layout="@layout/fragment_patient_details">
         <action
             android:id="@+id/action_patientDetailsFragment_to_preQuizFragment"
-            app:destination="@id/preQuizFragment" />
+            app:destination="@id/preQuizFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -78,9 +108,17 @@
         tools:layout="@layout/fragment_users">
         <action
             android:id="@+id/action_usersFragment_to_patientDetailsFragment"
-            app:destination="@id/patientDetailsFragment" />
+            app:destination="@id/patientDetailsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_usersFragment_to_preQuizFragment"
-            app:destination="@id/preQuizFragment" />
+            app:destination="@id/preQuizFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 </navigation>

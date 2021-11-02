@@ -47,12 +47,12 @@
             android:textSize="34sp" />
 
         <EditText
-            android:id="@+id/patientDetailsAgeEditText"
+            android:id="@+id/patientDetailsDOBEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/patientDetailsAgeEditText_hint"
-            android:inputType="number"
+            android:focusable="false"
+            android:hint="Enter your date of birth"
             android:textSize="34sp" />
 
         <Spinner

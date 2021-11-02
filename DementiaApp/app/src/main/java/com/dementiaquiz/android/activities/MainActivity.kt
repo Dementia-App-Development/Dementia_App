@@ -22,7 +22,7 @@ const val QUIZ_QUESTIONS_JSON = "quiz_questions.json"
  */
 class MainActivity : AppCompatActivity() {
 
-    // Creating a binding object for the main_activity.xml layout
+    // Creating a binding object for the main_activity.anim layout
     private lateinit var binding: ActivityMainBinding
 
     // create a reference to drawerLayout
