@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,9 +27,12 @@ import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizResultViewModel
 import com.dementiaquiz.android.models.QuizResultViewModelFactory
 import com.dementiaquiz.android.models.QuizViewModel
+import com.dementiaquiz.android.utils.TimeConverter
 import timber.log.Timber
 import java.io.InputStream
 import java.net.URL
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -148,18 +152,44 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
          quizViewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newQuizIsFinished ->
             if (newQuizIsFinished == true) {
 
+                // create a copy of the answers. Since the quizAnswerList in viewModel is mutableList,
+                // it may change overtime, We will need to make a stable copy of it
+                val quizAnswerList = quizViewModel.quizAnswerList.toMutableList()
+
+
                 // Fetch the current score and convert to double percentage
-                val currentScore = quizViewModel.score.value ?: 0
-                val timeCreated = Date() // TODO: verify/change to time = current time
-                val resultID = 0L //TODO: verify/change the resultID from zero to be the next auto-incremented resultID
+                val correctNumOfAnswers = quizViewModel.score.value ?: 0
 
-                // Generate quiz result object and assign to the view model
-                val quizResult = QuizResult(resultID, userID, currentScore, timeCreated)
-                quizViewModel.quizResult = quizResult
+                val scaledScore = (correctNumOfAnswers.toDouble()/quizAnswerList.size.toDouble()*100).toInt()
+                // TODO: (Done)verify/change to time = current time
+                val currentTime = LocalDateTime.now()
+                val timeCreated = TimeConverter.convertToDateViaInstant(currentTime)
+                Timber.i("result timeCreated is: $timeCreated")
 
-                // Pass the user ID, quiz result, currentScore and  answer list
-                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(userID, resultID, currentScore)
-                view?.findNavController()?.navigate(action)
+                // Create quiz result object to be inserted to the database.
+                // The ID is set to 0 to be auto-generated
+                val quizResult = QuizResult(0, userID, scaledScore, timeCreated)
+
+                // insert the result and the answers to the database,
+                quizViewModel.insertQuizResultAndAnswers(quizResult,quizAnswerList).observe(viewLifecycleOwner){ resultId ->
+
+                    if (resultId<=0){
+                        // something goes wrong
+                        Toast.makeText(context,
+                            "Something is wrong, quiz result is not saved",
+                            Toast.LENGTH_SHORT).show()
+                    }else{
+                        // all good
+                        // Pass the user ID, quiz result, currentScore and  answer list
+                        Timber.i("The inserted resultId is: $resultId")
+
+                        //TODO: (Done)verify/change the resultID from zero to be the next auto-incremented resultID
+                        val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(userID, resultId, scaledScore)
+                        view?.findNavController()?.navigate(action)
+
+                    }
+                }
+
             }
         })
 

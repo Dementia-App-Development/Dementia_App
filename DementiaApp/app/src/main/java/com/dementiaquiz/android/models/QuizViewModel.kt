@@ -286,6 +286,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
             // Reset the index to zero, and clear the answer list
             currentQuestionIndex = 0
+
+            // TODO: can we clear the answer list when the game start rather than game ends? This will make sure
+            //  the quizAnswerList is available when save to the database
             quizAnswerList.clear()
         }
 
@@ -322,14 +325,21 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 //        _currentQuestion.value = quizQuestions[currentQuestionIndex]
 //    }
 
-    // insertQuizResult and answers belong to that result. It returns the ID of
+    // insertQuizResult and answers belong to that result. It returns the LiveData that represent ID of
     // the inserted QuizResult
-    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):Long{
+    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):LiveData<Long>{
 
-        var quizResultId:Long =-1;
+        Timber.i("QuizResult is: $quizResult")
+        Timber.i("quizAnswerList is: $quizAnswerList")
+
+
+        var quizResultId =MutableLiveData<Long>()
+
         viewModelScope.launch {
-            quizResultId = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+            val num = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+            quizResultId.postValue(num)
         }
+
         return quizResultId
 
     }

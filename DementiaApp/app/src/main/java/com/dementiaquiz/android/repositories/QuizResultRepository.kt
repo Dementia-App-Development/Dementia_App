@@ -26,6 +26,7 @@ class QuizResultRepository(private val quizResultDao: QuizResultDao, private val
     suspend fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>): Long{
 
         val quizResultId = quizResultDao.insert(quizResult)
+
         for (quizAnswer in quizAnswerList) {
             quizAnswer.resultId = quizResultId
             answerDao.insert(quizAnswer)
