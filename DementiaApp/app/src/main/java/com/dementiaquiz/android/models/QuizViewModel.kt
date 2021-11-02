@@ -48,6 +48,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     // The index of the current question in the quiz question list
     private var currentQuestionIndex: Int
 
+    // The list of answers for the quiz
+    var quizAnswerList : MutableList<QuizAnswer> = mutableListOf<QuizAnswer>()
+
+    // The result of the quiz
+    lateinit var quizResult : QuizResult
+
     // A tally of how many correct answers the user has gotten in the quiz
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
@@ -109,7 +115,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
 
-            // TODO: handle if location is no granted permission
+            // TODO: handle if location is not granted permission
             return
         }
 
@@ -248,35 +254,78 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Checks the user answer against the true answer, returns boolean
+     */
+    private fun isResponseCorrect(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : Boolean {
+        // Check if the answer provided is correct
+        if (userAnswer == null && !assistedCorrect) {
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            return false
+        } else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is ✔ correct ✔")
+            // Increment the score
+            _score.value = (_score.value)?.plus(1)
+            return true
+        } else {
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            return false
+        }
+    }
+
+    /**
+     * Input is the user response and true answer to the question, returns a quiz answer object
+     */
+    private fun getQuestionAnswer(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : QuizAnswer {
+
+        // Generate a QuizAnswer object
+        val questionDescription = quizQuestions[currentQuestionIndex].instruction
+        // TODO: currently converts list of answers to a concatenated list, to change this need to update QuizAnswer model
+        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString { "&" } ?: ""
+        val response : String = userAnswer.toString()
+        val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
+        // TODO: (Done)result ID is current default to zero - should this be fetched from db?
+        //  [Feedback: It is not necessary, I will overwrite the resultId in each answer when I insert the result and answer to the database]
+        val resultId = 0L
+        return QuizAnswer(0, questionDescription, correctAnswer, response, correct, resultId)
+    }
+
+    /**
      * Goes to the next question, also checks the answer and records the result
      */
     fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
-        // TODO: Check if the answer provided is correct
-        if (userAnswer.isNullOrEmpty() && !assistedCorrect) {
-            Timber.i("Wrong!")
-        } else if (assistedCorrect || trueAnswer.contains(userAnswer!!)) {
-            Timber.i("Well Done")
 
-            // Increment the score
-            _score.value = (_score.value)?.plus(1)
-        } else {
-            Timber.i("Wrong!")
-        }
+        // Get a quizAnswer object and append to quiz answer list
+        val quizAnswer = getQuestionAnswer(userAnswer, trueAnswer, assistedCorrect)
+        quizAnswerList.add(quizAnswer)
 
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
+
             // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
+            // TODO: (done)before setting game finished to true, saves the results of the quiz to database
+            //  [feedback: the observer should be in fragment/activity rather than view model.
+            //  Therefore, this to-do is done in an observer in the fragment. However,
+            //  it might cause problem because of the time inconsistency, like the quizAnswer list is cleared
+            //  before being saved. This might need to be fixed or not]
+
             _quizIsFinished.value = true
-            // TODO: make this a method that, before setting game finished to true, saves the results of the quiz to database
-            _quizIsFinished.value = false
+
+            // Reset the index to zero, and clear the answer list
             currentQuestionIndex = 0
+
+            // TODO: can we clear the answer list when the game start rather than game ends? This will make sure
+            //  the quizAnswerList is available when save to the database. If it works then do not fix
+            quizAnswerList.clear()
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
     }
 
+    /**
+     * Starts the countdown timer
+     */
     fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
         binding.quizProgressBar.progress = 0
         val myCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
@@ -295,24 +344,21 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         return myCountDownTimer
     }
 
-    // Go to previous question
-    // TODO: I believe this is redundant now and can be removed
-    fun onPrev() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex -= 1
-        }
-        _currentQuestion.value = quizQuestions[currentQuestionIndex]
-    }
 
-    // insertQuizResult and answers belong to that result. It returns the ID of
+    // insertQuizResult and answers belong to that result. It returns the LiveData that represent ID of
     // the inserted QuizResult
-    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList: List<QuizAnswer>): Long {
+    fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):LiveData<Long>{
 
-        var quizResultId: Long = -1;
+        Timber.i("QuizResult is: $quizResult")
+        Timber.i("quizAnswerList is: $quizAnswerList")
+
+        var quizResultId =MutableLiveData<Long>()
+
         viewModelScope.launch {
-            quizResultId =
-                quizResultRepository.insertQuizResultAndAnswers(quizResult, quizAnswerList)
+            val num = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
+            quizResultId.postValue(num)
         }
+
         return quizResultId
 
     }
