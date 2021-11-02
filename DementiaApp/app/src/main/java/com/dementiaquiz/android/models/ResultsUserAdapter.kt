@@ -12,15 +12,16 @@ import com.dementiaquiz.android.database.model.User
 import com.dementiaquiz.android.databinding.FragmentResultsBinding
 import com.dementiaquiz.android.databinding.RecyclerviewItemBinding
 
-class ResultsUserAdapter: ListAdapter<User, ResultsUserAdapter.NicknameViewHolder>(UserDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NicknameViewHolder {
-        return NicknameViewHolder.from(parent)
-    }
+class ResultsUserAdapter : ListAdapter<User,
+        ResultsUserAdapter.NicknameViewHolder>(UserDiffCallback()) {
 
     override fun onBindViewHolder(holder: NicknameViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NicknameViewHolder {
+        return NicknameViewHolder.from(parent)
     }
 
     class NicknameViewHolder private constructor(val binding: RecyclerviewItemBinding)
@@ -43,7 +44,7 @@ class ResultsUserAdapter: ListAdapter<User, ResultsUserAdapter.NicknameViewHolde
 
 class UserDiffCallback : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem == newItem
+        return oldItem.userId == newItem.userId
     }
 
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {

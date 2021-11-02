@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:text="List of users: "
         tools:text="List of users:" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/results_title" />
+        app:layout_constraintTop_toBottomOf="@+id/results_title"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
