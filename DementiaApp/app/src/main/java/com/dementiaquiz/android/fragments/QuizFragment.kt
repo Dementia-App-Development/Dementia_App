@@ -60,6 +60,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
      * Shut down text to speech on fragment destroyed
      */
     override fun onDestroy() {
+        // manually destroy the viewModel when the fragment is destroyed
+        activity?.viewModelStore?.clear();
+
         // Shutdown TTS
         if (tts != null) {
             tts!!.stop()
