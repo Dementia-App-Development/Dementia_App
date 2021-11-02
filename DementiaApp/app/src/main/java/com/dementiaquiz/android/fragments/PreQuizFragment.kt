@@ -113,8 +113,9 @@ class PreQuizFragment : Fragment() {
 
         // Navigate to the quiz passing user ID as argument
         binding.preQuizGoToQuizButton.setOnClickListener { v:View ->
-            // TODO: pass the user ID argument to the quiz fragment
-            v.findNavController().navigate(R.id.action_preQuizFragment_to_quizFragment)
+            // Pass the user ID argument to the quiz fragment
+            val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
+            v.findNavController().navigate(action)
         }
 
         return binding.root

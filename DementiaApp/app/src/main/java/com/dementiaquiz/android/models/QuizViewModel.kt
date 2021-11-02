@@ -42,10 +42,16 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     private val REQUEST_CODE_SPEECH_INPUT = 100;
 
     // A List of quiz question objects
-    private var quizQuestions : List<QuizQuestion>
+    var quizQuestions : List<QuizQuestion>
 
     // The index of the current question in the quiz question list
     private var currentQuestionIndex : Int
+
+    // The list of answers for the quiz
+    var quizAnswerList : MutableList<QuizAnswer> = mutableListOf<QuizAnswer>()
+
+    // The result of the quiz
+    lateinit var quizResult : QuizResult
 
     // A tally of how many correct answers the user has gotten in the quiz
     private val _score = MutableLiveData<Int>()
@@ -102,7 +108,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                 context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // TODO: handle if location is no granted permission
+            // TODO: handle if location is not granted permission
             return
         }
 
@@ -225,37 +231,70 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Checks the user answer against the true answer, returns boolean
+     */
+    private fun isResponseCorrect(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : Boolean {
+        // Check if the answer provided is correct
+        if (userAnswer == null && !assistedCorrect) {
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            return false
+        } else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is ✔ correct ✔")
+            // Increment the score
+            _score.value = (_score.value)?.plus(1)
+            return true
+        } else {
+            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            return false
+        }
+    }
+
+    /**
+     * Input is the user response and true answer to the question, returns a quiz answer object
+     */
+    private fun getQuestionAnswer(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : QuizAnswer {
+
+        // Generate a QuizAnswer object
+        val questionDescription = quizQuestions[currentQuestionIndex].instruction
+        // TODO: currently converts list of answers to a concatenated list, to change this need to update QuizAnswer model
+        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString { ", " } ?: ""
+        val response : String = userAnswer.toString()
+        val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
+        // TODO: result ID is current default to zero - should this be fetched from db?
+        val resultId = 0L
+        return QuizAnswer(0, questionDescription, correctAnswer, response, correct, resultId)
+    }
+
+    /**
      * Goes to the next question, also checks the answer and records the result
      */
     fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
-        // TODO: Check if the answer provided is correct
-        if (userAnswer == null && !assistedCorrect) {
-            Timber.i("Wrong!")
-        }
-        else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
-            Timber.i("Well Done")
 
-            // Increment the score
-            _score.value = (_score.value)?.plus(1)
-        }
-        else {
-            Timber.i("Wrong!")
-        }
+        // Get a quizAnswer object and append to quiz answer list
+        val quizAnswer = getQuestionAnswer(userAnswer, trueAnswer, assistedCorrect)
+        quizAnswerList.add(quizAnswer)
 
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
+
         // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
+            // TODO:before setting game finished to true, saves the results of the quiz to database
+
             _quizIsFinished.value = true
-            // TODO: make this a method that, before setting game finished to true, saves the results of the quiz to database
-            _quizIsFinished.value = false
+
+            // Reset the index to zero, and clear the answer list
             currentQuestionIndex = 0
+            quizAnswerList.clear()
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
     }
 
+    /**
+     * Starts the countdown timer
+     */
     fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
         binding.quizProgressBar.progress = 0
         val myCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
@@ -276,12 +315,12 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
     // Go to previous question
     // TODO: I believe this is redundant now and can be removed
-    fun onPrev() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex -= 1
-        }
-        _currentQuestion.value = quizQuestions[currentQuestionIndex]
-    }
+//    fun onPrev() {
+//        if (currentQuestionIndex > 0) {
+//            currentQuestionIndex -= 1
+//        }
+//        _currentQuestion.value = quizQuestions[currentQuestionIndex]
+//    }
 
     // insertQuizResult and answers belong to that result. It returns the ID of
     // the inserted QuizResult

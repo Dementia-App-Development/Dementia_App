@@ -48,10 +48,6 @@
         android:name="com.dementiaquiz.android.fragments.PostQuizFragment"
         android:label="End"
         tools:layout="@layout/fragment_post_quiz">
-        <argument
-            android:name="currentScore"
-            android:defaultValue="0"
-            app:argType="integer" />
         <action
             android:id="@+id/action_postQuizFragment_to_titleFragment"
             app:destination="@id/titleFragment"
@@ -60,6 +56,15 @@
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/titleFragment" />
+        <argument
+            android:name="userID"
+            app:argType="long" />
+        <argument
+            android:name="resultID"
+            app:argType="long" />
+        <argument
+            android:name="currentScore"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"

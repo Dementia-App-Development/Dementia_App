@@ -13,12 +13,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
+import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.models.QuizQuestion
+import com.dementiaquiz.android.models.QuizResultViewModel
+import com.dementiaquiz.android.models.QuizResultViewModelFactory
 import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
 import java.io.InputStream
@@ -31,12 +37,14 @@ import java.util.*
  */
 class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
-    private lateinit var viewModel: QuizViewModel
+    private lateinit var quizViewModel : QuizViewModel
+    private lateinit var quizResultViewModel : QuizResultViewModel
     private val REQUEST_CODE_SPEECH_INPUT = 100
     private var tts: TextToSpeech? = null
     private var answer: String = "False"
     private var talk: String? = null
     private var voiceAnswer: String = "Nothing"
+    var countDown: CountDownTimer? = null
     private lateinit var binding: FragmentQuizBinding
 
     /**
@@ -91,70 +99,36 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         // Inflate the binding
         binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
 
-        // Get the viewmodel and set to the first question
-        viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
-        Timber.i("QUIZ MODE: %s", viewModel.mode)
-        viewModel.setFirstQuestion()
+        // Get the quiz view model and set to the first question
+        quizViewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
+        Timber.i("QUIZ MODE: %s", quizViewModel.mode)
+        quizViewModel.setFirstQuestion()
 
-        // Initialize count down timer
-        var countDown: CountDownTimer? = null
+        // Get the quiz result view model
+        val quizResultViewModel: QuizResultViewModel by viewModels {
+            QuizResultViewModelFactory((activity?.application as DementiaQuizApplication).quizResultRepository)
+        }
+
+        // Get user ID argument using by navArgs property delegate
+        val quizFragmentArgs by navArgs<QuizFragmentArgs>()
+        val userID = quizFragmentArgs.userID
 
         /**
          * Logic and UI handling when a new question is detected in the quiz
          */
-        viewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
-            Timber.i(newQuestion.answers.toString())
-            binding.quizInstructionsTextView.visibility = View.VISIBLE
-            binding.quizSubTextView.visibility = View.VISIBLE
-            binding.quizTrueButton.visibility = View.GONE
-            binding.quizFalseButton.visibility = View.GONE
-            binding.quizRepeatButton.visibility = View.GONE
-            binding.quizUserResponseEditText.visibility = View.GONE
-            binding.quizDateEditText.visibility = View.GONE
-            binding.quizStartTimerButton.visibility = View.GONE
-            binding.quizVoiceButton.visibility = View.GONE
-            binding.quizNextButton.visibility = View.VISIBLE
-            binding.quizProgressBar.visibility = View.VISIBLE
+        quizViewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
 
-            if (TextUtils.isEmpty(newQuestion.image_url)){
-                binding.quizSubTextView.visibility  = View.GONE
-                binding.quizQuestionImageView.visibility = View.VISIBLE
-                binding.quizQuestionImageView.setImageDrawable(loadImageFromWebOperations(newQuestion.image_url))
-            }
-            else {
-                binding.quizSubTextView.visibility  = View.VISIBLE
-                binding.quizQuestionImageView.visibility = View.GONE
-            }
+            Timber.i("Q" + newQuestion.question_no.toString() + " answers: %s", newQuestion.answers.toString())
+
+            toggleUIQuestionElements(newQuestion, binding)
 
             // TODO: Bind the loadingbar https://stackoverflow.com/questions/45373007/progressdialog-is-deprecated-what-is-the-alternate-one-to-use
             // TODO: in some way?
 
-            // Toggle visibility of respective parts of the UI based on the question response type
-            when (newQuestion.response_type) {
-                QuizQuestion.ResponseType.DATE -> {
-                    binding.quizDateEditText.visibility = View.VISIBLE
-                    countDown = viewModel.startTimer(binding, 60 * 1000)
-                }
-                QuizQuestion.ResponseType.ASSISTED -> {
-                    binding.quizStartTimerButton.visibility = View.VISIBLE
-                    binding.quizProgressBar.visibility = View.GONE
-                    binding.quizNextButton.visibility = View.GONE
-                }
-                QuizQuestion.ResponseType.SPEECH -> {
-                    binding.quizSubTextView.visibility = View.GONE
-                    binding.quizRepeatButton.visibility = View.VISIBLE
-                    binding.quizInstructionsTextView.visibility = View.GONE
-                    binding.quizVoiceButton.visibility = View.VISIBLE
-                    binding.quizNextButton.visibility = View.GONE
-                    countDown = viewModel.startTimer(binding, 60 * 1000)
-                }
-                else -> {
-                    binding.quizUserResponseEditText.visibility = View.VISIBLE
-                    countDown = viewModel.startTimer(binding, 60 * 1000)
-                }
-            }
+            // Toggle visibility of respective response parts of the UI based on the question response type
+            toggleUIResponseElements(newQuestion, binding, quizViewModel)
 
-            // Set the bindings in the UI to default values
+            // Set the bindings in the UI of the elements consistent among all questions
             binding.quizQuestionNumTextView.text = " Question " + newQuestion.question_no.toString()
             binding.quizInstructionsTextView.text = newQuestion.instruction
             binding.quizSubTextView.text = newQuestion.sub_text
@@ -169,55 +143,46 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         /**
          * Set up LiveData observation relationship to detect for when the quiz has completed
+         * Writes the quiz result to db and passes results to post quiz fragment
          */
-         viewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newBoolean ->
-            if (newBoolean == true) {
+         quizViewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newQuizIsFinished ->
+            if (newQuizIsFinished == true) {
 
-                // Fetch the current score
-                val currentScore = viewModel.score.value ?: 0
+                // Fetch the current score and convert to double percentage
+                val currentScore = quizViewModel.score.value ?: 0
+                val timeCreated = Date() // TODO: verify/change to time = current time
+                val resultID = 0L //TODO: verify/change the resultID from zero to be the next auto-incremented resultID
 
-                // TODO: convert the score to a double as a percentage score
-                // TODO: pass the user ID, score, results ID to the post quiz fragment
+                // Generate quiz result object and assign to the view model
+                val quizResult = QuizResult(resultID, userID, currentScore, timeCreated)
+                quizViewModel.quizResult = quizResult
 
-                // Finish the quiz with the current score bundle passed to the post quiz fragment
-                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(currentScore)
+                // Pass the user ID, quiz result, currentScore and  answer list
+                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(userID, resultID, currentScore)
                 view?.findNavController()?.navigate(action)
             }
         })
-
-        // Start timer when start timer button is pressed
-        binding.quizStartTimerButton.setOnClickListener{
-            binding.quizProgressBar.visibility = View.VISIBLE
-            binding.quizStartTimerButton.visibility = View.GONE
-            binding.quizTrueButton.visibility = View.VISIBLE
-            binding.quizFalseButton.visibility = View.VISIBLE
-            countDown = viewModel.startTimer(binding, 60 * 1000)
-        }
-
-        // Repeat the quiz question text to speech when button is pressed
-        binding.quizRepeatButton.setOnClickListener{
-            tts!!.speak(talk, TextToSpeech.QUEUE_FLUSH, null)
-        }
 
         // Go to the next question
         binding.quizNextButton.setOnClickListener {
             // Cancel countdown and go to next question
             countDown?.cancel()
-            // Verify answer against what was input in the edit text response field
-            // TODO: implement this properly, put in when/case loop
+
+            // Quiz View model verifies answer against what was input in the edit text response field
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
                 val response = binding.quizUserResponseEditText.text.toString()
-                viewModel.onNext(response, answer, false)
+                quizViewModel.onNext(response, answer, false)
             }
-            else if (binding.quizDateEditText.visibility == View.VISIBLE) {
+            if (binding.quizDateEditText.visibility == View.VISIBLE) {
                 val response = binding.quizDateEditText.text.toString()
-                viewModel.onNext(response, answer, false)
+                quizViewModel.onNext(response, answer, false)
+            } else {
+                quizViewModel.onNext(voiceAnswer, answer, false)
             }
-            else {
-                viewModel.onNext(voiceAnswer, answer, false)
-            }
-            binding.quizUserResponseEditText.getText().clear();
-            binding.quizDateEditText.getText().clear();
+
+            // Clear the user response fields
+            binding.quizUserResponseEditText.text.clear();
+            binding.quizDateEditText.text.clear();
 
 
             //TODO:test if we can save to database, this should be removed. It works, but it needs to be removed
@@ -226,25 +191,40 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             quizAnswerList.add(QuizAnswer(0,"firstQuestion","correctAns","myResponse",false,55))
             quizAnswerList.add(QuizAnswer(0,"secQuestion","correctsecAns","mysecResponse",true,55))
 
-            viewModel.insertQuizResultAndAnswers(quizResult,quizAnswerList)*/
+            quizViewModel.insertQuizResultAndAnswers(quizResult,quizAnswerList)*/
 
         }
 
-        // Assisted mode true/false response buttons
-        binding.quizTrueButton.setOnClickListener {
+        // Start timer when start timer button is pressed
+        binding.quizStartTimerButton.setOnClickListener{
+            binding.quizProgressBar.visibility = View.VISIBLE
+            binding.quizStartTimerButton.visibility = View.GONE
+            binding.quizTrueButton.visibility = View.VISIBLE
+            binding.quizFalseButton.visibility = View.VISIBLE
+            countDown = quizViewModel.startTimer(binding, 60 * 1000)
+        }
 
+        // Repeat the quiz question text to speech when button is pressed
+        binding.quizRepeatButton.setOnClickListener{
+            tts!!.speak(talk, TextToSpeech.QUEUE_FLUSH, null)
+        }
+
+        /**
+         * Assisted mode true/false response buttons
+         */
+        binding.quizTrueButton.setOnClickListener {
             // Verify answer against what was input in the edit text response field
 
             // Cancel countdown and go to next question
             countDown?.cancel()
-            viewModel.onNext(null, answer, true)
+            quizViewModel.onNext(null, answer, true)
         }
         binding.quizFalseButton.setOnClickListener {
             // Verify answer against what was input in the edit text response field
 
             // Cancel countdown and go to next question
             countDown?.cancel()
-            viewModel.onNext(null, answer, false)
+            quizViewModel.onNext(null, answer, false)
         }
 
         // Text to speech
@@ -274,8 +254,70 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         return binding.root
     }
 
+    /**
+     * Toggles question elements based on the quiz question
+     */
+    private fun toggleUIQuestionElements(newQuestion : QuizQuestion, binding : FragmentQuizBinding) {
+
+        binding.quizInstructionsTextView.visibility = View.VISIBLE
+        binding.quizSubTextView.visibility = View.VISIBLE
+        binding.quizTrueButton.visibility = View.GONE
+        binding.quizFalseButton.visibility = View.GONE
+        binding.quizRepeatButton.visibility = View.GONE
+        binding.quizUserResponseEditText.visibility = View.GONE
+        binding.quizDateEditText.visibility = View.GONE
+        binding.quizStartTimerButton.visibility = View.GONE
+        binding.quizVoiceButton.visibility = View.GONE
+        binding.quizNextButton.visibility = View.VISIBLE
+        binding.quizProgressBar.visibility = View.VISIBLE
+
+        if (TextUtils.isEmpty(newQuestion.image_url)) {
+            binding.quizSubTextView.visibility = View.GONE
+            binding.quizQuestionImageView.visibility = View.VISIBLE
+            binding.quizQuestionImageView.setImageDrawable(loadImageFromWebOperations(newQuestion.image_url))
+        } else {
+            binding.quizSubTextView.visibility = View.VISIBLE
+            binding.quizQuestionImageView.visibility = View.GONE
+        }
+    }
+
+    /**
+     * UI elements are hidden/shown based on the type of question being displayed
+     */
+    private fun toggleUIResponseElements(newQuestion : QuizQuestion,
+                                 binding : FragmentQuizBinding,
+                                 quizViewModel : QuizViewModel) {
+
+        when (newQuestion.response_type) {
+            QuizQuestion.ResponseType.DATE -> {
+                binding.quizDateEditText.visibility = View.VISIBLE
+                countDown = quizViewModel.startTimer(binding, 60 * 1000)
+            }
+            QuizQuestion.ResponseType.ASSISTED -> {
+                binding.quizStartTimerButton.visibility = View.VISIBLE
+                binding.quizProgressBar.visibility = View.GONE
+                binding.quizNextButton.visibility = View.GONE
+            }
+            QuizQuestion.ResponseType.SPEECH -> {
+                binding.quizSubTextView.visibility = View.GONE
+                binding.quizRepeatButton.visibility = View.VISIBLE
+                binding.quizInstructionsTextView.visibility = View.GONE
+                binding.quizVoiceButton.visibility = View.VISIBLE
+                binding.quizNextButton.visibility = View.GONE
+                countDown = quizViewModel.startTimer(binding, 60 * 1000)
+            }
+            else -> {
+                binding.quizUserResponseEditText.visibility = View.VISIBLE
+                countDown = quizViewModel.startTimer(binding, 60 * 1000)
+            }
+        }
+    }
+
 }
 
+/**
+ * Loads an image from web operations
+ */
 private fun loadImageFromWebOperations(url: String?): Drawable? {
     return try {
         val `is`: InputStream = URL(url).content as InputStream
