@@ -45,6 +45,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if(status != TextToSpeech.ERROR) {
             tts?.language = Locale.UK
+            tts!!.speak(talk, TextToSpeech.QUEUE_FLUSH, null)
         }
     }
 
@@ -59,6 +60,8 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
         super.onDestroy()
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
