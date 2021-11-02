@@ -63,6 +63,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         // manually destroy the viewModel when the fragment is destroyed
         activity?.viewModelStore?.clear();
 
+
         // Shutdown TTS
         if (tts != null) {
             tts!!.stop()
@@ -201,6 +202,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
         // Start timer when start timer button is pressed
         binding.quizStartTimerButton.setOnClickListener{
+            // clear the old timer if it exist
+            countDown?.cancel()
+
             binding.quizProgressBar.visibility = View.VISIBLE
             binding.quizStartTimerButton.visibility = View.GONE
             binding.quizTrueButton.visibility = View.VISIBLE
