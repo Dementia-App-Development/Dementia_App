@@ -2,12 +2,16 @@ package com.dementiaquiz.android.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +24,7 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizViewModel
+import com.squareup.picasso.Picasso
 import timber.log.Timber
 import java.io.InputStream
 import java.net.URL
@@ -38,7 +43,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private var talk: String? = null
     private var voiceAnswer: String = "Nothing"
     private lateinit var binding: FragmentQuizBinding
-
+    private val displayMetrics: DisplayMetrics by lazy { Resources.getSystem().displayMetrics }
+    val screenRectPx: Rect
+        get() = displayMetrics.run { Rect(0, 0, widthPixels, heightPixels) }
     /**
      * Create views for the quiz by inflating XML
      */
@@ -118,11 +125,12 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizVoiceButton.visibility = View.GONE
             binding.quizNextButton.visibility = View.VISIBLE
             binding.quizProgressBar.visibility = View.VISIBLE
-
-            if (TextUtils.isEmpty(newQuestion.image_url)){
+            Timber.i((!TextUtils.isEmpty(newQuestion.image_url)).toString())
+            if (!TextUtils.isEmpty(newQuestion.image_url)){
                 binding.quizSubTextView.visibility  = View.GONE
                 binding.quizQuestionImageView.visibility = View.VISIBLE
-                binding.quizQuestionImageView.setImageDrawable(loadImageFromWebOperations(newQuestion.image_url))
+                val url = newQuestion.image_url?.split('/')
+                Picasso.get().load("https://" + url!![2] +'/' + url[3]).resize(screenRectPx.width(), screenRectPx.height()/3).into( binding.quizQuestionImageView);
             }
             else {
                 binding.quizSubTextView.visibility  = View.VISIBLE
@@ -277,13 +285,4 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         return binding.root
     }
 
-}
-
-private fun loadImageFromWebOperations(url: String?): Drawable? {
-    return try {
-        val `is`: InputStream = URL(url).content as InputStream
-        Drawable.createFromStream(`is`, "src name")
-    } catch (e: java.lang.Exception) {
-        null
-    }
 }
