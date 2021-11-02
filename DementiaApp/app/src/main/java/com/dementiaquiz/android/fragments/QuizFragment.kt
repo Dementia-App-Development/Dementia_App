@@ -194,7 +194,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 // TODO: pass the user ID, score, results ID to the post quiz fragment
 
                 // Finish the quiz with the current score bundle passed to the post quiz fragment
-                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(currentScore)
+                val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(1L,1L,12)
                 view?.findNavController()?.navigate(action)
             }
         })
