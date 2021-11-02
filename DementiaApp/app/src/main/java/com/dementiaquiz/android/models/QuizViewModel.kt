@@ -175,9 +175,6 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
 
-                    // As the quiz is now loaded, set the quiz is loading now to false
-                    _quizIsLoading.value = false
-
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }
                     Timber.i("Length of quiz= %s", quizQuestions.size)
@@ -185,6 +182,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     // Set the first question
                     currentQuestionIndex = 0
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
+
                 }
             })
 
@@ -209,8 +209,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
                     Timber.i("Retrieved quiz questions from API")
 
-                    // As the quiz is now loaded, set the quiz is loading now to false
-                    _quizIsLoading.value = false
+
 
                     // Sort the questions list by id
                     quizQuestions.sortedBy { it.id }
@@ -219,6 +218,9 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
                     // Set the first question
                     currentQuestionIndex = 0
                     _currentQuestion.value = quizQuestions[currentQuestionIndex]
+
+                    // As the quiz is now loaded, set the quiz is loading now to false
+                    _quizIsLoading.value = false
                 }
             })
         }

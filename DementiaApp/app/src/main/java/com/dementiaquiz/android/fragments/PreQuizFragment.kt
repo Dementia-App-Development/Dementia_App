@@ -51,6 +51,7 @@ class PreQuizFragment : Fragment() {
 
         // Toggle the respective toggle buttons on/off as the other member of the pair is pressed
         binding.preQuizByMyselfButton.setOnClickListener {
+            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizByMyselfButton.isChecked) {
                 binding.preQuizBeingAssistedButton.toggle()
             } else {
@@ -64,6 +65,7 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizBeingAssistedButton.setOnClickListener {
+            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizBeingAssistedButton.isChecked) {
                 binding.preQuizByMyselfButton.toggle()
             } else {
@@ -77,6 +79,7 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizAtHomeButton.setOnClickListener {
+            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtHomeButton.isChecked) {
                 binding.preQuizAtClinicButton.toggle()
             } else {
@@ -90,6 +93,7 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizAtClinicButton.setOnClickListener {
+            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtClinicButton.isChecked) {
                 binding.preQuizAtHomeButton.toggle()
             } else {
