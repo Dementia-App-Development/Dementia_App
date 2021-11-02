@@ -229,7 +229,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
      */
     fun onNext(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) {
         // TODO: Check if the answer provided is correct
-        if (userAnswer == null && !assistedCorrect) {
+        if (userAnswer.isNullOrEmpty() && !assistedCorrect) {
             Timber.i("Wrong!")
         }
         else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
