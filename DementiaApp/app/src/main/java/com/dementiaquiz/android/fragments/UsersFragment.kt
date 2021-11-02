@@ -1,32 +1,20 @@
 package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-<<<<<<< Updated upstream
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-=======
-import androidx.lifecycle.ViewModelProvider
->>>>>>> Stashed changes
 import androidx.navigation.findNavController
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentUsersBinding
-<<<<<<< Updated upstream
-import com.dementiaquiz.android.models.QuizResultViewModel
-import com.dementiaquiz.android.models.QuizResultViewModelFactory
 import com.dementiaquiz.android.models.UsersViewModel
 import com.dementiaquiz.android.models.UsersViewModelFactory
-=======
-import com.dementiaquiz.android.models.QuizViewModel
-import com.dementiaquiz.android.models.UsersViewModel
-import timber.log.Timber
->>>>>>> Stashed changes
 
 /**
  * A fragment that prompts the user if they are a new user, or an existing one

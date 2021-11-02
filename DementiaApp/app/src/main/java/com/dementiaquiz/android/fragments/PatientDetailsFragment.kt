@@ -1,38 +1,26 @@
 package com.dementiaquiz.android.fragments
 
-import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.dementiaquiz.android.DementiaQuizApplication
-import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
 import com.dementiaquiz.android.databinding.FragmentPatientDetailsBinding
-import com.dementiaquiz.android.models.QuizViewModel
 import com.dementiaquiz.android.models.UsersViewModel
 import com.dementiaquiz.android.models.UsersViewModelFactory
-import timber.log.Timber
-import java.net.URL
-import java.util.*
-import android.widget.EditText
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
-import android.content.Context
-import android.graphics.Color
-import android.os.Build
-import android.widget.DatePicker
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.dementiaquiz.android.utils.TimeConverter
+import timber.log.Timber
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 
 /**
