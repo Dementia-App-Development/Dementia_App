@@ -281,7 +281,11 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
 
         // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
-            // TODO:before setting game finished to true, saves the results of the quiz to database
+            // TODO: (done)before setting game finished to true, saves the results of the quiz to database
+            //  [feedback: the observer should be in fragment/activity rather than view model.
+            //  Therefore, this to-do is done in an observer in the fragment. However,
+            //  it might cause problem because of the time inconsistency, like the quizAnswer list is cleared
+            //  before being saved. This may need to be fixed]
 
             _quizIsFinished.value = true
 
