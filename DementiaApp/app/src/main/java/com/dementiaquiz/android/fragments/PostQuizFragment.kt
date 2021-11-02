@@ -59,6 +59,7 @@ class PostQuizFragment : Fragment() {
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }*/
 
+
         // Get the userId, resultID and score from the QuizFragment
         // Get user ID argument using by navArgs property delegate
         val postQuizFragmentArgs by navArgs<PostQuizFragmentArgs>()
@@ -66,7 +67,7 @@ class PostQuizFragment : Fragment() {
         val resultID = postQuizFragmentArgs.resultID
         val finalScore = postQuizFragmentArgs.currentScore
 
-        quizResultViewModel.getQuizResultByResultId(1).observe(viewLifecycleOwner) { result ->
+        quizResultViewModel.getQuizResultByResultId(resultID).observe(viewLifecycleOwner) { result ->
 
             if (result != null) {
                 binding.postQuizScoreDescTextView.text = "Score"
