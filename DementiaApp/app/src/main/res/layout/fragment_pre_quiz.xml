@@ -86,6 +86,12 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please be waited when we are loading the quiz questions. The button will be shown once the questions are loaded..."
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/preQuizGoToQuizButton"
