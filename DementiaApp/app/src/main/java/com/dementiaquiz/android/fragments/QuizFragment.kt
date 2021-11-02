@@ -1,10 +1,10 @@
 package com.dementiaquiz.android.fragments
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.text.TextUtils
@@ -15,25 +15,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
-import java.util.*
-import android.os.CountDownTimer as CountDownTimer
-import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
-import com.dementiaquiz.android.database.model.QuizAnswer
-import com.dementiaquiz.android.database.model.QuizResult
 import java.io.InputStream
 import java.net.URL
+import java.util.*
 
 
 /**

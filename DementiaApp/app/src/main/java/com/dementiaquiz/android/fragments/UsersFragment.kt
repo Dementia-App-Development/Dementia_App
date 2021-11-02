@@ -1,23 +1,24 @@
 package com.dementiaquiz.android.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentUsersBinding
-import com.dementiaquiz.android.models.QuizResultViewModel
-import com.dementiaquiz.android.models.QuizResultViewModelFactory
 import com.dementiaquiz.android.models.UsersViewModel
 import com.dementiaquiz.android.models.UsersViewModelFactory
 
 /**
- * TODO: description
+ * A fragment that prompts the user if they are a new user, or an existing one
+ * Passes the user ID to the next fragment
  */
 class UsersFragment : Fragment() {
 
@@ -31,11 +32,24 @@ class UsersFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        
+
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
-        // TODO: Populate existing users spinner with the nicknames from the user database
+        // TODO: (Done)Populate existing users spinner with the nicknames from the user database
+        usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList->
+
+            val spinner = binding.usersExistingUsersSpinner
+            val adapter:ArrayAdapter<String>? = context?.let {
+                ArrayAdapter<String>(
+                    it, android.R.layout.simple_spinner_dropdown_item, nicknameList
+                )
+            }
+            spinner.adapter = adapter
+
+        }
+
+
         // binding.usersExistingUsersSpinner.setSelection()
 
         // Toggle the existing users and new user buttons to mirror each other
@@ -48,6 +62,10 @@ class UsersFragment : Fragment() {
 
             // Display the existing users spinner if existing users button is on
             binding.usersExistingUsersSpinner.visibility = View.VISIBLE
+            binding.spinnerPromptTextView.visibility = View.VISIBLE
+
+            // Expand the spinner automatically
+            // binding.usersExistingUsersSpinner.performClick()
         }
         binding.usersNewUserToggleButton.setOnClickListener {
             if (binding.usersNewUserToggleButton.isChecked) {
@@ -58,6 +76,7 @@ class UsersFragment : Fragment() {
 
             // Hide the existing users spinner if new users button is on
             binding.usersExistingUsersSpinner.visibility = View.GONE
+            binding.spinnerPromptTextView.visibility = View.GONE
         }
 
         // Go to quiz dependent on whether new or existing user
@@ -69,9 +88,22 @@ class UsersFragment : Fragment() {
             // If it is an existing user, navigate straight to the pre-quiz fragment
             } else {
                 // Send user ID to pre quiz fragment
-                val userID = 0 // TODO: get the user ID from the db
-                val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userID)
-                v.findNavController().navigate(action)
+                val nickname = binding.usersExistingUsersSpinner.selectedItem.toString()
+                usersViewModel.getUserByNickname(nickname).observe(viewLifecycleOwner){ user ->
+                    if (user==null){
+                        Toast.makeText(context,
+                            "Error, cannot find the user with the nickname",
+                            Toast.LENGTH_SHORT).show()
+                    }else{
+                        // TODO: (Done) send the userId to the next fragment
+                        // everything is good to go, navigate and pass the userId to next fragment
+                        val userId = user.userId
+                        val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userId)
+                        v.findNavController().navigate(action)
+
+                    }
+                }
+
             }
         }
 
