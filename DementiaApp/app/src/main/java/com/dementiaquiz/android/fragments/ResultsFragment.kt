@@ -6,12 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dementiaquiz.android.R
+import com.dementiaquiz.android.models.ResultsUserAdapter
 import timber.log.Timber
+import androidx.databinding.DataBindingUtil
+import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.dementiaquiz.android.databinding.FragmentResultsBinding
 
 /**
  * Displays the historical data obtained from results from the quiz
  */
-class resultsFragment : Fragment() {
+class ResultsFragment : Fragment() {
+
+    private lateinit var binding: FragmentResultsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,10 +25,6 @@ class resultsFragment : Fragment() {
     ): View? {
 
         Timber.i("onCreateView called")
-
-        // Inflate the layout for this fragment
-        // TODO change to nav host controller binding
         return inflater.inflate(R.layout.fragment_results, container, false)
     }
-
 }
