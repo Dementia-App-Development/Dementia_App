@@ -260,7 +260,8 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString { "&" } ?: ""
         val response : String = userAnswer.toString()
         val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
-        // TODO: result ID is current default to zero - should this be fetched from db?
+        // TODO: (Done)result ID is current default to zero - should this be fetched from db?
+        //  [Feedback: It is not necessary, I will overwrite the resultId in each answer when I insert the result and answer to the database]
         val resultId = 0L
         return QuizAnswer(0, questionDescription, correctAnswer, response, correct, resultId)
     }
