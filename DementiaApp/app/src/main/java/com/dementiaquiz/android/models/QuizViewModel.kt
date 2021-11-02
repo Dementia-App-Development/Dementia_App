@@ -257,7 +257,7 @@ class QuizViewModel(application : Application) : AndroidViewModel(application) {
         // Generate a QuizAnswer object
         val questionDescription = quizQuestions[currentQuestionIndex].instruction
         // TODO: currently converts list of answers to a concatenated list, to change this need to update QuizAnswer model
-        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString { ", " } ?: ""
+        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString { "&" } ?: ""
         val response : String = userAnswer.toString()
         val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
         // TODO: result ID is current default to zero - should this be fetched from db?
