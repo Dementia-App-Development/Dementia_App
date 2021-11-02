@@ -60,6 +60,15 @@
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/titleFragment" />
+        <argument
+            android:name="userID"
+            app:argType="long" />
+        <argument
+            android:name="resultID"
+            app:argType="long" />
+        <argument
+            android:name="currentScore"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"
