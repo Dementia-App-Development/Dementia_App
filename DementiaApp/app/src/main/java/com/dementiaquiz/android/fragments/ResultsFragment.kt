@@ -9,7 +9,6 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.models.ResultsUserAdapter
 import timber.log.Timber
 import androidx.databinding.DataBindingUtil
-import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.databinding.FragmentResultsBinding
 
 /**
@@ -17,14 +16,17 @@ import com.dementiaquiz.android.databinding.FragmentResultsBinding
  */
 class ResultsFragment : Fragment() {
 
-    private lateinit var binding: FragmentResultsBinding
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+
+        val binding = DataBindingUtil.inflate<FragmentResultsBinding>(inflater, R.layout.fragment_results, container, false)
+
+        val recyclerView = binding.resultUserList
+        val adapter = ResultsUserAdapter()
+        recyclerView.adapter = adapter
 
         Timber.i("onCreateView called")
-        return inflater.inflate(R.layout.fragment_results, container, false)
+        return binding.root
     }
 }
