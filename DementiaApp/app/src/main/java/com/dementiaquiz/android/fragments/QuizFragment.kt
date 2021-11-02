@@ -231,6 +231,10 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
                 // Fetch the current score and convert to double percentage
                 val correctNumOfAnswers = quizViewModel.score.value ?: 0
+                Timber.i("correctNumOfAnswers is: $correctNumOfAnswers")
+                Timber.i("question numbers is: ${quizAnswerList.size}")
+
+
 
                 val scaledScore = (correctNumOfAnswers.toDouble()/quizAnswerList.size.toDouble()*100).toInt()
                 // TODO: (Done)verify/change to time = current time
@@ -253,7 +257,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                     }else{
                         // all good
                         // Pass the user ID, quiz result, currentScore and  answer list
-                        Timber.i("The inserted resultId is: $resultId")
+                        Timber.i("The inserted result ID is: $resultId")
 
                         //TODO: (Done)verify/change the resultID from zero to be the next auto-incremented resultID
                         val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(userID, resultId, scaledScore)

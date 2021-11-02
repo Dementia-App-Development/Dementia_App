@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPostQuizBinding
@@ -42,7 +43,7 @@ class PostQuizFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentPostQuizBinding>(
             inflater, R.layout.fragment_post_quiz, container, false
         )
-        binding.viewKonfetti.build()
+        binding.postQuizViewKonfetti.build()
             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
             .setDirection(0.0, 359.0)
             .setSpeed(1f, 5f)
@@ -50,7 +51,7 @@ class PostQuizFragment : Fragment() {
             .setTimeToLive(2000L)
             .addShapes(Shape.Square, Shape.Circle)
             .addSizes(Size(12))
-            .setPosition(-50f, binding.viewKonfetti.width + 50f, -50f, -50f)
+            .setPosition(-50f, binding.postQuizViewKonfetti.width + 50f, -50f, -50f)
             .streamFor(300, 5000L)
         /* The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
         // Navigate back to the title screen
@@ -58,14 +59,21 @@ class PostQuizFragment : Fragment() {
             v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
         }*/
 
-        quizResultViewModel.getQuizResultByResultId(1).observe(viewLifecycleOwner) { result ->
+        // Get the userId, resultID and score from the QuizFragment
+        // Get user ID argument using by navArgs property delegate
+        val postQuizFragmentArgs by navArgs<PostQuizFragmentArgs>()
+        val userID = postQuizFragmentArgs.userID
+        val resultID = postQuizFragmentArgs.resultID
+        val finalScore = postQuizFragmentArgs.currentScore
+
+        quizResultViewModel.getQuizResultByResultId(resultID).observe(viewLifecycleOwner) { result ->
 
             if (result != null) {
-                binding.scoreDescriptionTextView.text = "Score"
+                binding.postQuizScoreDescTextView.text = "Score"
 
                 println("the score is: "+ result.score.toString())
                 //Log.d("the score is: ", result.score.toString())
-                binding.scoreTextView.text = result.score.toString()
+                binding.postQuizScoreNumberTextView.text = result.score.toString()
 
                 var comment:String
 
@@ -76,14 +84,14 @@ class PostQuizFragment : Fragment() {
                     else -> comment="Something is wrong, we are not able to read the scaled test score. Please contact the Administrator"
                 }
 
-                binding.commentContentTextView.text = comment
+                binding.postQuizCommentContentTextView.text = comment
 
             }else{
 
                 //There is not such result
-                binding.scoreTextView.text = ""
-                binding.scoreDescriptionTextView.text = "Not Available"
-                binding.commentContentTextView.text = "Something is wrong, the score is not available"
+                binding.postQuizScoreNumberTextView.text = ""
+                binding.postQuizScoreDescTextView.text = "Not Available"
+                binding.postQuizCommentContentTextView.text = "Something is wrong, the score is not available"
 
             }
 
