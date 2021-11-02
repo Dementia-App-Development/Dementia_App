@@ -62,6 +62,7 @@
         <entry key="app/src/main/res/layout/fragment_results.xml" value="0.2686628226309823" />
         <entry key="app/src/main/res/layout/fragment_title.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/quiz_question_layout.xml" value="0.13697916666666668" />
+        <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.26975815982713125" />
       </map>
     </option>
   </component>

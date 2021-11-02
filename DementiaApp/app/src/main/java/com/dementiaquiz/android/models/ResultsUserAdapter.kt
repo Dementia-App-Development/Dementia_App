@@ -9,44 +9,46 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
+import com.dementiaquiz.android.databinding.FragmentResultsBinding
+import com.dementiaquiz.android.databinding.RecyclerviewItemBinding
 
-class ResultsUserAdapter: ListAdapter<User, ResultsUserAdapter.NicknameViewHolder>(UserComparator()) {
+class ResultsUserAdapter: ListAdapter<User, ResultsUserAdapter.NicknameViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NicknameViewHolder {
-        return NicknameViewHolder.create(parent)
+        return NicknameViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: NicknameViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item.nickname)
+        holder.bind(item)
     }
 
-    class NicknameViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        private val userNicknameView: TextView = itemView.findViewById(R.id.result_user_list)
+    class NicknameViewHolder private constructor(val binding: RecyclerviewItemBinding)
+        : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(text: String?) {
-            userNicknameView.text = text
+        fun bind(item: User) {
+            binding.user = item
+            binding.executePendingBindings()
         }
 
         companion object {
-            fun create(parent: ViewGroup): NicknameViewHolder {
-                val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.fragment_results, parent, false)
-                return NicknameViewHolder(view)
+            fun from(parent: ViewGroup): NicknameViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RecyclerviewItemBinding.inflate(layoutInflater, parent, false)
+                return NicknameViewHolder(binding)
             }
         }
     }
+}
 
-    class UserComparator : DiffUtil.ItemCallback<User>() {
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem.nickname == newItem.nickname
-        }
+class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
     }
 
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.nickname == newItem.nickname
+    }
 }
 
 

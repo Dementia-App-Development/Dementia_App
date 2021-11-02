@@ -9,6 +9,7 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.models.ResultsUserAdapter
 import timber.log.Timber
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dementiaquiz.android.databinding.FragmentResultsBinding
 
 /**
@@ -22,9 +23,8 @@ class ResultsFragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentResultsBinding>(inflater, R.layout.fragment_results, container, false)
 
-        val recyclerView = binding.resultUserList
         val adapter = ResultsUserAdapter()
-        recyclerView.adapter = adapter
+        binding.resultUserList.adapter = adapter
 
         Timber.i("onCreateView called")
         return binding.root
