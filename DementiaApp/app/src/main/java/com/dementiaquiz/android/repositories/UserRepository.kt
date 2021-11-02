@@ -43,5 +43,9 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getAllNicknames()
     }
 
+    fun getUsers(): Flow<List<User>>{
+        return userDao.getUsers()
+    }
+
 
 }
