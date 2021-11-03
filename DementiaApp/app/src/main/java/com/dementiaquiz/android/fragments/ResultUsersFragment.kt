@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
@@ -69,6 +70,11 @@ class ResultUsersFragment : Fragment() {
         Timber.i("The user ID of the clicked item is: $userId")
 
         //TODO: navigate to the next fragment and passing the userId
+
+        // Pass the user ID argument and navigate to the resultResultsFragment
+//        val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
+        val action = ResultUsersFragmentDirections.actionResultUsersFragmentToResultResultsFragment(userId)
+        view?.findNavController()?.navigate(action)
     }
 
 }
