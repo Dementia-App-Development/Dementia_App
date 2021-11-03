@@ -44,9 +44,6 @@ class PreQuizFragment : Fragment() {
         // Get the viewmodel and set the quiz mode to solo
         viewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
 
-        // By default, the quiz is set to solo mode
-        viewModel.setQuizMode("solo")
-
         // Get user ID argument using by navArgs property delegate
         val preQuizFragmentArgs by navArgs<PreQuizFragmentArgs>()
         val userID = preQuizFragmentArgs.userID
