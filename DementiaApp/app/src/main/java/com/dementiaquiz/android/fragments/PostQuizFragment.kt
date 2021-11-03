@@ -73,7 +73,7 @@ class PostQuizFragment : Fragment() {
 
                 println("the score is: "+ result.score.toString())
                 //Log.d("the score is: ", result.score.toString())
-                binding.postQuizScoreNumberTextView.text = result.score.toString()
+                binding.postQuizScoreNumberTextView.text = result.score.toString()+"%"
 
                 var comment:String
 
