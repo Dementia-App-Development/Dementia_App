@@ -22,7 +22,7 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
         val current = getItem(position)
-        holder.bind(current.nickname)
+        holder.bind(current)
     }
 
 
@@ -39,8 +39,11 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
         //TODO: bind more views with data
         private val userNickNameItemView: TextView = itemView.findViewById(R.id.userNickNametextView)
 
-        fun bind(nickName: String?) {
-            userNickNameItemView.text = nickName
+        private lateinit var currentUser:User
+
+        fun bind(user: User) {
+            currentUser = user
+            userNickNameItemView.text = user.nickname
         }
 
         companion object {
@@ -57,6 +60,8 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
             val position = adapterPosition
 
             Timber.i("userNickNameItemView in onClick is: ${userNickNameItemView.text}")
+            Timber.i("the current user is: ${currentUser}")
+
 
             onItemClicked(position)
 
