@@ -33,6 +33,11 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
         return userRepository.getAllNicknames().asLiveData()
     }
 
+    // get all users in the database
+    fun getAllUsers(): LiveData<List<User>>{
+        return userRepository.getUsers().asLiveData()
+    }
+
 }
 
 class UsersViewModelFactory(private val userRepository: UserRepository):

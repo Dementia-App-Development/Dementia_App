@@ -30,6 +30,10 @@ class UserRepository(private val userDao: UserDao) {
 
     }
 
+    fun getUsers(): Flow<List<User>>{
+        return userDao.getUsers()
+    }
+
     fun getUserById(userId: Long): Flow<User>{
         return userDao.getUserById(userId)
     }
