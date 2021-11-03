@@ -100,6 +100,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         quizQuestions = emptyList()
         currentQuestionIndex = 0
         _score.value = 0
+        _quizIsLoading.value = false
     }
 
     // Get the location of the device

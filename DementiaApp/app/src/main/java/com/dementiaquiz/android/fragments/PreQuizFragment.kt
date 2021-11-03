@@ -1,10 +1,12 @@
 package com.dementiaquiz.android.fragments
 
+import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -51,7 +53,7 @@ class PreQuizFragment : Fragment() {
 
         // Toggle the respective toggle buttons on/off as the other member of the pair is pressed
         binding.preQuizByMyselfButton.setOnClickListener {
-            binding.preQuizGoToQuizButton.visibility = View.GONE
+//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizByMyselfButton.isChecked) {
                 binding.preQuizBeingAssistedButton.toggle()
             } else {
@@ -61,11 +63,10 @@ class PreQuizFragment : Fragment() {
             // Set the new quiz mode, and poll for coordinates
             isSolo = true
             isAssisted = false
-            viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
         }
 
         binding.preQuizBeingAssistedButton.setOnClickListener {
-            binding.preQuizGoToQuizButton.visibility = View.GONE
+//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizBeingAssistedButton.isChecked) {
                 binding.preQuizByMyselfButton.toggle()
             } else {
@@ -75,11 +76,10 @@ class PreQuizFragment : Fragment() {
             // Set the new quiz mode, and poll for coordinates
             isSolo = false
             isAssisted = true
-            viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
         }
 
         binding.preQuizAtHomeButton.setOnClickListener {
-            binding.preQuizGoToQuizButton.visibility = View.GONE
+//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtHomeButton.isChecked) {
                 binding.preQuizAtClinicButton.toggle()
             } else {
@@ -89,11 +89,10 @@ class PreQuizFragment : Fragment() {
             // Set the new quiz mode, and poll for coordinates
             isAtHome = true
             isAtClinic = false
-            viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
         }
 
         binding.preQuizAtClinicButton.setOnClickListener {
-            binding.preQuizGoToQuizButton.visibility = View.GONE
+//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtClinicButton.isChecked) {
                 binding.preQuizAtHomeButton.toggle()
             } else {
@@ -103,23 +102,41 @@ class PreQuizFragment : Fragment() {
             // Set the new quiz mode, and poll for coordinates
             isAtHome = false
             isAtClinic = true
-            viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
         }
 
         // Detect when quiz has finished loading, once it has, show the go to quiz button
-        viewModel.quizIsLoading.observe(viewLifecycleOwner, Observer<Boolean> {updatedQuizIsLoading ->
-            if (updatedQuizIsLoading) {
-                binding.preQuizGoToQuizButton.visibility = View.GONE
-            } else {
-                binding.preQuizGoToQuizButton.visibility = View.VISIBLE
+        viewModel.quizIsLoading.observe(viewLifecycleOwner, Observer<Boolean> {quizIsLoading ->
+
+            if (!quizIsLoading && binding.preQuizGoToQuizButton.visibility == View.GONE) {
+                val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
+                view?.findNavController()?.navigate(action)
             }
+
+//            if (updatedQuizIsLoading) {
+//                binding.preQuizGoToQuizButton.visibility = View.GONE
+//                binding.preQuizProgressBar.visibility = View.VISIBLE
+//            } else {
+//                binding.preQuizGoToQuizButton.visibility = View.VISIBLE
+//                binding.preQuizProgressBar.visibility = View.GONE
+//            }
         })
 
         // Navigate to the quiz passing user ID as argument
         binding.preQuizGoToQuizButton.setOnClickListener { v:View ->
-            // Pass the user ID argument to the quiz fragment
-            val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
-            v.findNavController().navigate(action)
+
+            viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
+
+            binding.preQuizGoToQuizButton.visibility = View.GONE
+            binding.preQuizProgressBar.visibility = View.VISIBLE
+
+//            if (!viewModel.quizIsLoading.value!!) {
+//                // Poll for coordinates and load the quiz
+//                viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
+//
+//                // Pass the user ID argument to the quiz fragment
+//                val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
+//                v.findNavController().navigate(action)
+//            }
         }
 
         return binding.root
