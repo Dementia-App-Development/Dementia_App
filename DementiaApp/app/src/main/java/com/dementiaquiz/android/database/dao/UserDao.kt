@@ -18,7 +18,8 @@ interface UserDao {
     @Update
     suspend fun update(user: User)
 
-    @Query("SELECT * FROM user")
+    // get all users in ascending order
+    @Query("SELECT * FROM user ORDER BY nickname COLLATE NOCASE ASC")
      fun getUsers(): Flow<List<User>>
 
     @Query("SELECT * FROM User WHERE userId = :userId")

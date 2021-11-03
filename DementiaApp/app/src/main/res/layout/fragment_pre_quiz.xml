@@ -90,7 +90,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Please be waited when we are loading the quiz questions. The button will be shown once the questions are loaded..."
+            android:text="Please be waited when we are loading the quiz questions from the Internet. The GoToQuizButton will be shown once the questions are loaded...\n\n(If the GoToQuizButton is not shown, please click on the Mode above one more time)"
             android:textSize="16sp" />
 
         <Button
