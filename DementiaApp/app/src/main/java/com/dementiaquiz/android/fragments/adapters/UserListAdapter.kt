@@ -11,12 +11,12 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
 import timber.log.Timber
 
-class UserListAdapter: ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
+class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         Timber.i("onCreateViewHolder called")
-        return UserViewHolder.create(parent)
+        return UserViewHolder.create(parent,onItemClicked)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -26,7 +26,16 @@ class UserListAdapter: ListAdapter<User, UserListAdapter.UserViewHolder>(UsersCo
     }
 
 
-    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class UserViewHolder(
+        itemView: View,
+        private val onItemClicked: (position: Int) -> Unit
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        // initialize the onclick listener
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         //TODO: bind more views with data
         private val userNickNameItemView: TextView = itemView.findViewById(R.id.userNickNametextView)
 
@@ -35,11 +44,22 @@ class UserListAdapter: ListAdapter<User, UserListAdapter.UserViewHolder>(UsersCo
         }
 
         companion object {
-            fun create(parent: ViewGroup): UserViewHolder {
+            fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit): UserViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.recyclerview_item_user, parent, false)
-                return UserViewHolder(view)
+                return UserViewHolder(view, onItemClicked)
             }
+        }
+
+        // implement the onclick listener
+        override fun onClick(p0: View?) {
+
+            val position = adapterPosition
+
+            Timber.i("userNickNameItemView in onClick is: ${userNickNameItemView.text}")
+
+            onItemClicked(position)
+
         }
     }
 

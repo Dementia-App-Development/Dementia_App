@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +46,7 @@ class ResultUsersFragment : Fragment() {
 
         // set up the recycleView
         val userRecyclerView = binding.userRecyclerview
-        val adapter = UserListAdapter()
+        val adapter = UserListAdapter{position -> onListItemClick(position)}
         userRecyclerView.adapter = adapter
         userRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -61,6 +62,11 @@ class ResultUsersFragment : Fragment() {
         // TODO change to nav host controller binding
 
         return binding.root
+    }
+
+    private fun onListItemClick(position: Int) {
+//        Toast.makeText(context, "I am clicked: $position", Toast.LENGTH_SHORT).show()
+        Timber.i("I am clicked: $position")
     }
 
 }
