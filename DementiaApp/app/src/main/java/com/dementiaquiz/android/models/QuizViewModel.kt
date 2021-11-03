@@ -282,7 +282,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         // Generate a QuizAnswer object
         val questionDescription = quizQuestions[currentQuestionIndex].instruction
         // Converts list of answers to a concatenated list
-        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString("& ") ?: ""
+        val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString("&") ?: ""
         val response : String = userAnswer.toString().orEmpty()
         val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
         // TODO: (Done)result ID is current default to zero - should this be fetched from db?

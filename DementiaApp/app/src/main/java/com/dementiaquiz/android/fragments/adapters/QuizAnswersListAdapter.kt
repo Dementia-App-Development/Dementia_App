@@ -49,14 +49,18 @@ class QuizAnswersListAdapter(): ListAdapter<QuizAnswer, QuizAnswersListAdapter.Q
                 correctnessTextView.text = "✗ The patients's response is wrong"
             }
 
-            patientResponseTextView.text = quizAnswer.response
+            if(quizAnswer.response.isBlank()){
+                patientResponseTextView.text = "Patient's response: \n"+"[Patient did not answer this question]"
+            }else {
+                patientResponseTextView.text = "Patient's response: \n" + quizAnswer.response
+            }
 
             val correctAnswerList: List<String> = quizAnswer.correctAnswer.split("&")
-            var formattedCorrectAnswers:String = "/n"
+            var formattedCorrectAnswers:String = "\n"
             for (correctAnswer in correctAnswerList){
-                formattedCorrectAnswers+=" - "+correctAnswer+"/n"
+                formattedCorrectAnswers+=" ● "+correctAnswer+"\n"
             }
-            correctAnswersTextView.text = formattedCorrectAnswers
+            correctAnswersTextView.text = "Correct answers: "+formattedCorrectAnswers
 
         }
 
