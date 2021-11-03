@@ -41,12 +41,21 @@ class UsersFragment : Fragment() {
         usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList->
 
             val spinner = binding.usersExistingUsersSpinner
-            val adapter:ArrayAdapter<String>? = context?.let {
-                ArrayAdapter<String>(
-                    it, android.R.layout.simple_spinner_dropdown_item, nicknameList
-                )
+
+            if (nicknameList.isEmpty()) {
+                spinner.visibility = View.GONE
+                binding.usersNextButton.visibility = View.GONE
+                binding.spinnerPromptTextView.setText("No users found. Please register new user")
+                binding.usersHeaderTextView.setText("Register")
+            } else {
+
+                val adapter: ArrayAdapter<String>? = context?.let {
+                    ArrayAdapter<String>(
+                        it, android.R.layout.simple_spinner_dropdown_item, nicknameList
+                    )
+                }
+                spinner.adapter = adapter
             }
-            spinner.adapter = adapter
 
         }
 
