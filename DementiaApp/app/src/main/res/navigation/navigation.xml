@@ -42,7 +42,7 @@
         <argument
             android:name="userID"
             app:argType="long" />
-</fragment>
+    </fragment>
     <fragment
         android:id="@+id/postQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PostQuizFragment"
@@ -69,10 +69,9 @@
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"
-        android:name="com.dementiaquiz.android.fragments.ResultsFragment"
+        android:name="com.dementiaquiz.android.fragments.ResultUsersFragment"
         android:label="Results"
-        tools:layout="@layout/fragment_results"
-        />
+        tools:layout="@layout/fragment_result_users" />
     <fragment
         android:id="@+id/preQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PreQuizFragment"

@@ -9,15 +9,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
+import timber.log.Timber
 
 class UserListAdapter: ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        Timber.i("onCreateViewHolder called")
         return UserViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        Timber.i("onBindViewHolder called")
         val current = getItem(position)
         holder.bind(current.nickname)
     }

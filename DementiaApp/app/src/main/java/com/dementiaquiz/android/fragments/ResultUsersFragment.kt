@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
-import com.dementiaquiz.android.databinding.FragmentResultsBinding
+import com.dementiaquiz.android.databinding.FragmentResultUsersBinding
 import com.dementiaquiz.android.fragments.adapters.UserListAdapter
 import com.dementiaquiz.android.models.UsersViewModel
 import com.dementiaquiz.android.models.UsersViewModelFactory
@@ -19,7 +19,7 @@ import timber.log.Timber
 /**
  * Displays the historical data obtained from results from the quiz
  */
-class ResultsFragment : Fragment() {
+class ResultUsersFragment : Fragment() {
 
     //TODO: this may crash the app, there might be another better solution
     // see "https://stackoverflow.com/questions/11585702/how-to-get-application-object-into-fragment-class"
@@ -35,9 +35,9 @@ class ResultsFragment : Fragment() {
         Timber.i("onCreateView called")
 
         // Inflate view binding to get variables from XML
-        val binding = DataBindingUtil.inflate<FragmentResultsBinding>(
+        val binding = DataBindingUtil.inflate<FragmentResultUsersBinding>(
             inflater,
-            R.layout.fragment_results,
+            R.layout.fragment_result_users,
             container,
             false
         )
