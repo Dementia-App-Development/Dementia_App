@@ -36,7 +36,8 @@ class UsersFragment : Fragment() {
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
-        // TODO: (Done)Populate existing users spinner with the nicknames from the user database
+        // Populate existing users spinner with the nicknames from the user database once there are
+        // change on the user table on the run time
         usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList->
 
             val spinner = binding.usersExistingUsersSpinner
@@ -60,12 +61,24 @@ class UsersFragment : Fragment() {
                 binding.usersExistingUserToggleButton.toggle()
             }
 
-            // Display the existing users spinner if existing users button is on
-            binding.usersExistingUsersSpinner.visibility = View.VISIBLE
-            binding.spinnerPromptTextView.visibility = View.VISIBLE
+            usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList ->
 
-            // Expand the spinner automatically
-            // binding.usersExistingUsersSpinner.performClick()
+                if (nicknameList.isEmpty()){
+                    // there is no users in the database, avoid showing spinner to prevent bugs
+                    binding.usersExistingUsersSpinner.visibility = View.GONE
+                    binding.spinnerPromptTextView.visibility = View.VISIBLE
+                    binding.spinnerPromptTextView.text = "There is no existing users, please create a new one"
+                    binding.usersNextButton.visibility = View.GONE
+
+                }else{
+                    // there is at least one patient in the database, then show spinner
+                    binding.usersExistingUsersSpinner.visibility = View.VISIBLE
+                    binding.spinnerPromptTextView.visibility = View.VISIBLE
+                    binding.spinnerPromptTextView.text = "Please choose your nickname from the spinner down below"
+
+                }
+            }
+
         }
         binding.usersNewUserToggleButton.setOnClickListener {
             if (binding.usersNewUserToggleButton.isChecked) {
@@ -77,6 +90,7 @@ class UsersFragment : Fragment() {
             // Hide the existing users spinner if new users button is on
             binding.usersExistingUsersSpinner.visibility = View.GONE
             binding.spinnerPromptTextView.visibility = View.GONE
+            binding.usersNextButton.visibility = View.VISIBLE
         }
 
         // Go to quiz dependent on whether new or existing user
