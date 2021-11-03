@@ -134,8 +134,8 @@
     <fragment
         android:id="@+id/resultResultsFragment"
         android:name="com.dementiaquiz.android.fragments.ResultResultsFragment"
-        android:label="fragment_result_results"
-        tools:layout="@layout/fragment_result_results" >
+        android:label="Scores"
+        tools:layout="@layout/fragment_result_results">
         <argument
             android:name="userId"
             app:argType="long" />
