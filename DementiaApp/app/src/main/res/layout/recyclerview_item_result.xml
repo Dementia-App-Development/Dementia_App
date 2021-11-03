@@ -11,6 +11,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Score: "
+        android:layout_marginLeft="10dp"
         android:textSize="34sp" />
 
     <TextView
@@ -20,6 +21,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Test Time: "
+        android:layout_marginLeft="10dp"
         android:textSize="20sp" />
 
     <View

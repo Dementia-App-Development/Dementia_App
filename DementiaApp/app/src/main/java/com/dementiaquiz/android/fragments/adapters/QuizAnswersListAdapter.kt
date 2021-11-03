@@ -50,9 +50,9 @@ class QuizAnswersListAdapter(): ListAdapter<QuizAnswer, QuizAnswersListAdapter.Q
             }
 
             if(quizAnswer.response.isBlank()){
-                patientResponseTextView.text = "Patient's response: \n"+"[Patient did not answer this question]"
+                patientResponseTextView.text = "Patient's response: \n"+" ● "+"[Patient did not answer this question]"
             }else {
-                patientResponseTextView.text = "Patient's response: \n" + quizAnswer.response
+                patientResponseTextView.text = "Patient's response: \n" +" ● "+ quizAnswer.response
             }
 
             val correctAnswerList: List<String> = quizAnswer.correctAnswer.split("&")
