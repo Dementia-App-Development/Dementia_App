@@ -53,7 +53,6 @@ class PreQuizFragment : Fragment() {
 
         // Toggle the respective toggle buttons on/off as the other member of the pair is pressed
         binding.preQuizByMyselfButton.setOnClickListener {
-//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizByMyselfButton.isChecked) {
                 binding.preQuizBeingAssistedButton.toggle()
             } else {
@@ -66,7 +65,6 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizBeingAssistedButton.setOnClickListener {
-//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizBeingAssistedButton.isChecked) {
                 binding.preQuizByMyselfButton.toggle()
             } else {
@@ -79,7 +77,6 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizAtHomeButton.setOnClickListener {
-//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtHomeButton.isChecked) {
                 binding.preQuizAtClinicButton.toggle()
             } else {
@@ -92,7 +89,6 @@ class PreQuizFragment : Fragment() {
         }
 
         binding.preQuizAtClinicButton.setOnClickListener {
-//            binding.preQuizGoToQuizButton.visibility = View.GONE
             if (binding.preQuizAtClinicButton.isChecked) {
                 binding.preQuizAtHomeButton.toggle()
             } else {
@@ -107,36 +103,21 @@ class PreQuizFragment : Fragment() {
         // Detect when quiz has finished loading, once it has, show the go to quiz button
         viewModel.quizIsLoading.observe(viewLifecycleOwner, Observer<Boolean> {quizIsLoading ->
 
+            // If quiz is not loading and the go to quiz button is hidden (after it is clicked) then navigate to quiz
             if (!quizIsLoading && binding.preQuizGoToQuizButton.visibility == View.GONE) {
                 val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
                 view?.findNavController()?.navigate(action)
             }
-
-//            if (updatedQuizIsLoading) {
-//                binding.preQuizGoToQuizButton.visibility = View.GONE
-//                binding.preQuizProgressBar.visibility = View.VISIBLE
-//            } else {
-//                binding.preQuizGoToQuizButton.visibility = View.VISIBLE
-//                binding.preQuizProgressBar.visibility = View.GONE
-//            }
         })
 
         // Navigate to the quiz passing user ID as argument
         binding.preQuizGoToQuizButton.setOnClickListener { v:View ->
 
+            // Upon pressing go to quiz, load the quiz based on the parameters in the UI
             viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
 
             binding.preQuizGoToQuizButton.visibility = View.GONE
             binding.preQuizProgressBar.visibility = View.VISIBLE
-
-//            if (!viewModel.quizIsLoading.value!!) {
-//                // Poll for coordinates and load the quiz
-//                viewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
-//
-//                // Pass the user ID argument to the quiz fragment
-//                val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
-//                v.findNavController().navigate(action)
-//            }
         }
 
         return binding.root
