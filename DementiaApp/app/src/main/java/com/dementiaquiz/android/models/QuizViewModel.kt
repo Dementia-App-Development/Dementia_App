@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
@@ -181,6 +182,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         _response.value = "Failure: " + t.message
                         Timber.i("API failure")
+
 
                         // TODO: handle API response failure exception with dialog prompt
                     }
