@@ -4,17 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.CountDownTimer
-import android.speech.RecognizerIntent
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.lifecycle.*
-import androidx.room.Transaction
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
@@ -30,7 +26,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.util.*
 
 /**
  * Holds the information for the current question in the quiz
@@ -80,6 +75,16 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     val quizIsLoading: LiveData<Boolean>
         get() = _quizIsLoading
 
+    // Boolean set to true if the quiz is able to fetch GPS coordinates
+    private var _gpsCoordinatesFetched = MutableLiveData<Boolean>()
+    val gpsCoordinatesFetched: LiveData<Boolean>
+        get() = _gpsCoordinatesFetched
+
+    // Boolean that is true/false depending on whether permissions have been granted by the user
+    private var _gpsPermissionsGranted = MutableLiveData<Boolean>()
+    val gpsPermissionsGranted: LiveData<Boolean>
+        get() = _gpsPermissionsGranted
+
     // Application context, used for location access
     @SuppressLint("StaticFieldLeak")
     private val context = getApplication<Application>().applicationContext
@@ -101,6 +106,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         currentQuestionIndex = 0
         _score.value = 0
         _quizIsLoading.value = false
+        _gpsPermissionsGranted.value = false
     }
 
     // Get the location of the device
@@ -116,25 +122,37 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 context, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // Location is not granted permission
+            _gpsPermissionsGranted.value = false
 
-            // TODO: handle if location is not granted permission
+            Timber.i("GPS not granted permission")
+
             return
+        } else {
+            // GPS has been granted permission
+            _gpsPermissionsGranted.value = true
         }
 
+        // Add the on success and on failure methods for GPS request
         fusedLocationProviderClient.lastLocation.apply {
             addOnFailureListener {
                 //Handle the failure of the call. You can show an error dialogue or a toast stating the failure in receiving location.
 
+                // Handle if GPS location request failure
+                _gpsCoordinatesFetched.value = false
+
                 Timber.i("GPS location request failure")
             }
             addOnSuccessListener {
+
+                _gpsCoordinatesFetched.value = true
+
                 // Get last known location if it is not null, then get all quiz questions
                 if (it != null) {
-                    //You ca extract the details from the client, like the latitude and longitude of the place and use it accordingly.
+                    //You can extract the details from the client, like the latitude and longitude of the place and use it accordingly.
                     myLat = it.latitude
                     myLong = it.longitude
-                    Timber.i("myLat= %s", myLat.toString())
-                    Timber.i("myLong= %s", myLong.toString())
+                    Timber.i("myLat= %s | myLong= %s", myLat.toString(), myLong.toString())
 
                     getAllQuizQuestions()
                 }

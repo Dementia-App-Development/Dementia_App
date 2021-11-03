@@ -96,11 +96,14 @@
         <argument
             android:name="userID"
             app:argType="long" />
+        <action
+            android:id="@+id/action_preQuizFragment_to_titleFragment"
+            app:destination="@id/titleFragment" />
     </fragment>
     <fragment
         android:id="@+id/patientDetailsFragment"
         android:name="com.dementiaquiz.android.fragments.PatientDetailsFragment"
-        android:label="PatientDetailsFragment"
+        android:label="Details"
         tools:layout="@layout/fragment_patient_details">
         <action
             android:id="@+id/action_patientDetailsFragment_to_preQuizFragment"
@@ -118,7 +121,7 @@
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.dementiaquiz.android.fragments.UsersFragment"
-        android:label="UsersFragment"
+        android:label="Users"
         tools:layout="@layout/fragment_users">
         <action
             android:id="@+id/action_usersFragment_to_patientDetailsFragment"
@@ -138,7 +141,7 @@
     <fragment
         android:id="@+id/resultResultsFragment"
         android:name="com.dementiaquiz.android.fragments.ResultResultsFragment"
-        android:label="Scores"
+        android:label="Results"
         tools:layout="@layout/fragment_result_results">
         <argument
             android:name="userId"
