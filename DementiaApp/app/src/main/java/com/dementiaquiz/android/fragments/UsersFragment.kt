@@ -36,7 +36,8 @@ class UsersFragment : Fragment() {
         // Use view binding to get variables from XML
         binding = DataBindingUtil.inflate<FragmentUsersBinding>(inflater,R.layout.fragment_users, container, false)
 
-        // TODO: (Done)Populate existing users spinner with the nicknames from the user database
+        // Populate existing users spinner with the nicknames from the user database once there are
+        // change on the user table on the run time
         usersViewModel.getAllNicknames().observe(viewLifecycleOwner){ nicknameList->
 
             val spinner = binding.usersExistingUsersSpinner

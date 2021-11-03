@@ -53,12 +53,12 @@ class PatientDetailsFragment : Fragment() {
                     // failed, indicate there is already a user with the same nickname in hte database
                     Toast.makeText(context,
                         "Fail, your nickname has been used by others, please try again",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_LONG).show()
                 }else{
                     // success inserted, navigate to next fragment
                     Toast.makeText(context,
                         "Success, your new account is: ${user.nickname}",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_LONG).show()
                     Timber.i("Created new user in db")
 
                     // TODO:(Done) get the user ID here so it can be passed to pre quiz

@@ -2,6 +2,7 @@ package com.dementiaquiz.android
 
 import android.app.Application
 import com.dementiaquiz.android.database.QuizDatabase
+import com.dementiaquiz.android.repositories.QuizAnswerRepository
 import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.dementiaquiz.android.repositories.UserRepository
 import timber.log.Timber
@@ -14,6 +15,7 @@ class DementiaQuizApplication : Application() {
     val database by lazy{QuizDatabase.getInstance(this)}
     val quizResultRepository by lazy { QuizResultRepository(database.quizResultDao(),database.quizAnswerDao()) }
     val userRepository by lazy { UserRepository(database.userDao()) }
+    val quizAnswerRepository by lazy { QuizAnswerRepository(database.quizAnswerDao()) }
 
 
     override fun onCreate() {
