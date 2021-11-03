@@ -28,8 +28,8 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE nickname = :nickname")
     fun getUserByNickname(nickname:String): Flow<User>
 
-    //TODO: test this function
-    @Query("SELECT nickname FROM User")
+    // get all nicknames in ascending order
+    @Query("SELECT nickname FROM User ORDER BY nickname COLLATE NOCASE ASC")
     fun getAllNicknames(): Flow<List<String>>
 
     @Transaction
