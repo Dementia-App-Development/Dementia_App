@@ -46,7 +46,7 @@ class ResultUsersFragment : Fragment() {
 
         // set up the recycleView
         val userRecyclerView = binding.userRecyclerview
-        val adapter = UserListAdapter{position -> onListItemClick(position)}
+        val adapter = UserListAdapter{userId -> onListItemClick(userId)}
         userRecyclerView.adapter = adapter
         userRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -64,9 +64,11 @@ class ResultUsersFragment : Fragment() {
         return binding.root
     }
 
-    private fun onListItemClick(position: Int) {
+    private fun onListItemClick(userId: Long) {
 //        Toast.makeText(context, "I am clicked: $position", Toast.LENGTH_SHORT).show()
-        Timber.i("I am clicked: $position")
+        Timber.i("The user ID of the clicked item is: $userId")
+
+        //TODO: navigate to the next fragment and passing the userId
     }
 
 }

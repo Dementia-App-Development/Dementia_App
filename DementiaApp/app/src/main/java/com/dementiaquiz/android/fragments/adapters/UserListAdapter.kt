@@ -11,7 +11,7 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
 import timber.log.Timber
 
-class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
+class UserListAdapter(private val onItemClicked: (userId: Long) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -28,7 +28,7 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
 
     class UserViewHolder(
         itemView: View,
-        private val onItemClicked: (position: Int) -> Unit
+        private val onItemClicked: (userId: Long) -> Unit
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         // initialize the onclick listener
@@ -47,7 +47,7 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
         }
 
         companion object {
-            fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit): UserViewHolder {
+            fun create(parent: ViewGroup, onItemClicked: (userId: Long) -> Unit): UserViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.recyclerview_item_user, parent, false)
                 return UserViewHolder(view, onItemClicked)
@@ -63,7 +63,7 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
             Timber.i("the current user is: ${currentUser}")
 
 
-            onItemClicked(position)
+            onItemClicked(currentUser.userId)
 
         }
     }
