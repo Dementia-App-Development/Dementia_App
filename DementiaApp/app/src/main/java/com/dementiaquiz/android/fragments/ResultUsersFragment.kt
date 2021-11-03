@@ -55,7 +55,7 @@ class ResultUsersFragment : Fragment() {
 
         usersViewModel.getAllUsers().observe(viewLifecycleOwner){ nickNameList ->
 
-            // Update the cached copy of the words in the adapter.
+            // Update the cached copy of the nicknames in the adapter.
             nickNameList?.let { adapter.submitList(it) }
         }
 
