@@ -71,6 +71,8 @@ class ResultResultsFragment : Fragment() {
         Timber.i("The resultId of the clicked item is: $resultId")
 
         //TODO: navigate to the next fragment and passing the resultId
+        val action = ResultResultsFragmentDirections.actionResultResultsFragmentToResultAnswersFragment(resultId)
+        view?.findNavController()?.navigate(action)
 
     }
 

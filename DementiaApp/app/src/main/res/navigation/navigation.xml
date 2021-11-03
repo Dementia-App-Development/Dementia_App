@@ -143,5 +143,17 @@
         <argument
             android:name="userId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_resultResultsFragment_to_resultAnswersFragment"
+            app:destination="@id/resultAnswersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultAnswersFragment"
+        android:name="com.dementiaquiz.android.fragments.ResultAnswersFragment"
+        android:label="ResultAnswersFragment"
+        tools:layout="@layout/fragment_result_answers">
+        <argument
+            android:name="resultId"
+            app:argType="long" />
     </fragment>
 </navigation>

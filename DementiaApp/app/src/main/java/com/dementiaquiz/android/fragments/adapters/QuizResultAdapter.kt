@@ -52,7 +52,7 @@ class QuizResultAdapter(private val onItemClicked: (resultId: Long) -> Unit) :
             Timber.i("the formatted date is: $dateFormated")
 
             // update the layout
-            scoreTextView.text = "Score: ${currentQuizResult.score}"
+            scoreTextView.text = "Score: ${currentQuizResult.score}%"
             testTimeTextView.text = "Test Time: ${dateFormated}"
         }
 
