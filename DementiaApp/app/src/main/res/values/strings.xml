@@ -41,7 +41,7 @@
     <string name="titleWebsiteButton_text">Website</string>
     <string name="quizQuestionNumTextView_text">Question</string>
     <string name="quizInstructionsTextView_text">instructions</string>
-    <string name="spinner_prompt_text">Please choose your nickname from the spinner down below</string>
+    <string name="spinner_prompt_text">Please choose your nickname from the spinner down below, or select register to add a new user</string>
 
     <string-array name="Genders">
         <item>Male</item>

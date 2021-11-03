@@ -18,38 +18,17 @@
             android:text="Are you a new or existing user?"
             android:textSize="34sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/usersNewUserToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:textOff="New User"
-                android:textOn="New User" />
-
-            <ToggleButton
-                android:id="@+id/usersExistingUserToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:textOff="Existing User"
-                android:textOn="Existing User" />
-
-        </LinearLayout>
-
         <TextView
             android:id="@+id/spinnerPromptTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/spinner_prompt_text"
-            android:textSize="20sp"
-            android:visibility="gone" />
+            android:textSize="20sp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="10dp" />
 
         <Spinner
             android:id="@+id/usersExistingUsersSpinner"
@@ -58,8 +37,7 @@
             android:layout_height="wrap_content"
             android:entries="@array/Users"
             android:minHeight="48dp"
-            android:scrollbarSize="24sp"
-            android:visibility="gone" />
+            android:scrollbarSize="24sp"/>
 
         <View
             android:id="@+id/view"
@@ -67,11 +45,39 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/usersNextButton"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Next" />
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/usersRegisterButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Register"
+                android:textColor="?attr/colorOnError"
+                android:textSize="20sp"
+                app:backgroundTint="?attr/colorError"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/usersNextButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/usersNextButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Next"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/usersRegisterButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>

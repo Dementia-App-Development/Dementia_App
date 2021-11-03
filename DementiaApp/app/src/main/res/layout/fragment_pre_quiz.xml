@@ -16,38 +16,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/patientDetailsAreYouTextView_text"
-            android:textSize="24sp" />
+            android:textSize="36dp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ToggleButton
-                android:id="@+id/preQuizByMyselfButton"
-                android:layout_width="158dp"
-                android:layout_height="129dp"
-                android:checked="true"
-                android:drawableTop="@drawable/ic_myself"
-                android:textOff="@string/patientDetailsByMyselfButton_textOff"
-                android:textOn="@string/patientDetailsByMyselfButton_textOn" />
 
-            <TextView
-                android:id="@+id/preQuizOrTextView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/patientDetailsOrTextView2_text"
-                android:textAlignment="center"
-                android:textSize="24sp" />
 
-            <ToggleButton
-                android:id="@+id/preQuizBeingAssistedButton"
-                android:layout_width="160dp"
-                android:layout_height="129dp"
-                android:drawableTop="@drawable/ic_assistance"
-                android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
-                android:textOn="@string/patientDetailsBeingAssistedButton_textOn" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ToggleButton
+                    android:id="@+id/preQuizByMyselfButton"
+                    android:layout_width="158dp"
+                    android:layout_height="145dp"
+                    android:checked="true"
+                    android:drawableTop="@drawable/ic_myself"
+                    android:textOff="@string/patientDetailsByMyselfButton_textOff"
+                    android:textOn="@string/patientDetailsByMyselfButton_textOn"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/preQuizOrTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/patientDetailsOrTextView2_text"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/preQuizBeingAssistedButton"
+                    app:layout_constraintStart_toEndOf="@+id/preQuizByMyselfButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/preQuizBeingAssistedButton"
+                    android:layout_width="160dp"
+                    android:layout_height="145dp"
+                    android:drawableTop="@drawable/ic_assistance"
+                    android:textOff="@string/patientDetailsBeingAssistedButton_textOff"
+                    android:textOn="@string/patientDetailsBeingAssistedButton_textOn"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -57,40 +82,57 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <ToggleButton
-                android:id="@+id/preQuizAtHomeButton"
-                android:layout_width="158dp"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:drawableTop="@drawable/home"
-                android:textOff="@string/patientDetailsAtHomeButton_textOff"
-                android:textOn="@string/patientDetailsAtHomeButton_textOn" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/preQuizOrTextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/patientDetailsOrTextView1_text"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                <ToggleButton
+                    android:id="@+id/preQuizAtHomeButton"
+                    android:layout_width="158dp"
+                    android:layout_height="145dp"
+                    android:checked="true"
+                    android:drawableTop="@drawable/home"
+                    android:textOff="@string/patientDetailsAtHomeButton_textOff"
+                    android:textOn="@string/patientDetailsAtHomeButton_textOn"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ToggleButton
-                android:id="@+id/preQuizAtClinicButton"
-                android:layout_width="160dp"
-                android:layout_height="match_parent"
-                android:checked="false"
-                android:drawableTop="@drawable/hospital"
-                android:textOff="@string/patientDetailsAtClinicButton_textOff"
-                android:textOn="@string/patientDetailsAtClinicButton_textOn" />
+                <TextView
+                    android:id="@+id/preQuizOrTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/patientDetailsOrTextView1_text"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/preQuizAtClinicButton"
+                    app:layout_constraintStart_toEndOf="@+id/preQuizAtHomeButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/preQuizAtClinicButton"
+                    android:layout_width="160dp"
+                    android:layout_height="145dp"
+                    android:checked="false"
+                    android:drawableTop="@drawable/hospital"
+                    android:textOff="@string/patientDetailsAtClinicButton_textOff"
+                    android:textOn="@string/patientDetailsAtClinicButton_textOn"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/preQuizGoToQuizButton"
-            android:layout_width="411dp"
-            android:layout_height="60dp"
-            android:text="@string/patientDetailsGoToQuizButton_text" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <ProgressBar
             android:id="@+id/preQuizProgressBar"
@@ -98,6 +140,18 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="invisible" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/preQuizGoToQuizButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/patientDetailsGoToQuizButton_text"
+            android:textSize="24sp" />
 
     </LinearLayout>
 </layout>

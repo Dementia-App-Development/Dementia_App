@@ -2,17 +2,25 @@
     <!-- Base application theme. -->
     <style name="Theme.QuizQuestionDemo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/teal_300</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/purple_700</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
+
+        <item name="colorError">@color/negative_red </item>
+        <item name="colorOnError">@color/purple_700</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">#003349</item>
+    </style>
+
+    <style name="DementiaActionBar">
+        <item name="android:background">@color/teal_300</item>
+        <item name="android:textColor">@color/purple_700</item>
     </style>
 
     <style name="Theme.QuizQuestionDemo.Fullscreen" parent="Theme.QuizQuestionDemo">
