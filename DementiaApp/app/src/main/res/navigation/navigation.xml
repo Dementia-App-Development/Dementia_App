@@ -70,7 +70,7 @@
     <fragment
         android:id="@+id/resultsFragment"
         android:name="com.dementiaquiz.android.fragments.ResultUsersFragment"
-        android:label="Results"
+        android:label="Patients"
         tools:layout="@layout/fragment_result_users" />
     <fragment
         android:id="@+id/preQuizFragment"
