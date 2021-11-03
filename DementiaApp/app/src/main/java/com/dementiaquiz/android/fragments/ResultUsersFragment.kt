@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dementiaquiz.android.DementiaQuizApplication
 import com.dementiaquiz.android.R
@@ -46,7 +47,7 @@ class ResultUsersFragment : Fragment() {
 
         // set up the recycleView
         val userRecyclerView = binding.userRecyclerview
-        val adapter = UserListAdapter{position -> onListItemClick(position)}
+        val adapter = UserListAdapter{userId -> onListItemClick(userId)}
         userRecyclerView.adapter = adapter
         userRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -54,7 +55,7 @@ class ResultUsersFragment : Fragment() {
 
         usersViewModel.getAllUsers().observe(viewLifecycleOwner){ nickNameList ->
 
-            // Update the cached copy of the words in the adapter.
+            // Update the cached copy of the nicknames in the adapter.
             nickNameList?.let { adapter.submitList(it) }
         }
 
@@ -64,9 +65,16 @@ class ResultUsersFragment : Fragment() {
         return binding.root
     }
 
-    private fun onListItemClick(position: Int) {
+    private fun onListItemClick(userId: Long) {
 //        Toast.makeText(context, "I am clicked: $position", Toast.LENGTH_SHORT).show()
-        Timber.i("I am clicked: $position")
+        Timber.i("The user ID of the clicked item is: $userId")
+
+        //TODO: navigate to the next fragment and passing the userId
+
+        // Pass the user ID argument and navigate to the resultResultsFragment
+//        val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
+        val action = ResultUsersFragmentDirections.actionResultUsersFragmentToResultResultsFragment(userId)
+        view?.findNavController()?.navigate(action)
     }
 
 }

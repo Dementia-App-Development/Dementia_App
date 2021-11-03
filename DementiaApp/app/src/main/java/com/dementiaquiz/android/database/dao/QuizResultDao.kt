@@ -18,13 +18,16 @@ interface QuizResultDao {
     @Update
     suspend fun update(quizResult: QuizResult)
 
-    @Query("SELECT * FROM quiz_result")
+    // get all quiz result order by the time it is created in descending order
+    @Query("SELECT * FROM quiz_result ORDER BY timeCreated DESC")
      fun getQuizResults():Flow<List<QuizResult>>
 
     @Query("SELECT * FROM quiz_result WHERE resultId = :resultId")
     fun getQuizResultByResultId(resultId: Long):Flow<QuizResult>
 
-    @Query("SELECT * FROM quiz_result WHERE userId = :userId")
+
+    // get all quiz result by userId order by the time it is created in descending order
+    @Query("SELECT * FROM quiz_result WHERE userId = :userId ORDER BY timeCreated DESC")
      fun getQuizResultsByUserId(userId:Long):Flow<List<QuizResult>>
 
     @Transaction

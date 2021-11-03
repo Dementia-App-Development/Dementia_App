@@ -35,6 +35,10 @@ class QuizResultViewModel(private val quizResultRepository: QuizResultRepository
         return quizResultRepository.getQuizResults().asLiveData()
     }
 
+    fun getQuizResultsByUserId(userId: Long):LiveData<List<QuizResult>>{
+        return quizResultRepository.getQuizResultsByUserId(userId).asLiveData()
+    }
+
     fun getQuizResultByResultId(resultId:Long):LiveData<QuizResult>{
         return quizResultRepository.getQuizResultByResultId(resultId).asLiveData()
     }

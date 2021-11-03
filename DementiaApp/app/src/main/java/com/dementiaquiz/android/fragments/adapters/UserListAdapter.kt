@@ -11,7 +11,7 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
 import timber.log.Timber
 
-class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
+class UserListAdapter(private val onItemClicked: (userId: Long) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -22,13 +22,13 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
         val current = getItem(position)
-        holder.bind(current.nickname)
+        holder.bind(current)
     }
 
 
     class UserViewHolder(
         itemView: View,
-        private val onItemClicked: (position: Int) -> Unit
+        private val onItemClicked: (userId: Long) -> Unit
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         // initialize the onclick listener
@@ -39,12 +39,15 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
         //TODO: bind more views with data
         private val userNickNameItemView: TextView = itemView.findViewById(R.id.userNickNametextView)
 
-        fun bind(nickName: String?) {
-            userNickNameItemView.text = nickName
+        private lateinit var currentUser:User
+
+        fun bind(user: User) {
+            currentUser = user
+            userNickNameItemView.text = user.nickname
         }
 
         companion object {
-            fun create(parent: ViewGroup, onItemClicked: (position: Int) -> Unit): UserViewHolder {
+            fun create(parent: ViewGroup, onItemClicked: (userId: Long) -> Unit): UserViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.recyclerview_item_user, parent, false)
                 return UserViewHolder(view, onItemClicked)
@@ -57,8 +60,10 @@ class UserListAdapter(private val onItemClicked: (position: Int) -> Unit): ListA
             val position = adapterPosition
 
             Timber.i("userNickNameItemView in onClick is: ${userNickNameItemView.text}")
+            Timber.i("the current user is: ${currentUser}")
 
-            onItemClicked(position)
+
+            onItemClicked(currentUser.userId)
 
         }
     }

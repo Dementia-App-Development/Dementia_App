@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_title">
         <action
             android:id="@+id/action_titleFragment_to_resultsFragment"
-            app:destination="@id/resultsFragment"
+            app:destination="@id/resultUsersFragment"
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
@@ -43,6 +43,7 @@
             android:name="userID"
             app:argType="long" />
     </fragment>
+
     <fragment
         android:id="@+id/postQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PostQuizFragment"
@@ -68,10 +69,13 @@
             app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/resultsFragment"
+        android:id="@+id/resultUsersFragment"
         android:name="com.dementiaquiz.android.fragments.ResultUsersFragment"
-        android:label="Patients"
-        tools:layout="@layout/fragment_result_users" />
+        android:label="Patients">
+        <action
+            android:id="@+id/action_resultUsersFragment_to_resultResultsFragment"
+            app:destination="@id/resultResultsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/preQuizFragment"
         android:name="com.dementiaquiz.android.fragments.PreQuizFragment"
@@ -126,5 +130,14 @@
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultResultsFragment"
+        android:name="com.dementiaquiz.android.fragments.ResultResultsFragment"
+        android:label="Scores"
+        tools:layout="@layout/fragment_result_results">
+        <argument
+            android:name="userId"
+            app:argType="long" />
     </fragment>
 </navigation>

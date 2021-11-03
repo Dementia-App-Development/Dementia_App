@@ -17,25 +17,25 @@
 
 
         <TextView
-            android:id="@+id/chooseUserHintTextView"
+            android:id="@+id/instructionTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#E6E2E2"
-            android:text="Please choose a nickname to view the patient's test results"
+            android:text="Please choose a test result to view the answers"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userRecyclerview"
+            android:id="@+id/quizResultRecyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chooseUserHintTextView"
-            tools:listitem="@layout/recyclerview_item_user" />
+            app:layout_constraintTop_toBottomOf="@+id/instructionTextView"
+            tools:listitem="@layout/recyclerview_item_result" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
