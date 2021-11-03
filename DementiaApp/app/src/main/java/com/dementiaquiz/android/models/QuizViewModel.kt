@@ -260,7 +260,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun isResponseCorrect(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : Boolean {
         // Check if the answer provided is correct
-        if (userAnswer == null && !assistedCorrect) {
+        if (userAnswer == "" && !assistedCorrect) {
             Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
             return false
         } else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
@@ -283,7 +283,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         val questionDescription = quizQuestions[currentQuestionIndex].instruction
         // Converts list of answers to a concatenated list
         val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString("& ") ?: ""
-        val response : String = userAnswer.toString()
+        val response : String = userAnswer.toString().orEmpty()
         val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
         // TODO: (Done)result ID is current default to zero - should this be fetched from db?
         //  [Feedback: It is not necessary, I will overwrite the resultId in each answer when I insert the result and answer to the database]

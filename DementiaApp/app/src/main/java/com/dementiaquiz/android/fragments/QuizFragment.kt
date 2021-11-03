@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.RecognizerIntent
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -45,7 +47,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private var tts: TextToSpeech? = null
     private var answer: String = "False"
     private var talk: String? = null
-    private var voiceAnswer: String = "Nothing"
+    private var voiceAnswer: String = ""
     private lateinit var binding: FragmentQuizBinding
     private val displayMetrics: DisplayMetrics by lazy { Resources.getSystem().displayMetrics }
     val screenRectPx: Rect
@@ -100,6 +102,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     /**
      * Initialize text to speech, view model, and handle bindings of UI elements
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -113,8 +116,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         quizViewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
         Timber.i("QUIZ MODE: %s", quizViewModel.mode)
         quizViewModel.setFirstQuestion()
-
-
 
         // Get user ID argument using by navArgs property delegate
         val quizFragmentArgs by navArgs<QuizFragmentArgs>()
@@ -290,6 +291,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         binding.quizNextButton.setOnClickListener {
             // Cancel countdown and go to next question
             countDown?.cancel()
+
             // Verify answer against what was input in the edit text response field
             // TODO: implement this properly, put in when/case loop
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
@@ -303,8 +305,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             else {
                 quizViewModel.onNext(voiceAnswer, answer, false)
             }
-            binding.quizUserResponseEditText.getText().clear();
-            binding.quizDateEditText.getText().clear();
+
+            binding.quizUserResponseEditText.text.clear();
+            binding.quizDateEditText.text.clear();
 
         }
 
@@ -315,14 +318,14 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
             // Cancel countdown and go to next question
             countDown?.cancel()
-            quizViewModel.onNext(null, answer, true)
+            quizViewModel.onNext("", answer, true)
         }
         binding.quizFalseButton.setOnClickListener {
             // Verify answer against what was input in the edit text response field
 
             // Cancel countdown and go to next question
             countDown?.cancel()
-            quizViewModel.onNext(null, answer, false)
+            quizViewModel.onNext("", answer, false)
         }
 
         // Text to speech
