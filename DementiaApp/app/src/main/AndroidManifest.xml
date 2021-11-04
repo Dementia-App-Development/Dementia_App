@@ -19,6 +19,8 @@
         android:theme="@style/Theme.QuizQuestionDemo">
         <activity
             android:name="com.dementiaquiz.android.activities.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,8 @@
 package com.dementiaquiz.android.fragments
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
@@ -24,6 +26,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.QuizResult
+import com.dementiaquiz.android.databinding.FragmentPatientDetailsBinding
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizViewModel
@@ -352,6 +355,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizNextButton.visibility = View.VISIBLE
         }
 
+        // Open a date picker dialog when pressing date picker edit text
+        binding.quizDateEditText.setOnClickListener { v:View ->
+            context?.let { showDatePickerDialog(it, binding) }
+        }
+
         return binding.root
     }
 
@@ -416,4 +424,20 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
     }
 
+}
+
+/**
+ * Displays the date picker dialog and sets the text field equal to the users input
+ */
+@RequiresApi(Build.VERSION_CODES.N)
+private fun showDatePickerDialog(context : Context, binding : FragmentQuizBinding) {
+    val datePickerDialog : DatePickerDialog = DatePickerDialog(context)
+    // Default year of birth is set to 1940
+    datePickerDialog.updateDate(1940,0,1)
+    datePickerDialog.datePicker.touchables[0].performClick();
+    datePickerDialog.show()
+    datePickerDialog.setOnDateSetListener { _, year, month, day ->
+        val dobString = ("$year-${month+1}-$day")
+        binding.quizDateEditText.setText(dobString)
+    }
 }

@@ -377,12 +377,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
             _quizIsFinished.value = true
 
-            // Reset the index to zero, and clear the answer list
-            currentQuestionIndex = 0
-
             // TODO: can we clear the answer list when the game start rather than game ends? This will make sure
             //  the quizAnswerList is available when save to the database. If it works then do not fix
             quizAnswerList.clear()
+
+            // Reset the index to zero, and clear the answer list
+            currentQuestionIndex = 0
         }
 
         _currentQuestion.value = quizQuestions[currentQuestionIndex]
@@ -392,7 +392,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
      * Starts the countdown timer
      */
     fun startTimer(binding: FragmentQuizBinding, Min: Int): CountDownTimer {
-        binding.quizProgressBar.progress = 0
         val myCountDownTimer = object : CountDownTimer(Min.toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
 
