@@ -47,21 +47,23 @@ class PreQuizFragment : Fragment() {
     private var isAtHome : Boolean = true
     private var isAtClinic : Boolean = false
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
+                context?.let { quizViewModel.prePollLocation(it) }
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                // Only approximate location access granted.
+                context?.let { quizViewModel.prePollLocation(it) }
             } else -> {
             // No location access granted.
         }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -144,6 +146,7 @@ class PreQuizFragment : Fragment() {
 
             // If quiz is not loading and the go to quiz button is hidden (after it is clicked) then navigate to quiz
             if (!quizIsLoading && binding.preQuizGoToQuizButton.visibility == View.GONE) {
+                quizViewModel.stopPollLocation()
                 val action = PreQuizFragmentDirections.actionPreQuizFragmentToQuizFragment(userID)
                 view?.findNavController()?.navigate(action)
             }

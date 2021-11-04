@@ -5,8 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.CountDownTimer
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +20,7 @@ import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
+import com.dementiaquiz.android.network.QuizLocationService
 import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -92,10 +97,21 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     // Location client
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
+    val locationListener = LocationListener { location ->
+        myLat = location.latitude
+        myLong = location.longitude
+        Timber.i("myLatNew= %s | myLongNew= %s", myLat.toString(), myLong.toString())
+
+        _gpsCoordinatesFetched.value = true
+    }
+
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
     // Quiz latitude, longitude and mode
     var myLat: Double? = null
     var myLong: Double? = null
     var mode: String = ""
+
 
 
     /**
@@ -107,6 +123,34 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _score.value = 0
         _quizIsLoading.value = false
         _gpsPermissionsGranted.value = false
+    }
+
+    fun prePollLocation(context: Context) {
+        if (ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Location is not granted permission
+            _gpsPermissionsGranted.value = false
+
+            Timber.i("GPS not granted permission")
+
+            return
+        } else {
+            // GPS has been granted permission
+            _gpsPermissionsGranted.value = true
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+            0.01.toFloat(), locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+            0.01.toFloat(), locationListener);
+    }
+
+    fun stopPollLocation(){
+        locationManager.removeUpdates(locationListener)
     }
 
     // Get the location of the device
@@ -142,6 +186,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 _gpsCoordinatesFetched.value = false
 
                 Timber.i("GPS location request failure")
+
             }
             addOnSuccessListener {
 
@@ -173,6 +218,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
         // fetch the quiz everytime the mode button is clicked
         mode = newMode
+        val locationClient = QuizLocationService()
         getLocation(fusedLocationClient, context)
 
 
