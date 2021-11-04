@@ -305,24 +305,27 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             }
             else if (binding.quizDateEditText.visibility == View.VISIBLE) {
                 var response = binding.quizDateEditText.text.toString()
+                if (response != "") {
+                    // reformat the date to keep it consistent with the answers on server
+                    // original from user response example: Y-M-D
+                    // need to convert to the same format as the one from ther server, in this case: dd/mm/yy
+                    val dateList = response.split("-")
+                    val year = dateList[0].toInt()
+                    val month = dateList[1].toInt()
+                    val day = dateList[2].toInt()
+                    var date = LocalDate.of(year, month, day)
 
-                // reformat the date to keep it consistent with the answers on server
-                // original from user response example: Y-M-D
-                // need to convert to the same format as the one from ther server, in this case: dd/mm/yy
-                val dateList = response.split("-")
-                val year = dateList[0].toInt()
-                val month =  dateList[1].toInt()
-                val day =  dateList[2].toInt()
-                var date = LocalDate.of(year, month, day)
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+                    val formattedDate = date.format(formatter)
+                    response = formattedDate
 
-                val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
-                val formattedDate = date.format(formatter)
-                response=formattedDate
-
-                Timber.i("The date picked is: $date")
-                Timber.i("The formatted date picked is: $formattedDate")
-
-                quizViewModel.onNext(response, answer, false)
+                    Timber.i("The date picked is: $date")
+                    Timber.i("The formatted date picked is: $formattedDate")
+                    quizViewModel.onNext(response, answer, false)
+                }
+                else {
+                    quizViewModel.onNext("", answer, false)
+                }
             }
             else {
                 quizViewModel.onNext(voiceAnswer, answer, false)

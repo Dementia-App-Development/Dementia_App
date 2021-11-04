@@ -371,6 +371,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         // Check whether at the end of the quiz
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
+            _currentQuestion.value = quizQuestions[currentQuestionIndex]
 
             // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
@@ -385,12 +386,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             // TODO: can we clear the answer list when the game start rather than game ends? This will make sure
             //  the quizAnswerList is available when save to the database. If it works then do not fix
             quizAnswerList.clear()
-
-            // Reset the index to zero, and clear the answer list
-            currentQuestionIndex = 0
         }
 
-        _currentQuestion.value = quizQuestions[currentQuestionIndex]
     }
 
     /**

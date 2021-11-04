@@ -81,10 +81,10 @@ class PostQuizFragment : Fragment() {
                         .streamFor(300, 5000L)
                 }
                 when(result.score){
-                    in 80..100 -> comment="Congratulation! Based on the test result, you have no symptom of dementia"
-                    in 50..80 -> comment="Warning! Based on the test result, you have mild symptom of dementia. We recommend you to see a Doctor if possible"
-                    in 0..50 -> comment="Warning! Based on the test result, you have severe symptom of dementia. Please inform your family and see a Doctor as soon as possible. "
-                    else -> comment="Something is wrong, we are not able to read the scaled test score. Please contact the Administrator"
+                    in 80..100 -> comment="Based on today's result, your cognitive function is normal."
+                    in 50..80 -> comment="Based on today's result, you have mild symptoms of cognitive impairment. We recommend a consultation with your GP."
+                    in 0..50 -> comment="Based on today's result, you have severe symptoms of cognitive impairment. We recommend a consultation with your GP and further testing."
+                    else -> comment="Something is wrong, we are not able to read the scaled test score. Please contact the Administrator."
                 }
 
                 binding.postQuizCommentContentTextView.text = comment
