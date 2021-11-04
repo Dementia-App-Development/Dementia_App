@@ -322,11 +322,16 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
      * Checks the user answer against the true answer, returns boolean
      */
     private fun isResponseCorrect(userAnswer: String?, trueAnswer: String, assistedCorrect: Boolean) : Boolean {
+
+        // make the answers correctness case insensitive
+        val userAnswerUppercase = userAnswer?.uppercase()
+        val trueAnswerUppercase = trueAnswer?.uppercase()
+
         // Check if the answer provided is correct
-        if (userAnswer == "" && !assistedCorrect) {
+        if (userAnswerUppercase == "" && !assistedCorrect) {
             Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
             return false
-        } else if ( assistedCorrect || trueAnswer.contains(userAnswer!!)){
+        } else if ( assistedCorrect || trueAnswerUppercase.contains(userAnswerUppercase!!)){
             Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is ✔ correct ✔")
             // Increment the score
             _score.value = (_score.value)?.plus(1)
