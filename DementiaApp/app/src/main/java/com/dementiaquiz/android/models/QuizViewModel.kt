@@ -20,7 +20,6 @@ import com.dementiaquiz.android.QuizApi
 import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
-import com.dementiaquiz.android.network.QuizLocationService
 import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -218,7 +217,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
         // fetch the quiz everytime the mode button is clicked
         mode = newMode
-        val locationClient = QuizLocationService()
         getLocation(fusedLocationClient, context)
 
 
