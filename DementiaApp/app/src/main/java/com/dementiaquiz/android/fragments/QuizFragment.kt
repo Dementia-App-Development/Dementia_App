@@ -33,7 +33,9 @@ import com.dementiaquiz.android.models.QuizViewModel
 import com.dementiaquiz.android.utils.TimeConverter
 import com.squareup.picasso.Picasso
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -302,7 +304,24 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 quizViewModel.onNext(response, answer, false)
             }
             else if (binding.quizDateEditText.visibility == View.VISIBLE) {
-                val response = binding.quizDateEditText.text.toString()
+                var response = binding.quizDateEditText.text.toString()
+
+                // reformat the date to keep it consistent with the answers on server
+                // original from user response example: Y-M-D
+                // need to convert to the same format as the one from ther server, in this case: dd/mm/yy
+                val dateList = response.split("-")
+                val year = dateList[0].toInt()
+                val month =  dateList[1].toInt()
+                val day =  dateList[2].toInt()
+                var date = LocalDate.of(year, month, day)
+
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+                val formattedDate = date.format(formatter)
+                response=formattedDate
+
+                Timber.i("The date picked is: $date")
+                Timber.i("The formatted date picked is: $formattedDate")
+
                 quizViewModel.onNext(response, answer, false)
             }
             else {
