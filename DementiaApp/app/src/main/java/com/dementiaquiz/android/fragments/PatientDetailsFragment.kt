@@ -48,34 +48,79 @@ class PatientDetailsFragment : Fragment() {
         // Go to quiz button
         binding.patientDetailsNextButton.setOnClickListener { v:View ->
 
-            val user = createNewUser(binding)
-            Timber.i("the user is: $user")
+            val nickname = binding.patientDetailsNicknameEditText.text.toString()
+            val firstName = binding.patientDetailsFirstNameEditText.text.toString()
+            val lastName = binding.patientDetailsLastNameEditText.text.toString()
+            val dateOfBirth = binding.patientDetailsDOBEditText.text.toString()
+            val gender = binding.patientDetailsGenderSpinner.selectedItem.toString()
+
+            var bad: Boolean = false
+
+            when {
+                nickname == "" -> {
+                    Toast.makeText(context,
+                        "You can't leave the nickname field empty!",
+                        Toast.LENGTH_LONG).show()
+                    bad = true
+                }
+                firstName == "" -> {
+                    Toast.makeText(context,
+                        "You can't the first name field empty!",
+                        Toast.LENGTH_LONG).show()
+                    bad = true
+                }
+                lastName == "" -> {
+                    Toast.makeText(context,
+                        "You can't the last name field empty!",
+                        Toast.LENGTH_LONG).show()
+                    bad = true
+                }
+                dateOfBirth == "" -> {
+                    Toast.makeText(context,
+                        "You have to provide a date of birth!",
+                        Toast.LENGTH_LONG).show()
+                    bad = true
+                }
+                gender == "" -> {
+                    Toast.makeText(context,
+                        "You have to provide us with a gender!",
+                        Toast.LENGTH_LONG).show()
+                    bad = true
+                }
+            }
 
             // TODO: only saveToDatabase and navigate if the fields are all populated, else show a warning / pop-up and change colour of empty edit text fields to red
 
             // TODO:(Done) Write to the users database with the info provided by the user in the UI
-            usersViewModel.checkAndInsert(user).observe(viewLifecycleOwner){ userId ->
-                if (userId==(-1L)){
-                    // failed, indicate there is already a user with the same nickname in hte database
-                    Toast.makeText(context,
-                        "Fail, your nickname has been used by others, please try again",
-                        Toast.LENGTH_LONG).show()
-                }else{
-                    // success inserted, navigate to next fragment
-                    Toast.makeText(context,
-                        "Success, your new account is: ${user.nickname}",
-                        Toast.LENGTH_LONG).show()
-                    Timber.i("Created new user in db")
+            if (!bad) {
+                val user = createNewUser(binding)
+                Timber.i("the user is: $user")
 
-                    // TODO:(Done) get the user ID here so it can be passed to pre quiz
-                    val action = PatientDetailsFragmentDirections.actionPatientDetailsFragmentToPreQuizFragment(userId)
+                usersViewModel.checkAndInsert(user).observe(viewLifecycleOwner){ userId ->
+                    if (userId==(-1L)){
+                        // failed, indicate there is already a user with the same nickname in hte database
+                        Toast.makeText(context,
+                            "Fail, your nickname has been used by others, please try again",
+                            Toast.LENGTH_LONG).show()
+                    }else{
+                        // success inserted, navigate to next fragment
+                        Toast.makeText(context,
+                            "Success, your new account is: ${user.nickname}",
+                            Toast.LENGTH_LONG).show()
+                        Timber.i("Created new user in db")
 
-                    v.findNavController().navigate(action)
+                        // TODO:(Done) get the user ID here so it can be passed to pre quiz
+                        val action = PatientDetailsFragmentDirections.actionPatientDetailsFragmentToPreQuizFragment(userId)
+
+                        v.findNavController().navigate(action)
+                    }
                 }
+                Timber.i("Created new user in db")
+
+            } else {
+                Timber.i("Empty fields in the form")
+                bad = false
             }
-
-            Timber.i("Created new user in db")
-
         }
 
         // On change of focus of the last name edit text, move to the dob picker and hide keyboard
@@ -90,6 +135,8 @@ class PatientDetailsFragment : Fragment() {
         binding.patientDetailsDOBEditText.setOnClickListener { v:View ->
             context?.let { showDatePickerDialog(it, binding) }
         }
+
+        // BUG: dob remains open!
 
         return binding.root
     }
