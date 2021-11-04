@@ -53,6 +53,7 @@
             android:layout_height="5dp"
             android:layout_weight="1"
             android:ems="10"
+            android:focusable="false"
             android:hint="@string/quizDateEditText_hint"
             android:imeOptions="actionDone"
             android:inputType="date"
@@ -83,7 +84,6 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/quizUserResponseEditText_hint"
-            android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:singleLine="true"
             android:visibility="gone" />
