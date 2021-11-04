@@ -1,6 +1,8 @@
 package com.dementiaquiz.android.activities
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
@@ -13,6 +15,10 @@ import androidx.navigation.ui.NavigationUI
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.ActivityMainBinding
 import timber.log.Timber
+import android.widget.TextView
+
+
+
 
 //TODO: can probably remove this constant, unless when we are loading quiz from file after onStop/onResume in fragment
 const val QUIZ_QUESTIONS_JSON = "quiz_questions.json"
@@ -46,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        // Change the title colour
+        val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
+            getSupportActionBar()?.setTitle((Html.fromHtml("<font color=\"#003349\">" + "Dementia App" + "</font>")))
+        };
         // get drawerLayout
         drawerLayout = binding.drawerLayout
 

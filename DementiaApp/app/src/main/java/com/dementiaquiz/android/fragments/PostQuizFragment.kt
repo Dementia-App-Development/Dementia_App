@@ -43,16 +43,7 @@ class PostQuizFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentPostQuizBinding>(
             inflater, R.layout.fragment_post_quiz, container, false
         )
-        binding.postQuizViewKonfetti.build()
-            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-            .setDirection(0.0, 359.0)
-            .setSpeed(1f, 5f)
-            .setFadeOutEnabled(true)
-            .setTimeToLive(2000L)
-            .addShapes(Shape.Square, Shape.Circle)
-            .addSizes(Size(12))
-            .setPosition(-50f, binding.postQuizViewKonfetti.width + 50f, -50f, -50f)
-            .streamFor(300, 5000L)
+
         /* The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
         // Navigate back to the title screen
         binding.mainMenuButton.setOnClickListener { v: View ->
@@ -76,7 +67,18 @@ class PostQuizFragment : Fragment() {
                 binding.postQuizScoreNumberTextView.text = result.score.toString()+"%"
 
                 var comment:String
-
+                if (result.score >= 80){
+                    binding.postQuizViewKonfetti.build()
+                        .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(1f, 5f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(2000L)
+                        .addShapes(Shape.Square, Shape.Circle)
+                        .addSizes(Size(12))
+                        .setPosition(-50f, binding.postQuizViewKonfetti.width + 50f, -50f, -50f)
+                        .streamFor(300, 5000L)
+                }
                 when(result.score){
                     in 80..100 -> comment="Congratulation! Based on the test result, you have no symptom of dementia"
                     in 50..80 -> comment="Warning! Based on the test result, you have mild symptom of dementia. We recommend you to see a Doctor if possible"
