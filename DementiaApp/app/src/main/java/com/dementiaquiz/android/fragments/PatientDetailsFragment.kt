@@ -125,7 +125,7 @@ class PatientDetailsFragment : Fragment() {
 
         // On change of focus of the last name edit text, move to the dob picker and hide keyboard
         binding.patientDetailsLastNameEditText.setOnFocusChangeListener { view, b ->
-            if (binding.patientDetailsLastNameEditText.text.isNotEmpty()) {
+            if (binding.patientDetailsLastNameEditText.text.isNotEmpty() && binding.patientDetailsDOBEditText.text.isEmpty()) {
                 context?.let { hideKeyboard(it, view) }
                 binding.patientDetailsDOBEditText.performClick()
             }
