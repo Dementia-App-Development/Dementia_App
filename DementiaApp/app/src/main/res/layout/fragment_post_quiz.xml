@@ -12,52 +12,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="268dp" />
+            tools:layout_editor_absoluteY="-16dp" />
 
         <TextView
             android:id="@+id/postQuizAnswersSubmittedTextView"
-            android:layout_width="280dp"
+            android:layout_width="0dp"
             android:layout_height="100dp"
-            android:background="@drawable/postresult_textview_border"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="Answers Submitted"
             android:textSize="34sp"
-            app:layout_constraintBottom_toBottomOf="@+id/postQuizGreenImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/postQuizGreenImageView"
-            app:layout_constraintTop_toTopOf="@+id/postQuizGreenImageView" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/postQuizViewKonfetti" />
 
         <TextView
             android:id="@+id/postQuizScoreDescTextView"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="100dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/postresult_textview_border"
             android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Score"
             android:textSize="34sp"
-            app:layout_constraintBottom_toBottomOf="@+id/postQuizScoreNumberTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/postQuizScoreNumberTextView"
-            app:layout_constraintTop_toTopOf="@+id/postQuizScoreNumberTextView"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="@+id/postQuizAnswersSubmittedTextView"
+            app:layout_constraintTop_toBottomOf="@+id/postQuizAnswersSubmittedTextView" />
 
         <TextView
             android:id="@+id/postQuizScoreNumberTextView"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginStart="30dp"
             android:background="@drawable/postresult_textview_border"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:textAlignment="center"
             android:textSize="60sp"
-            app:layout_constraintEnd_toStartOf="@+id/postQuizScoreDescTextView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postQuizGreenImageView" />
+            app:layout_constraintEnd_toEndOf="@+id/postQuizAnswersSubmittedTextView"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toEndOf="@+id/postQuizScoreDescTextView"
+            app:layout_constraintTop_toTopOf="@+id/postQuizScoreDescTextView" />
 
         <TextView
             android:id="@+id/postQuizCommentContentTextView"
@@ -66,21 +66,10 @@
             android:background="@drawable/postresult_textview_border"
             android:gravity="left"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/postQuizScoreDescTextView"
+            app:layout_constraintEnd_toEndOf="@+id/postQuizAnswersSubmittedTextView"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/postQuizScoreNumberTextView"
+            app:layout_constraintStart_toStartOf="@+id/postQuizCommentTitleTextView"
             app:layout_constraintTop_toBottomOf="@id/postQuizCommentTitleTextView" />
-
-        <ImageView
-            android:id="@+id/postQuizGreenImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="48dp"
-            app:layout_constraintEnd_toStartOf="@+id/postQuizAnswersSubmittedTextView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background" />
 
         <!--<Button
             android:id="@+id/mainMenuButton"
@@ -96,14 +85,25 @@
             android:id="@+id/postQuizCommentTitleTextView"
             android:layout_width="196dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="Comment:"
             android:textSize="34sp"
             app:flow_horizontalBias="0.5"
             app:layout_constraintBottom_toTopOf="@+id/postQuizCommentContentTextView"
-            app:layout_constraintStart_toStartOf="@+id/postQuizScoreNumberTextView"
-            app:layout_constraintTop_toBottomOf="@+id/postQuizScoreNumberTextView"
+            app:layout_constraintStart_toStartOf="@+id/postQuizAnswersSubmittedTextView"
+            app:layout_constraintTop_toBottomOf="@+id/postQuizScoreDescTextView"
             app:layout_constraintVertical_bias="0" />
+
+        <Button
+            android:id="@+id/goToMainMenuButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="35dp"
+            android:text="Go To Main Menu"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/postQuizCommentContentTextView"
+            app:layout_constraintStart_toStartOf="@+id/postQuizCommentContentTextView"
+            app:layout_constraintTop_toBottomOf="@+id/postQuizCommentContentTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
