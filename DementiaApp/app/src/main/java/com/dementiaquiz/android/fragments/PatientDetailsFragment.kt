@@ -1,12 +1,18 @@
 package com.dementiaquiz.android.fragments
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -72,6 +78,14 @@ class PatientDetailsFragment : Fragment() {
 
         }
 
+        // On change of focus of the last name edit text, move to the dob picker and hide keyboard
+        binding.patientDetailsLastNameEditText.setOnFocusChangeListener { view, b ->
+            if (binding.patientDetailsLastNameEditText.text.isNotEmpty() && binding.patientDetailsDOBEditText.text.isEmpty()) {
+                context?.let { hideKeyboard(it, view) }
+                binding.patientDetailsDOBEditText.performClick()
+            }
+        }
+
         // Open date picker dialog when date of birth edit text is opened
         binding.patientDetailsDOBEditText.setOnClickListener { v:View ->
             context?.let { showDatePickerDialog(it, binding) }
@@ -115,3 +129,7 @@ private fun createNewUser(binding: FragmentPatientDetailsBinding) : User{
     return User(0, nickname, firstName, lastName, TimeConverter.convertToDateViaInstant(parsedDate), gender)
 }
 
+private fun hideKeyboard(context: Context, view: View) {
+    val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
