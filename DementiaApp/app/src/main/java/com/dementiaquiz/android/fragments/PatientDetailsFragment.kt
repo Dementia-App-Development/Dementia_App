@@ -116,6 +116,7 @@ class PatientDetailsFragment : Fragment() {
                     }
                 }
                 Timber.i("Created new user in db")
+
             } else {
                 Timber.i("Empty fields in the form")
                 bad = false
@@ -134,6 +135,8 @@ class PatientDetailsFragment : Fragment() {
         binding.patientDetailsDOBEditText.setOnClickListener { v:View ->
             context?.let { showDatePickerDialog(it, binding) }
         }
+
+        // BUG: dob remains open!
 
         return binding.root
     }
