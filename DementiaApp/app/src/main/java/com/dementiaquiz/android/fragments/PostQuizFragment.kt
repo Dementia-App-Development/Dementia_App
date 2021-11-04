@@ -44,11 +44,12 @@ class PostQuizFragment : Fragment() {
             inflater, R.layout.fragment_post_quiz, container, false
         )
 
-        /* The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
+         //The main_menu button is removed to avoid too many main_menu fragments existing in the app stack at the same time
         // Navigate back to the title screen
-        binding.mainMenuButton.setOnClickListener { v: View ->
-            v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
-        }*/
+        binding.goToMainMenuButton.setOnClickListener { v: View ->
+            activity?.onBackPressed()
+//            v.findNavController().navigate(R.id.action_postQuizFragment_to_titleFragment)
+        }
 
         // Get the userId, resultID and score from the QuizFragment
         // Get user ID argument using by navArgs property delegate
@@ -107,4 +108,6 @@ class PostQuizFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         application = activity?.application as DementiaQuizApplication
     }*/
+
+
 }
