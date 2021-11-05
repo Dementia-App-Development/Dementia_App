@@ -1,5 +1,6 @@
 package com.dementiaquiz.android.fragments.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.QuizAnswer
-import com.dementiaquiz.android.database.model.User
-import timber.log.Timber
 
+/**
+ * Used in Quiz Result Recycler View
+ */
 class QuizAnswersListAdapter(): ListAdapter<QuizAnswer, QuizAnswersListAdapter.QuizAnswersViewHolder>(
-    QuizAnswersListAdapter.QuizAnswersComparator()
+    QuizAnswersComparator()
 ) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizAnswersViewHolder {
-        return QuizAnswersListAdapter.QuizAnswersViewHolder.create(parent)
+        return QuizAnswersViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: QuizAnswersViewHolder, position: Int) {
@@ -31,13 +32,12 @@ class QuizAnswersListAdapter(): ListAdapter<QuizAnswer, QuizAnswersListAdapter.Q
         itemView: View,
     ) : RecyclerView.ViewHolder(itemView) {
 
-
-        //TODO: bind more views with data
         private val questionDescriptionTextView: TextView = itemView.findViewById(R.id.questionDescriptionTextView)
         private val correctnessTextView: TextView = itemView.findViewById(R.id.correctnessTextView)
         private val patientResponseTextView: TextView = itemView.findViewById(R.id.patientResponseTextView)
         private val correctAnswersTextView: TextView = itemView.findViewById(R.id.correctAnswersTextView)
 
+        @SuppressLint("SetTextI18n")
         fun bind(quizAnswer: QuizAnswer) {
 
             // update the layout based on the quizAnswer retrieved from the database
@@ -58,9 +58,9 @@ class QuizAnswersListAdapter(): ListAdapter<QuizAnswer, QuizAnswersListAdapter.Q
             val correctAnswerList: List<String> = quizAnswer.correctAnswer.split("&")
             var formattedCorrectAnswers:String = "\n"
             for (correctAnswer in correctAnswerList){
-                formattedCorrectAnswers+=" ● "+correctAnswer+"\n"
+                formattedCorrectAnswers+= " ● $correctAnswer\n"
             }
-            correctAnswersTextView.text = "Correct answers: "+formattedCorrectAnswers
+            correctAnswersTextView.text = "Correct answers: $formattedCorrectAnswers"
 
         }
 

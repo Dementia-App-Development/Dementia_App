@@ -11,8 +11,10 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.User
 import timber.log.Timber
 
+/**
+ * Used in Quiz Result Recycler View
+ */
 class UserListAdapter(private val onItemClicked: (userId: Long) -> Unit): ListAdapter<User, UserListAdapter.UserViewHolder>(UsersComparator()){
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         Timber.i("onCreateViewHolder called")
@@ -36,7 +38,6 @@ class UserListAdapter(private val onItemClicked: (userId: Long) -> Unit): ListAd
             itemView.setOnClickListener(this)
         }
 
-        //TODO: bind more views with data
         private val userNickNameItemView: TextView = itemView.findViewById(R.id.userNickNametextView)
 
         private lateinit var currentUser:User
@@ -57,10 +58,10 @@ class UserListAdapter(private val onItemClicked: (userId: Long) -> Unit): ListAd
         // implement the onclick listener
         override fun onClick(p0: View?) {
 
-            val position = adapterPosition
+            adapterPosition
 
             Timber.i("userNickNameItemView in onClick is: ${userNickNameItemView.text}")
-            Timber.i("the current user is: ${currentUser}")
+            Timber.i("the current user is: $currentUser")
 
 
             onItemClicked(currentUser.userId)

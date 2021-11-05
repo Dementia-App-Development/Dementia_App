@@ -1,18 +1,14 @@
 package com.dementiaquiz.android.fragments
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -56,6 +52,7 @@ class PatientDetailsFragment : Fragment() {
 
             var bad: Boolean = false
 
+            // Handle error when user does not fill in the required fields
             when {
                 nickname == "" -> {
                     Toast.makeText(context,
@@ -89,9 +86,7 @@ class PatientDetailsFragment : Fragment() {
                 }
             }
 
-            // TODO: only saveToDatabase and navigate if the fields are all populated, else show a warning / pop-up and change colour of empty edit text fields to red
-
-            // TODO:(Done) Write to the users database with the info provided by the user in the UI
+            // Write to the users database with the info provided by the user in the UI
             if (!bad) {
                 val user = createNewUser(binding)
                 Timber.i("the user is: $user")
@@ -109,7 +104,7 @@ class PatientDetailsFragment : Fragment() {
                             Toast.LENGTH_LONG).show()
                         Timber.i("Created new user in db")
 
-                        // TODO:(Done) get the user ID here so it can be passed to pre quiz
+                        // Get the user ID here so it can be passed to pre quiz
                         val action = PatientDetailsFragmentDirections.actionPatientDetailsFragmentToPreQuizFragment(userId)
 
                         v.findNavController().navigate(action)
@@ -119,12 +114,11 @@ class PatientDetailsFragment : Fragment() {
 
             } else {
                 Timber.i("Empty fields in the form")
-                bad = false
             }
         }
 
         // On change of focus of the last name edit text, move to the dob picker and hide keyboard
-        binding.patientDetailsLastNameEditText.setOnFocusChangeListener { view, b ->
+        binding.patientDetailsLastNameEditText.setOnFocusChangeListener { view, _ ->
             if (binding.patientDetailsLastNameEditText.text.isNotEmpty() && binding.patientDetailsDOBEditText.text.isEmpty()) {
                 context?.let { hideKeyboard(it, view) }
                 binding.patientDetailsDOBEditText.performClick()
@@ -132,11 +126,9 @@ class PatientDetailsFragment : Fragment() {
         }
 
         // Open date picker dialog when date of birth edit text is opened
-        binding.patientDetailsDOBEditText.setOnClickListener { v:View ->
+        binding.patientDetailsDOBEditText.setOnClickListener {
             context?.let { showDatePickerDialog(it, binding) }
         }
-
-        // BUG: dob remains open!
 
         return binding.root
     }
@@ -147,10 +139,10 @@ class PatientDetailsFragment : Fragment() {
  */
 @RequiresApi(Build.VERSION_CODES.N)
 private fun showDatePickerDialog(context : Context, binding : FragmentPatientDetailsBinding) {
-    val datePickerDialog : DatePickerDialog = DatePickerDialog(context)
+    val datePickerDialog = DatePickerDialog(context)
     // Default year of birth is set to 1940
     datePickerDialog.updateDate(1940,0,1)
-    datePickerDialog.datePicker.touchables[0].performClick();
+    datePickerDialog.datePicker.touchables[0].performClick()
     datePickerDialog.show()
     datePickerDialog.setOnDateSetListener { _, year, month, day ->
         val dobString = ("$year-${month+1}-$day")
@@ -170,12 +162,14 @@ private fun createNewUser(binding: FragmentPatientDetailsBinding) : User{
 
     // parse dateOfBirth String to LocalDate
     val dateArray = dateOfBirth.split("-").toTypedArray()
-    var parsedDate = LocalDate.of(dateArray[0].toInt(), dateArray[1].toInt(), dateArray[2].toInt())
+    val parsedDate = LocalDate.of(dateArray[0].toInt(), dateArray[1].toInt(), dateArray[2].toInt())
 
-    // TODO: place holder values Date() and gender need to be the correct type
     return User(0, nickname, firstName, lastName, TimeConverter.convertToDateViaInstant(parsedDate), gender)
 }
 
+/**
+ * Hides the soft keyboard
+ */
 private fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)

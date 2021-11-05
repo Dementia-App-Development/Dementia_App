@@ -4,12 +4,10 @@ import androidx.lifecycle.*
 import com.dementiaquiz.android.database.model.QuizAnswer
 import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.repositories.QuizResultRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class QuizResultViewModel(private val quizResultRepository: QuizResultRepository):ViewModel(){
 
-    // fun insert(quizResult: QuizResult) = viewModelScope.launch {quizResultRepository.insert(quizResult)}
     /**
      * Cite from "https://developer.android.com/codelabs/android-room-with-a-view-kotlin#9"
      * Launching a new coroutine to insert the data in a non-blocking way
@@ -18,12 +16,11 @@ class QuizResultViewModel(private val quizResultRepository: QuizResultRepository
     // the inserted QuizResult
     fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):Long{
 
-        var quizResultId:Long =-1;
+        var quizResultId:Long =-1
         viewModelScope.launch {
             quizResultId = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
         }
         return quizResultId
-
     }
 
     // The comment below is quoted from "https://developer.android.com/codelabs/android-room-with-a-view-kotlin#9"
@@ -42,7 +39,6 @@ class QuizResultViewModel(private val quizResultRepository: QuizResultRepository
     fun getQuizResultByResultId(resultId:Long):LiveData<QuizResult>{
         return quizResultRepository.getQuizResultByResultId(resultId).asLiveData()
     }
-
 
 }
 

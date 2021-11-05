@@ -5,12 +5,10 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.CountDownTimer
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import timber.log.Timber
 
 /**
  * Holds the information for the current question in the quiz
@@ -39,8 +36,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private val quizResultRepository: QuizResultRepository =
         getApplication<DementiaQuizApplication>().quizResultRepository
 
-    // TODO: variable never used, can delete?
-    private val REQUEST_CODE_SPEECH_INPUT = 100;
+    private val REQUEST_CODE_SPEECH_INPUT = 100
 
     // A List of quiz question objects
     private var quizQuestions: List<QuizQuestion>
@@ -49,7 +45,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private var currentQuestionIndex: Int
 
     // The list of answers for the quiz
-    var quizAnswerList : MutableList<QuizAnswer> = mutableListOf<QuizAnswer>()
+    var quizAnswerList : MutableList<QuizAnswer> = mutableListOf()
 
     // The result of the quiz
     lateinit var quizResult : QuizResult
@@ -96,21 +92,20 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     // Location client
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
-    val locationListener = LocationListener { location ->
+    private val locationListener = LocationListener { location ->
         myLat = location.latitude
         myLong = location.longitude
-        Timber.i("myLatNew= %s | myLongNew= %s", myLat.toString(), myLong.toString())
+//        Timber.i("myLatNew= %s | myLongNew= %s", myLat.toString(), myLong.toString())
 
         _gpsCoordinatesFetched.value = true
     }
 
-    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     // Quiz latitude, longitude and mode
-    var myLat: Double? = null
-    var myLong: Double? = null
-    var mode: String = ""
-
+    private var myLat: Double? = null
+    private var myLong: Double? = null
+    private var mode: String = ""
 
 
     /**
@@ -124,6 +119,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _gpsPermissionsGranted.value = false
     }
 
+    /**
+     * Polls for location
+     */
     fun prePollLocation(context: Context) {
         if (ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
@@ -134,7 +132,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             // Location is not granted permission
             _gpsPermissionsGranted.value = false
 
-            Timber.i("GPS not granted permission")
+//            Timber.i("GPS not granted permission")
 
             return
         } else {
@@ -143,9 +141,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-            0.01.toFloat(), locationListener);
+            0.01.toFloat(), locationListener)
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
-            0.01.toFloat(), locationListener);
+            0.01.toFloat(), locationListener)
     }
 
     fun stopPollLocation(){
@@ -157,7 +155,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         fusedLocationProviderClient: FusedLocationProviderClient,
         context: Context
     ) {
-        Timber.i("Fetching device location")
+//        Timber.i("Fetching device location")
 
         if (ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
@@ -168,7 +166,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             // Location is not granted permission
             _gpsPermissionsGranted.value = false
 
-            Timber.i("GPS not granted permission")
+//            Timber.i("GPS not granted permission")
 
             return
         } else {
@@ -179,12 +177,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         // Add the on success and on failure methods for GPS request
         fusedLocationProviderClient.lastLocation.apply {
             addOnFailureListener {
-                //Handle the failure of the call. You can show an error dialogue or a toast stating the failure in receiving location.
-
                 // Handle if GPS location request failure
                 _gpsCoordinatesFetched.value = false
 
-                Timber.i("GPS location request failure")
+//                Timber.i("GPS location request failure")
 
             }
             addOnSuccessListener {
@@ -196,7 +192,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     //You can extract the details from the client, like the latitude and longitude of the place and use it accordingly.
                     myLat = it.latitude
                     myLong = it.longitude
-                    Timber.i("myLat= %s | myLong= %s", myLat.toString(), myLong.toString())
+//                    Timber.i("myLat= %s | myLong= %s", myLat.toString(), myLong.toString())
 
                     getAllQuizQuestions()
                 }
@@ -209,12 +205,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
      * Then gets the location of the quiz
      */
     fun setQuizMode(newMode: String) {
-        /*// Fetch quiz if the new mode is different to the current mode
-        if (newMode != mode) {
-            mode = newMode
-            getLocation(fusedLocationClient, context)
-        }*/
-
         // fetch the quiz everytime the mode button is clicked
         mode = newMode
         getLocation(fusedLocationClient, context)
@@ -244,29 +234,26 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 .enqueue(object : Callback<String> {
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         _response.value = "Failure: " + t.message
-                        Timber.i("API failure")
-
-
-                        // TODO: handle API response failure exception with dialog prompt
+//                        Timber.i("API failure")
                     }
 
                     // Get the quiz questions from API call and sort them
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         _response.value = response.body()
-                        Timber.i("API response:")
-                        Timber.i(response.body())
+//                        Timber.i("API response:")
+//                        Timber.i(response.body())
 
                         // Parse the json response to generate quiz question list
                         quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                        Timber.i("Retrieved quiz questions from API")
-                        Timber.i("unsorted questions: " + quizQuestions)
+//                        Timber.i("Retrieved quiz questions from API")
+//                        Timber.i("unsorted questions: " + quizQuestions)
 
 
                         // Sort the questions list by id
-                        quizQuestions = quizQuestions.sortedWith(compareBy({ it.question_no }))
-                        Timber.i("sorted questions: " + quizQuestions)
+                        quizQuestions = quizQuestions.sortedWith(compareBy { it.question_no })
+//                        Timber.i("sorted questions: " + quizQuestions)
 
-                        Timber.i("Length of quiz= %s", quizQuestions.size)
+//                        Timber.i("Length of quiz= %s", quizQuestions.size)
 
                         // Set the first question
                         currentQuestionIndex = 0
@@ -284,28 +271,26 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 .enqueue(object : Callback<String> {
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         _response.value = "Failure: " + t.message
-                        Timber.i("API failure")
-
-                        // TODO: handle API response failure exception with dialog prompt
+//                        Timber.i("API failure")
                     }
 
                     // Get the quiz questions from API call and sort them
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         _response.value = response.body()
-                        Timber.i("API response:")
-                        Timber.i(response.body())
+//                        Timber.i("API response:")
+//                        Timber.i(response.body())
 
                         // Parse the json response to generate quiz question list
                         quizQuestions = response.body()?.let { generateQuizQuestionsFromJson(it) }!!
-                        Timber.i("Retrieved quiz questions from API")
-                        Timber.i("unsorted questions: " + quizQuestions)
+//                        Timber.i("Retrieved quiz questions from API")
+//                        Timber.i("unsorted questions: " + quizQuestions)
 
 
                         // Sort the questions list by id
-                        quizQuestions = quizQuestions.sortedWith(compareBy({ it.question_no }))
-                        Timber.i("sorted questions: " + quizQuestions)
+                        quizQuestions = quizQuestions.sortedWith(compareBy { it.question_no })
+//                        Timber.i("sorted questions: " + quizQuestions)
 
-                        Timber.i("Length of quiz= %s", quizQuestions.size)
+//                        Timber.i("Length of quiz= %s", quizQuestions.size)
 
                         // Set the first question
                         currentQuestionIndex = 0
@@ -325,20 +310,20 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
         // make the answers correctness case insensitive
         val userAnswerUppercase = userAnswer?.uppercase()
-        val trueAnswerUppercase = trueAnswer?.uppercase()
+        val trueAnswerUppercase = trueAnswer.uppercase()
 
         // Check if the answer provided is correct
-        if (userAnswerUppercase == "" && !assistedCorrect) {
-            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
-            return false
+        return if (userAnswerUppercase == "" && !assistedCorrect) {
+    //            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            false
         } else if ( assistedCorrect || trueAnswerUppercase.contains(userAnswerUppercase!!)){
-            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is ✔ correct ✔")
+    //            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is ✔ correct ✔")
             // Increment the score
             _score.value = (_score.value)?.plus(1)
-            return true
+            true
         } else {
-            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
-            return false
+    //            Timber.i("Question #" + currentQuestion.value?.question_no.toString() + " Answer is X wrong X")
+            false
         }
     }
 
@@ -351,10 +336,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         val questionDescription = quizQuestions[currentQuestionIndex].instruction
         // Converts list of answers to a concatenated list
         val correctAnswer = quizQuestions[currentQuestionIndex].answers?.joinToString("&") ?: ""
-        val response : String = userAnswer.toString().orEmpty()
+        val response : String = userAnswer.toString()
         val correct = isResponseCorrect(userAnswer, trueAnswer, assistedCorrect)
-        // TODO: (Done)result ID is current default to zero - should this be fetched from db?
-        //  [Feedback: It is not necessary, I will overwrite the resultId in each answer when I insert the result and answer to the database]
         val resultId = 0L
         return QuizAnswer(0, questionDescription, correctAnswer, response, correct, resultId)
     }
@@ -372,19 +355,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         if (currentQuestionIndex < quizQuestions.size - 1) {
             currentQuestionIndex += 1
             _currentQuestion.value = quizQuestions[currentQuestionIndex]
-
-            // When at the end of the quiz, set the boolean to true so to move to the post quiz fragment
         } else {
-            // TODO: (done)before setting game finished to true, saves the results of the quiz to database
-            //  [feedback: the observer should be in fragment/activity rather than view model.
-            //  Therefore, this to-do is done in an observer in the fragment. However,
-            //  it might cause problem because of the time inconsistency, like the quizAnswer list is cleared
-            //  before being saved. This might need to be fixed or not]
-
             _quizIsFinished.value = true
-
-            // TODO: can we clear the answer list when the game start rather than game ends? This will make sure
-            //  the quizAnswerList is available when save to the database. If it works then do not fix
             quizAnswerList.clear()
         }
 
@@ -415,10 +387,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     // the inserted QuizResult
     fun insertQuizResultAndAnswers(quizResult: QuizResult, quizAnswerList:List<QuizAnswer>):LiveData<Long>{
 
-        Timber.i("QuizResult is: $quizResult")
-        Timber.i("quizAnswerList is: $quizAnswerList")
+//        Timber.i("QuizResult is: $quizResult")
+//        Timber.i("quizAnswerList is: $quizAnswerList")
 
-        var quizResultId =MutableLiveData<Long>()
+        val quizResultId =MutableLiveData<Long>()
 
         viewModelScope.launch {
             val num = quizResultRepository.insertQuizResultAndAnswers(quizResult,quizAnswerList)
@@ -439,7 +411,7 @@ private fun generateQuizQuestionsFromJson(jsonString: String): List<QuizQuestion
         val quizQuestion = object : TypeToken<List<QuizQuestion>>() {}.type
         return gson.fromJson(jsonString, quizQuestion)
     } catch (e: Exception) {
-        Timber.i("Could not generate quiz questions list from json string")
+//        Timber.i("Could not generate quiz questions list from json string")
         throw Exception("Could not generate quiz questions list from json string")
     }
 }

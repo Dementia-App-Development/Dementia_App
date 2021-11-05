@@ -3,6 +3,9 @@ package com.dementiaquiz.android.database.typeConverter
 import androidx.room.TypeConverter
 import java.util.*
 
+/**
+ * Type converter for converting dates to/from long
+ */
 class Converter {
 
     @TypeConverter
@@ -12,7 +15,7 @@ class Converter {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 
 }

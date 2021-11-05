@@ -10,6 +10,10 @@ import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.database.model.User
 import com.dementiaquiz.android.database.typeConverter.Converter
 
+/**
+ * An abstract class representing a quiz database
+ * Use getInstance to create a database for this class
+ */
 @Database(entities = [User::class, QuizResult::class, QuizAnswer::class], version = 5, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class QuizDatabase : RoomDatabase() {

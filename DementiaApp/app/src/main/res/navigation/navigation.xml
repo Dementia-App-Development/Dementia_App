@@ -9,7 +9,6 @@
         android:id="@+id/titleFragment"
         android:name="com.dementiaquiz.android.fragments.TitleFragment"
         android:label="Dementia App"
-
         tools:layout="@layout/fragment_title">
         <action
             android:id="@+id/action_titleFragment_to_resultsFragment"
@@ -71,7 +70,8 @@
     <fragment
         android:id="@+id/resultUsersFragment"
         android:name="com.dementiaquiz.android.fragments.ResultUsersFragment"
-        android:label="Patients">
+        android:label="Users"
+        tools:layout="@layout/fragment_users">
         <action
             android:id="@+id/action_resultUsersFragment_to_resultResultsFragment"
             app:destination="@id/resultResultsFragment"
@@ -153,7 +153,7 @@
     <fragment
         android:id="@+id/resultAnswersFragment"
         android:name="com.dementiaquiz.android.fragments.ResultAnswersFragment"
-        android:label="ResultAnswersFragment"
+        android:label="Answers"
         tools:layout="@layout/fragment_result_answers">
         <argument
             android:name="resultId"

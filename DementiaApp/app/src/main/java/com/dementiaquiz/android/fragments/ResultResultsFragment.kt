@@ -23,11 +23,11 @@ import com.dementiaquiz.android.models.UsersViewModel
 import com.dementiaquiz.android.models.UsersViewModelFactory
 import timber.log.Timber
 
-
+/**
+ * A fragment for display results
+ */
 class ResultResultsFragment : Fragment() {
 
-    //TODO: this may crash the app, there might be another better solution
-    // see "https://stackoverflow.com/questions/11585702/how-to-get-application-object-into-fragment-class"
     private val quizResultViewModel: QuizResultViewModel by viewModels {
         QuizResultViewModelFactory((activity?.application as DementiaQuizApplication).quizResultRepository)
     }
@@ -35,7 +35,7 @@ class ResultResultsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate view binding to get variables from XML
         val binding = DataBindingUtil.inflate<FragmentResultResultsBinding>(
             inflater,
@@ -54,7 +54,7 @@ class ResultResultsFragment : Fragment() {
         val resultResultsFragmentArgs by navArgs<ResultResultsFragmentArgs>()
         val userId = resultResultsFragmentArgs.userId
 
-        Timber.i("The passed userId is: $userId")
+//        Timber.i("The passed userId is: $userId")
 
         quizResultViewModel.getQuizResultsByUserId(userId).observe(viewLifecycleOwner){ quizResultList ->
 
@@ -68,9 +68,9 @@ class ResultResultsFragment : Fragment() {
 
     private fun onListItemClick(resultId: Long) {
 
-        Timber.i("The resultId of the clicked item is: $resultId")
+//        Timber.i("The resultId of the clicked item is: $resultId")
 
-        //TODO: navigate to the next fragment and passing the resultId
+        // Navigate to the next fragment and passing the resultId
         val action = ResultResultsFragmentDirections.actionResultResultsFragmentToResultAnswersFragment(resultId)
         view?.findNavController()?.navigate(action)
 

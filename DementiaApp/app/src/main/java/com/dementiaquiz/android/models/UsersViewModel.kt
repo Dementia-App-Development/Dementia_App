@@ -2,11 +2,12 @@ package com.dementiaquiz.android.models
 
 import androidx.lifecycle.*
 import com.dementiaquiz.android.database.model.User
-import com.dementiaquiz.android.repositories.QuizResultRepository
 import com.dementiaquiz.android.repositories.UserRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+/**
+ * A class holding data for user
+ */
 class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
 
     // check if there is already a same nickname in the database before insert, only
@@ -14,7 +15,7 @@ class UsersViewModel(private val userRepository: UserRepository): ViewModel() {
     // return the ID of the inserted user if succeed, return -1 if failed
     fun checkAndInsert(user: User):LiveData<Long> {
 
-        var result = MutableLiveData<Long>()
+        val result = MutableLiveData<Long>()
 
         viewModelScope.launch {
             val num = userRepository.checkAndInsert(user)

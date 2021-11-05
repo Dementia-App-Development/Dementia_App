@@ -28,8 +28,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -150,6 +148,7 @@
             android:id="@+id/preQuizGoToQuizButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:backgroundTint="@color/teal_200"
             android:text="@string/patientDetailsGoToQuizButton_text"
             android:textSize="24sp" />
 

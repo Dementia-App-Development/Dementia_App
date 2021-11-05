@@ -12,12 +12,6 @@ import kotlinx.coroutines.flow.Flow
 // the Room database. It encapsulates the data and then used as an API class for the viewModel
 class QuizResultRepository(private val quizResultDao: QuizResultDao, private val answerDao: QuizAnswerDao) {
 
-    /*@Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun insert(quizResult: QuizResult){
-        quizResultDao.insert(quizResult)
-    }*/
-
     // insertQuizResult and answers belong to that result. It returns the ID of
     // the inserted QuizResult
     @Suppress("RedundantSuspendModifier")

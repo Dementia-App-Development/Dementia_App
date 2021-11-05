@@ -1,5 +1,6 @@
 package com.dementiaquiz.android.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,14 +23,13 @@ import com.dementiaquiz.android.models.UsersViewModelFactory
  */
 class UsersFragment : Fragment() {
 
-    //TODO: this may crash the app, there might be another better solution
-    // see "https://stackoverflow.com/questions/11585702/how-to-get-application-object-into-fragment-class"
     private val usersViewModel: UsersViewModel by viewModels {
         UsersViewModelFactory((activity?.application as DementiaQuizApplication).userRepository)
     }
 
     private lateinit var binding : FragmentUsersBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
@@ -45,8 +45,8 @@ class UsersFragment : Fragment() {
             if (nicknameList.isEmpty()) {
                 spinner.visibility = View.GONE
                 binding.usersNextButton.visibility = View.GONE
-                binding.spinnerPromptTextView.setText("No users found. Please register new user")
-                binding.usersHeaderTextView.setText("Register")
+                binding.spinnerPromptTextView.text = "No users found. Please register new user"
+                binding.usersHeaderTextView.text = "Register"
             } else {
 
                 val adapter: ArrayAdapter<String>? = context?.let {
@@ -59,64 +59,6 @@ class UsersFragment : Fragment() {
 
         }
 
-
-        // binding.usersExistingUsersSpinner.setSelection()
-
-//        // Toggle the existing users and new user buttons to mirror each other
-//        binding.usersExistingUserToggleButton.setOnClickListener {
-//            if (binding.usersExistingUserToggleButton.isChecked) {
-//                binding.usersNewUserToggleButton.toggle()
-//            } else {
-//                binding.usersExistingUserToggleButton.toggle()
-//            }
-//
-//            // Display the existing users spinner if existing users button is on
-//            binding.usersExistingUsersSpinner.visibility = View.VISIBLE
-//            binding.spinnerPromptTextView.visibility = View.VISIBLE
-//
-//            // Expand the spinner automatically
-//            // binding.usersExistingUsersSpinner.performClick()
-//        }
-//        binding.usersNewUserToggleButton.setOnClickListener {
-//            if (binding.usersNewUserToggleButton.isChecked) {
-//                binding.usersExistingUserToggleButton.toggle()
-//            } else {
-//                binding.usersNewUserToggleButton.toggle()
-//            }
-//
-//            // Hide the existing users spinner if new users button is on
-//            binding.usersExistingUsersSpinner.visibility = View.GONE
-//            binding.spinnerPromptTextView.visibility = View.GONE
-//        }
-
-//        // Go to quiz dependent on whether new or existing user
-//        binding.usersNextButton.setOnClickListener { v:View ->
-//            // If it is a new user, navigate to the patient details fragment
-//            if (binding.usersNewUserToggleButton.isChecked) {
-//                v.findNavController().navigate(R.id.action_usersFragment_to_patientDetailsFragment)
-//
-//            // If it is an existing user, navigate straight to the pre-quiz fragment
-//            } else {
-//                // Send user ID to pre quiz fragment
-//                val nickname = binding.usersExistingUsersSpinner.selectedItem.toString()
-//                usersViewModel.getUserByNickname(nickname).observe(viewLifecycleOwner){ user ->
-//                    if (user==null){
-//                        Toast.makeText(context,
-//                            "Error, cannot find the user with the nickname",
-//                            Toast.LENGTH_SHORT).show()
-//                    }else{
-//                        // TODO: (Done) send the userId to the next fragment
-//                        // everything is good to go, navigate and pass the userId to next fragment
-//                        val userId = user.userId
-//                        val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userId)
-//                        v.findNavController().navigate(action)
-//
-//                    }
-//                }
-//
-//            }
-//        }
-
         binding.usersNextButton.setOnClickListener { v:View ->
             // Send user ID to pre quiz fragment
             val nickname = binding.usersExistingUsersSpinner.selectedItem.toString()
@@ -126,8 +68,7 @@ class UsersFragment : Fragment() {
                         "Error, cannot find the user with the nickname",
                         Toast.LENGTH_SHORT).show()
                 }else{
-                    // TODO: (Done) send the userId to the next fragment
-                    // everything is good to go, navigate and pass the userId to next fragment
+                    // Navigate and pass the userId to next fragment
                     val userId = user.userId
                     val action = UsersFragmentDirections.actionUsersFragmentToPreQuizFragment(userId)
                     v.findNavController().navigate(action)
@@ -144,12 +85,4 @@ class UsersFragment : Fragment() {
         return binding.root
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//
-//        // Display the existing users spinner if existing users button is on (simple check if navigating back to this fragment)
-//        if (binding.usersExistingUserToggleButton.isChecked) {
-//            binding.usersExistingUsersSpinner.visibility = View.VISIBLE
-//        }
-//    }
 }

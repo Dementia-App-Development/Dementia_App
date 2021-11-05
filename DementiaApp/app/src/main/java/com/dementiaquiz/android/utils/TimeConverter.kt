@@ -5,6 +5,9 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
+/**
+ * A class for converting time
+ */
 class TimeConverter {
     companion object {
 

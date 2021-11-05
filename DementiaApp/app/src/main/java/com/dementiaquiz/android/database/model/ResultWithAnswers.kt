@@ -2,9 +2,10 @@ package com.dementiaquiz.android.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.dementiaquiz.android.database.model.QuizAnswer
-import com.dementiaquiz.android.database.model.QuizResult
 
+/**
+ * This data class is a quiz result with a set of answers
+ */
 data class ResultWithAnswers(
 
     @Embedded

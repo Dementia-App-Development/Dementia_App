@@ -1,12 +1,10 @@
 package com.dementiaquiz.android.fragments
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -41,9 +39,9 @@ class TitleFragment : Fragment() {
         }
 
         // Go to Dementia Australia Website
-        binding.titleWebsiteButton.setOnClickListener { v: View ->
+        binding.titleWebsiteButton.setOnClickListener {
             val uri: Uri =
-                Uri.parse("https://www.dementia.org.au/") // missing 'http://' will cause crashed
+                Uri.parse("https://www.dementia.org.au/")
 
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
@@ -54,6 +52,7 @@ class TitleFragment : Fragment() {
         return binding.root
     }
 
+    // Title screen has options menu
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.options_menu, menu)

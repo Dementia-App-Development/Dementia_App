@@ -26,7 +26,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.database.model.QuizResult
-import com.dementiaquiz.android.databinding.FragmentPatientDetailsBinding
 import com.dementiaquiz.android.databinding.FragmentQuizBinding
 import com.dementiaquiz.android.models.QuizQuestion
 import com.dementiaquiz.android.models.QuizViewModel
@@ -45,7 +44,7 @@ import java.util.*
 class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
     // Initialize count down timer
-    var countDown: CountDownTimer? = null
+    private var countDown: CountDownTimer? = null
 
     private lateinit var quizViewModel: QuizViewModel
     private val REQUEST_CODE_SPEECH_INPUT = 100
@@ -55,10 +54,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     private var voiceAnswer: String = ""
     private lateinit var binding: FragmentQuizBinding
     private val displayMetrics: DisplayMetrics by lazy { Resources.getSystem().displayMetrics }
-    val screenRectPx: Rect
+    private val screenRectPx: Rect
         get() = displayMetrics.run { Rect(0, 0, widthPixels, heightPixels) }
+
     /**
-     * Create views for the quiz by inflating XML
+     * Initialize TTS
      */
     override fun onInit(status: Int) {
         if(status != TextToSpeech.ERROR) {
@@ -72,8 +72,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
      */
     override fun onDestroy() {
         // manually destroy the viewModel when the fragment is destroyed
-        activity?.viewModelStore?.clear();
-
+        activity?.viewModelStore?.clear()
 
         // Shutdown TTS
         if (tts != null) {
@@ -84,7 +83,9 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
     }
 
 
-
+    /**
+     * Speech to text response from Google
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -98,7 +99,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                     }
 
                     // Return result of question
-                    Timber.i(voiceAnswer)
+//                    Timber.i(voiceAnswer)
                 }
             }
         }
@@ -115,11 +116,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(activity, this)
 
         // Inflate the binding
-        binding = DataBindingUtil.inflate<FragmentQuizBinding>(inflater, R.layout.fragment_quiz, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_quiz, container, false)
 
         // Get the viewmodel and set to the first question
         quizViewModel = ViewModelProvider(requireActivity()).get(QuizViewModel::class.java)
-        Timber.i("QUIZ MODE: %s", quizViewModel.mode)
+//        Timber.i("QUIZ MODE: %s", quizViewModel.mode)
         quizViewModel.setFirstQuestion()
 
         // Get user ID argument using by navArgs property delegate
@@ -129,83 +130,11 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         /**
          * Logic and UI handling when a new question is detected in the quiz
          */
-        /*quizViewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
-            Timber.i(newQuestion.answers.toString())
-            binding.quizInstructionsTextView.visibility = View.VISIBLE
-            binding.quizSubTextView.visibility = View.VISIBLE
-            binding.quizTrueButton.visibility = View.GONE
-            binding.quizFalseButton.visibility = View.GONE
-            binding.quizRepeatButton.visibility = View.GONE
-            binding.quizUserResponseEditText.visibility = View.GONE
-            binding.quizDateEditText.visibility = View.GONE
-            binding.quizStartTimerButton.visibility = View.GONE
-            binding.quizVoiceButton.visibility = View.GONE
-            binding.quizNextButton.visibility = View.VISIBLE
-            binding.quizProgressBar.visibility = View.VISIBLE
-            Timber.i((!TextUtils.isEmpty(newQuestion.image_url)).toString())
-            if (!TextUtils.isEmpty(newQuestion.image_url)){
-                binding.quizSubTextView.visibility  = View.GONE
-                binding.quizQuestionImageView.visibility = View.VISIBLE
-                val url = newQuestion.image_url?.split('/')
-                Picasso.get().load("https://" + url!![2] +'/' + url[3]).resize(screenRectPx.width(), screenRectPx.height()/3).into( binding.quizQuestionImageView);
-            }
-            else {
-                binding.quizSubTextView.visibility  = View.VISIBLE
-                binding.quizQuestionImageView.visibility = View.GONE
-            }
+        quizViewModel.currentQuestion.observe(viewLifecycleOwner, { newQuestion ->
 
-            // TODO: Bind the loadingbar https://stackoverflow.com/questions/45373007/progressdialog-is-deprecated-what-is-the-alternate-one-to-use
-            // TODO: in some way?
-
-            // Toggle visibility of respective parts of the UI based on the question response type
-            when (newQuestion.response_type) {
-                QuizQuestion.ResponseType.DATE -> {
-                    binding.quizDateEditText.visibility = View.VISIBLE
-                    countDown = quizViewModel.startTimer(binding, 60 * 1000)
-                }
-                QuizQuestion.ResponseType.ASSISTED -> {
-                    binding.quizStartTimerButton.visibility = View.VISIBLE
-                    binding.quizProgressBar.visibility = View.GONE
-                    binding.quizNextButton.visibility = View.GONE
-                }
-                QuizQuestion.ResponseType.SPEECH -> {
-                    binding.quizSubTextView.visibility = View.GONE
-                    binding.quizRepeatButton.visibility = View.VISIBLE
-                    binding.quizInstructionsTextView.visibility = View.GONE
-                    binding.quizVoiceButton.visibility = View.VISIBLE
-                    binding.quizNextButton.visibility = View.GONE
-                    countDown = quizViewModel.startTimer(binding, 60 * 1000)
-                }
-                else -> {
-                    binding.quizUserResponseEditText.visibility = View.VISIBLE
-                    countDown = quizViewModel.startTimer(binding, 60 * 1000)
-                }
-            }
-
-            // Set the bindings in the UI to default values
-            binding.quizQuestionNumTextView.text = " Question " + newQuestion.question_no.toString()
-            binding.quizInstructionsTextView.text = newQuestion.instruction
-            binding.quizSubTextView.text = newQuestion.sub_text
-
-            // Used for answer handling
-            answer = newQuestion.answers.toString()
-
-            // Get the new question instruction and pass it to text to speech
-            talk = newQuestion.instruction
-            tts!!.speak(newQuestion.instruction, TextToSpeech.QUEUE_FLUSH, null)
-        })*/
-
-        /**
-         * Logic and UI handling when a new question is detected in the quiz
-         */
-        quizViewModel.currentQuestion.observe(viewLifecycleOwner, Observer<QuizQuestion> { newQuestion ->
-
-            Timber.i("Q" + newQuestion.question_no.toString() + " answers: %s", newQuestion.answers.toString())
+//            Timber.i("Q" + newQuestion.question_no.toString() + " answers: %s", newQuestion.answers.toString())
 
             toggleUIQuestionElements(newQuestion, binding)
-
-            // TODO: Bind the loadingbar https://stackoverflow.com/questions/45373007/progressdialog-is-deprecated-what-is-the-alternate-one-to-use
-            // TODO: in some way?
 
             // Toggle visibility of respective response parts of the UI based on the question response type
             toggleUIResponseElements(newQuestion, binding, quizViewModel)
@@ -227,7 +156,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
          * Set up LiveData observation relationship to detect for when the quiz has completed
          * Writes the quiz result to db and passes results to post quiz fragment
          */
-        quizViewModel.quizIsFinished.observe(viewLifecycleOwner, Observer<Boolean> { newQuizIsFinished ->
+        quizViewModel.quizIsFinished.observe(viewLifecycleOwner, { newQuizIsFinished ->
             if (newQuizIsFinished == true) {
 
                 // create a copy of the answers. Since the quizAnswerList in viewModel is mutableList,
@@ -237,16 +166,13 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
 
                 // Fetch the current score and convert to double percentage
                 val correctNumOfAnswers = quizViewModel.score.value ?: 0
-                Timber.i("correctNumOfAnswers is: $correctNumOfAnswers")
-                Timber.i("question numbers is: ${quizAnswerList.size}")
-
-
+//                Timber.i("correctNumOfAnswers is: $correctNumOfAnswers")
+//                Timber.i("question numbers is: ${quizAnswerList.size}")
 
                 val scaledScore = (correctNumOfAnswers.toDouble()/quizAnswerList.size.toDouble()*100).toInt()
-                // TODO: (Done)verify/change to time = current time
                 val currentTime = LocalDateTime.now()
                 val timeCreated = TimeConverter.convertToDateViaInstant(currentTime)
-                Timber.i("result timeCreated is: $timeCreated")
+//                Timber.i("result timeCreated is: $timeCreated")
 
                 // Create quiz result object to be inserted to the database.
                 // The ID is set to 0 to be auto-generated
@@ -262,10 +188,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                             Toast.LENGTH_SHORT).show()
                     }else{
                         // all good
-                        // Pass the user ID, quiz result, currentScore and  answer list
-                        Timber.i("The inserted result ID is: $resultId")
-
-                        //TODO: (Done)verify/change the resultID from zero to be the next auto-incremented resultID
+//                        Timber.i("The inserted result ID is: $resultId")
                         val action = QuizFragmentDirections.actionQuizFragmentToPostQuizFragment(userID, resultId, scaledScore)
                         view?.findNavController()?.navigate(action)
 
@@ -298,7 +221,6 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             countDown?.cancel()
 
             // Verify answer against what was input in the edit text response field
-            // TODO: implement this properly, put in when/case loop
             if (binding.quizUserResponseEditText.visibility == View.VISIBLE){
                 val response = binding.quizUserResponseEditText.text.toString()
                 quizViewModel.onNext(response, answer, false)
@@ -308,19 +230,18 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 if (response != "") {
                     // reformat the date to keep it consistent with the answers on server
                     // original from user response example: Y-M-D
-                    // need to convert to the same format as the one from ther server, in this case: dd/mm/yy
+                    // need to convert to the same format as the one from the server, in this case: dd/mm/yy
                     val dateList = response.split("-")
                     val year = dateList[0].toInt()
                     val month = dateList[1].toInt()
                     val day = dateList[2].toInt()
-                    var date = LocalDate.of(year, month, day)
-
+                    val date = LocalDate.of(year, month, day)
                     val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
                     val formattedDate = date.format(formatter)
                     response = formattedDate
 
-                    Timber.i("The date picked is: $date")
-                    Timber.i("The formatted date picked is: $formattedDate")
+//                    Timber.i("The date picked is: $date")
+//                    Timber.i("The formatted date picked is: $formattedDate")
                     quizViewModel.onNext(response, answer, false)
                 }
                 else {
@@ -331,23 +252,18 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
                 quizViewModel.onNext(voiceAnswer, answer, false)
             }
 
-            binding.quizUserResponseEditText.text.clear();
-            binding.quizDateEditText.text.clear();
+            binding.quizUserResponseEditText.text.clear()
+            binding.quizDateEditText.text.clear()
 
         }
 
         // Assisted mode true/false response buttons
         binding.quizTrueButton.setOnClickListener {
-
-            // Verify answer against what was input in the edit text response field
-
             // Cancel countdown and go to next question
             countDown?.cancel()
             quizViewModel.onNext("", answer, true)
         }
         binding.quizFalseButton.setOnClickListener {
-            // Verify answer against what was input in the edit text response field
-
             // Cancel countdown and go to next question
             countDown?.cancel()
             quizViewModel.onNext("", answer, false)
@@ -378,7 +294,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
         }
 
         // Open a date picker dialog when pressing date picker edit text
-        binding.quizDateEditText.setOnClickListener { v:View ->
+        binding.quizDateEditText.setOnClickListener {
             context?.let { showDatePickerDialog(it, binding) }
         }
 
@@ -406,7 +322,7 @@ class QuizFragment : Fragment(), TextToSpeech.OnInitListener {
             binding.quizSubTextView.visibility  = View.GONE
             binding.quizQuestionImageView.visibility = View.VISIBLE
             val url = newQuestion.image_url?.split('/')
-            Picasso.get().load("https://" + url!![2] +'/' + url[3]).resize(screenRectPx.width(), screenRectPx.height()/3).into( binding.quizQuestionImageView);
+            Picasso.get().load("https://" + url!![2] +'/' + url[3]).resize(screenRectPx.width(), screenRectPx.height()/3).into( binding.quizQuestionImageView)
         }
         else {
             binding.quizSubTextView.visibility  = View.VISIBLE
@@ -456,7 +372,7 @@ private fun showDatePickerDialog(context : Context, binding : FragmentQuizBindin
     val datePickerDialog : DatePickerDialog = DatePickerDialog(context)
     // Default year of birth is set to 1940
     datePickerDialog.updateDate(1940,0,1)
-    datePickerDialog.datePicker.touchables[0].performClick();
+    datePickerDialog.datePicker.touchables[0].performClick()
     datePickerDialog.show()
     datePickerDialog.setOnDateSetListener { _, year, month, day ->
         val dobString = ("$year-${month+1}-$day")

@@ -1,30 +1,19 @@
 package com.dementiaquiz.android.fragments
 
 import android.Manifest
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,10 +21,9 @@ import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.FragmentPreQuizBinding
 import com.dementiaquiz.android.models.QuizViewModel
 import timber.log.Timber
-import java.security.Permission
 
 /**
- * Two-button display to determine whether the quiz is being conducted in Assisted or Patient mode
+ * Four-button display to determine whether the quiz is being conducted in Assisted or Patient mode, by yourself ot at a clinic
  */
 class PreQuizFragment : Fragment() {
 
@@ -142,7 +130,7 @@ class PreQuizFragment : Fragment() {
         }
 
         // Detect when quiz has finished loading, once it has, show the go to quiz button
-        quizViewModel.quizIsLoading.observe(viewLifecycleOwner, Observer<Boolean> {quizIsLoading ->
+        quizViewModel.quizIsLoading.observe(viewLifecycleOwner, { quizIsLoading ->
 
             // If quiz is not loading and the go to quiz button is hidden (after it is clicked) then navigate to quiz
             if (!quizIsLoading && binding.preQuizGoToQuizButton.visibility == View.GONE) {
@@ -153,7 +141,7 @@ class PreQuizFragment : Fragment() {
         })
 
         // Navigate to the quiz passing user ID as argument
-        binding.preQuizGoToQuizButton.setOnClickListener { v:View ->
+        binding.preQuizGoToQuizButton.setOnClickListener {
 
             // Upon pressing go to quiz, load the quiz based on the parameters in the UI
             quizViewModel.setQuizMode(getQuizModeString(isSolo, isAssisted, isAtHome, isAtClinic))
@@ -163,9 +151,9 @@ class PreQuizFragment : Fragment() {
         }
 
         // Observe whether quiz has fetched GPS coordinates, if it cannot then show dialog and navigate to title
-        quizViewModel.gpsCoordinatesFetched.observe(viewLifecycleOwner, Observer<Boolean> { gpsCoordinatesFetched ->
+        quizViewModel.gpsCoordinatesFetched.observe(viewLifecycleOwner, { gpsCoordinatesFetched ->
             if (!gpsCoordinatesFetched && binding.preQuizGoToQuizButton.visibility == View.GONE) {
-                context?.let { view?.let { it1 -> showCannotFetchGPSDialog(it, it1, quizViewModel) } }
+                context?.let { view?.let { it1 -> showCannotFetchGPSDialog(it, it1) } }
             }
         })
 
@@ -177,15 +165,16 @@ class PreQuizFragment : Fragment() {
 /**
  * Shows a dialog that informs the user that GPS coordinates cannot be fetched, navigates to the title screen
  */
-private fun showCannotFetchGPSDialog(context : Context,
-                                     view : View,
-                                     quizViewModel : QuizViewModel) {
+private fun showCannotFetchGPSDialog(
+    context: Context,
+    view: View
+) {
 
     val builder = AlertDialog.Builder(context)
     builder.setTitle("Cannot fetch GPS coordinates")
     builder.setMessage("Please check your location settings")
     builder.setIcon(android.R.drawable.ic_dialog_alert)
-    builder.setPositiveButton("Go Back to Main Menu"){dialogInterface, which ->
+    builder.setPositiveButton("Go Back to Main Menu"){ _, _ ->
         view.findNavController().navigate(R.id.action_preQuizFragment_to_titleFragment)
     }
     val alertDialog: AlertDialog = builder.create()

@@ -1,7 +1,6 @@
 package com.dementiaquiz.android.database.dao
 
 import androidx.room.*
-import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.database.model.User
 import com.dementiaquiz.android.database.model.UserWithResults
 import kotlinx.coroutines.flow.Flow

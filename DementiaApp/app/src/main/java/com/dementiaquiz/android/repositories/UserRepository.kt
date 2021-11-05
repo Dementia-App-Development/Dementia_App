@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.first
 
 class UserRepository(private val userDao: UserDao) {
 
-
     // check if there is already a same nickname in the database before insert, only
     // allow insert into the database if there is no such nickname.
     // return the ID of the inserted user if succeed, return -1 if failed
@@ -23,7 +22,7 @@ class UserRepository(private val userDao: UserDao) {
         if (userWithSameNickname!=null){
             // failed to insert, someone has used the user name
             return -1
-        }else{
+        } else {
             // insert successfully, return the ID of the inserted user
             return userDao.insert(user)
         }

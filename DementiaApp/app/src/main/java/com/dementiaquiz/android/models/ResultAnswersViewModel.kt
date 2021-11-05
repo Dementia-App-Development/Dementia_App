@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.dementiaquiz.android.database.model.QuizAnswer
-import com.dementiaquiz.android.database.model.QuizResult
 import com.dementiaquiz.android.repositories.QuizAnswerRepository
-import com.dementiaquiz.android.repositories.QuizResultRepository
 
+/**
+ * A class holding data for Result Answers
+ */
 class ResultAnswersViewModel(private val quizAnswerRepository: QuizAnswerRepository): ViewModel() {
 
     // get the quiz answers belong to the given result ID

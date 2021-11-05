@@ -3,7 +3,6 @@ package com.dementiaquiz.android.activities
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-
 import com.dementiaquiz.android.R
 import com.dementiaquiz.android.databinding.ActivityMainBinding
-import timber.log.Timber
-import android.widget.TextView
-
-
-
-
-//TODO: can probably remove this constant, unless when we are loading quiz from file after onStop/onResume in fragment
-const val QUIZ_QUESTIONS_JSON = "quiz_questions.json"
 
 /**
  * Main activity for the Dementia Quiz App, hosts a number of fragments
@@ -34,18 +24,12 @@ class MainActivity : AppCompatActivity() {
     // create a reference to drawerLayout
     private lateinit var drawerLayout: DrawerLayout
 
-
-
-    // Initialize the current question index to 0 (the first question)
-    // TODO: probably need to store this persistent data variable somewhere else
-    private var currentQuestionIndex = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
 
-        Timber.i("onCreate called")
+//        Timber.i("onCreate called")
 
         // use DataBindingUtil to set the content view
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -55,8 +39,9 @@ class MainActivity : AppCompatActivity() {
         // Change the title colour
         val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
-            getSupportActionBar()?.setTitle((Html.fromHtml("<font color=\"#003349\">" + "Dementia App" + "</font>")))
-        };
+            // Change the colour of the action bar to same as colour theme
+            supportActionBar?.title = (Html.fromHtml("<font color=\"#003349\">" + "Dementia App" + "</font>"))
+        }
         // get drawerLayout
         drawerLayout = binding.drawerLayout
 

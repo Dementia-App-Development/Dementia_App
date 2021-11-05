@@ -4,6 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
+/**
+ * This data class represents a result to a single quiz with many questions
+ */
 @Entity(tableName = "quiz_result")
 data class QuizResult(
 

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/spinner_prompt_text"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:entries="@array/Users"
             android:minHeight="48dp"
-            android:scrollbarSize="24sp"/>
+            android:scrollbarSize="24sp" />
 
         <View
             android:id="@+id/view"
@@ -70,6 +70,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
+                android:backgroundTint="@color/teal_200"
                 android:text="Next"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
